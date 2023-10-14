@@ -60,8 +60,7 @@
         <section class="wrapper">
             <div class="new_models_section sto_ d_flex">
                 @php
-                    $best_deal = $widgets->where('section_name','best_deals')->first();
-
+                    $best_deal = $widgets->where('section_name','feature_categories')->first();
                 @endphp
                 <div class="d_flex sto_ for_mob_view">
                     <div>
@@ -80,7 +79,7 @@
                         <div class="model_product">
                             <a href="{{singleProductURL($product->seller->slug, $product->slug, $product->product->categories[0]->slug)}}">
                                 <div class="model_img">
-                                    <img @if ($product->thum_img != NULL) src="{{showImage($product->thum_img)}}"
+                                    <img @if ($product->thum_img != null) src="{{showImage($product->thum_img)}}"
                                          @else src="{{showImage($product->product->thumbnail_image_source)}}"
                                          @endif alt="">
                                 </div>
@@ -133,7 +132,7 @@
                                 <div class="d_flex sto_ col_titles_mob">
                                     <a class="model_name"
                                        href="{{singleProductURL($product->seller->slug, $product->slug, $product->product->categories[0]->slug)}}">
-                                        @if($product->product_name != NULL)
+                                        @if($product->product_name != null)
                                             {{ @$product->product_name }}
                                         @else
                                             {{$product->product->product_name}}
@@ -176,30 +175,30 @@
                                     @include('product::products.download_product_partial', ['product' => $product->product()->first()])
                                 @else
                                     <a
-                                        @php
-                                            $disabledAddToCartClass = "";
-                                            if( \App\Services\CartService::isProductInCart($product->skus->first()->id)) {
-                                              $disabledAddToCartClass = "disabled";
-                                            }
-                                        @endphp
-                                        @if(single_price($product->skus->max('selling_price')) == '$ 0.00')
-                                            @auth
-                                                href="{{$product->product->video_link}}"
-                                        class="{{ $disabledAddToCartClass }} add_catalog_btn"
-                                        @else
-                                            class="{{ $disabledAddToCartClass }} add_catalog_btn login_btn"
+                                            @php
+                                                $disabledAddToCartClass = "";
+                                                if( \App\Services\CartService::isProductInCart($product->skus->first()->id)) {
+                                                  $disabledAddToCartClass = "disabled";
+                                                }
+                                            @endphp
+                                            @if(single_price($product->skus->max('selling_price')) == '$ 0.00')
+                                                @auth
+                                                    href="{{$product->product->video_link}}"
+                                            class="{{ $disabledAddToCartClass }} add_catalog_btn"
+                                            @else
+                                                class="{{ $disabledAddToCartClass }} add_catalog_btn login_btn"
 
-                                        @endauth
-                                        @else
+                                            @endauth
+                                            @else
 
-                                            @auth class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
-                                        @elseif(single_price($product->skus->max('selling_price')) == '$ 0.00') class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
-                                        @else class="add_catalog_btn login_btn"
-                                        @endauth
-                                        @endif
-                                        tabindex="-1"
-                                        data-producttype="{{ @$product->product->product_type }}"
-                                        data-seller={{ $product->user_id }} data-product-sku={{ @$product->skus->first()->id }}
+                                                @auth class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
+                                            @elseif(single_price($product->skus->max('selling_price')) == '$ 0.00') class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
+                                            @else class="add_catalog_btn login_btn"
+                                            @endauth
+                                            @endif
+                                            tabindex="-1"
+                                            data-producttype="{{ @$product->product->product_type }}"
+                                            data-seller={{ $product->user_id }} data-product-sku={{ @$product->skus->first()->id }}
                                     @if(@$product->hasDeal)
                                         data-base-price={{ selling_price(@$product->skus->first()->selling_price,@$product->hasDeal->discount_type,@$product->hasDeal->discount) }}
                                     @else
@@ -210,38 +209,38 @@
                                       @endif
                                     @endif
                                     data-shipping-method=0
-                                        data-product-id={{ $product->id }}
+                                            data-product-id={{ $product->id }}
                                     data-stock_manage="{{$product->stock_manage}}"
-                                        data-stock="{{@$product->skus->first()->product_stock}}"
-                                        data-min_qty="{{$product->product->minimum_order_qty}}"
-                                 >
-                                    @if(single_price($product->skus->max('selling_price')) == '$ 0.00')
-                                        <svg width="18" height="16"
-                                             viewBox="0 0 18 16" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <g clip-path="url(#clip0_794_15016)">
-                                                <path d="M16.5 9H13.5938L15.0625 7.5625C16 6.625 15.3125 5 14 5H12V1.5C12 0.6875 11.3125 0 10.5 0H7.5C6.65625 0 6 0.6875 6 1.5V5H4C2.65625 5 1.96875 6.625 2.9375 7.5625L4.375 9H1.5C0.65625 9 0 9.6875 0 10.5V14.5C0 15.3438 0.65625 16 1.5 16H16.5C17.3125 16 18 15.3438 18 14.5V10.5C18 9.6875 17.3125 9 16.5 9ZM4 6.5H7.5V1.5H10.5V6.5H14L9 11.5L4 6.5ZM16.5 14.5H1.5V10.5H5.875L7.9375 12.5625C8.5 13.1562 9.46875 13.1562 10.0312 12.5625L12.0938 10.5H16.5V14.5ZM13.75 12.5C13.75 12.9375 14.0625 13.25 14.5 13.25C14.9062 13.25 15.25 12.9375 15.25 12.5C15.25 12.0938 14.9062 11.75 14.5 11.75C14.0625 11.75 13.75 12.0938 13.75 12.5Z"
-                                                      fill="white"/>
-                                            </g>
-                                            <defs>
-                                                <clipPath id="clip0_794_15016">
-                                                    <rect width="18" height="16"
+                                            data-stock="{{@$product->skus->first()->product_stock}}"
+                                            data-min_qty="{{$product->product->minimum_order_qty}}"
+                                    >
+                                        @if(single_price($product->skus->max('selling_price')) == '$ 0.00')
+                                            <svg width="18" height="16"
+                                                 viewBox="0 0 18 16" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_794_15016)">
+                                                    <path d="M16.5 9H13.5938L15.0625 7.5625C16 6.625 15.3125 5 14 5H12V1.5C12 0.6875 11.3125 0 10.5 0H7.5C6.65625 0 6 0.6875 6 1.5V5H4C2.65625 5 1.96875 6.625 2.9375 7.5625L4.375 9H1.5C0.65625 9 0 9.6875 0 10.5V14.5C0 15.3438 0.65625 16 1.5 16H16.5C17.3125 16 18 15.3438 18 14.5V10.5C18 9.6875 17.3125 9 16.5 9ZM4 6.5H7.5V1.5H10.5V6.5H14L9 11.5L4 6.5ZM16.5 14.5H1.5V10.5H5.875L7.9375 12.5625C8.5 13.1562 9.46875 13.1562 10.0312 12.5625L12.0938 10.5H16.5V14.5ZM13.75 12.5C13.75 12.9375 14.0625 13.25 14.5 13.25C14.9062 13.25 15.25 12.9375 15.25 12.5C15.25 12.0938 14.9062 11.75 14.5 11.75C14.0625 11.75 13.75 12.0938 13.75 12.5Z"
                                                           fill="white"/>
-                                                </clipPath>
-                                            </defs>
-                                        </svg>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_794_15016">
+                                                        <rect width="18" height="16"
+                                                              fill="white"/>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
 
-                                    @else
-                                        +
-                                        <svg width="21" height="18"
-                                             viewBox="0 0 21 18" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M19.645 2.25H5.33643L5.02002 0.703125C4.94971 0.316406 4.59815 0 4.21143 0H0.695801C0.449707 0 0.273926 0.210938 0.273926 0.421875V1.26562C0.273926 1.51172 0.449707 1.6875 0.695801 1.6875H3.5083L5.93408 14.2031C5.54736 14.625 5.33643 15.1523 5.33643 15.75C5.33643 17.0156 6.3208 18 7.58643 18C8.8169 18 9.83643 17.0156 9.83643 15.75C9.83643 15.3633 9.6958 14.9766 9.52002 14.625H14.6177C14.4419 14.9766 14.3364 15.3633 14.3364 15.75C14.3364 17.0156 15.3208 18 16.5864 18C17.8169 18 18.8364 17.0156 18.8364 15.75C18.8364 15.1172 18.5552 14.5547 18.1333 14.1328L18.1685 13.9922C18.2739 13.4648 17.8872 12.9375 17.3247 12.9375H7.41065L7.09424 11.25H18.063C18.4849 11.25 18.8013 11.0039 18.9067 10.6172L20.4888 3.30469C20.5942 2.77734 20.2075 2.25 19.645 2.25ZM7.58643 16.5938C7.09424 16.5938 6.74268 16.2422 6.74268 15.75C6.74268 15.293 7.09424 14.9062 7.58643 14.9062C8.04346 14.9062 8.43018 15.293 8.43018 15.75C8.43018 16.2422 8.04346 16.5938 7.58643 16.5938ZM16.5864 16.5938C16.0942 16.5938 15.7427 16.2422 15.7427 15.75C15.7427 15.293 16.0942 14.9062 16.5864 14.9062C17.0435 14.9062 17.4302 15.293 17.4302 15.75C17.4302 16.2422 17.0435 16.5938 16.5864 16.5938ZM17.395 9.5625H6.74268L5.65283 3.9375H18.6255L17.395 9.5625Z"
-                                                  fill="white"/>
-                                        </svg>
-                                    @endif
-                                </a>
-                            @endif
+                                        @else
+                                            +
+                                            <svg width="21" height="18"
+                                                 viewBox="0 0 21 18" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M19.645 2.25H5.33643L5.02002 0.703125C4.94971 0.316406 4.59815 0 4.21143 0H0.695801C0.449707 0 0.273926 0.210938 0.273926 0.421875V1.26562C0.273926 1.51172 0.449707 1.6875 0.695801 1.6875H3.5083L5.93408 14.2031C5.54736 14.625 5.33643 15.1523 5.33643 15.75C5.33643 17.0156 6.3208 18 7.58643 18C8.8169 18 9.83643 17.0156 9.83643 15.75C9.83643 15.3633 9.6958 14.9766 9.52002 14.625H14.6177C14.4419 14.9766 14.3364 15.3633 14.3364 15.75C14.3364 17.0156 15.3208 18 16.5864 18C17.8169 18 18.8364 17.0156 18.8364 15.75C18.8364 15.1172 18.5552 14.5547 18.1333 14.1328L18.1685 13.9922C18.2739 13.4648 17.8872 12.9375 17.3247 12.9375H7.41065L7.09424 11.25H18.063C18.4849 11.25 18.8013 11.0039 18.9067 10.6172L20.4888 3.30469C20.5942 2.77734 20.2075 2.25 19.645 2.25ZM7.58643 16.5938C7.09424 16.5938 6.74268 16.2422 6.74268 15.75C6.74268 15.293 7.09424 14.9062 7.58643 14.9062C8.04346 14.9062 8.43018 15.293 8.43018 15.75C8.43018 16.2422 8.04346 16.5938 7.58643 16.5938ZM16.5864 16.5938C16.0942 16.5938 15.7427 16.2422 15.7427 15.75C15.7427 15.293 16.0942 14.9062 16.5864 14.9062C17.0435 14.9062 17.4302 15.293 17.4302 15.75C17.4302 16.2422 17.0435 16.5938 16.5864 16.5938ZM17.395 9.5625H6.74268L5.65283 3.9375H18.6255L17.395 9.5625Z"
+                                                      fill="white"/>
+                                            </svg>
+                                        @endif
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     @endforeach
