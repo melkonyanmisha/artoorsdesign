@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var Illuminate\Database\Eloquent\Collection $widgets
+ */
+
+?>
+
 @extends('frontend.default.layouts.newApp')
 @php $home_seo = App\Models\HomeSeo::first(); @endphp
 
@@ -29,17 +36,6 @@
 @endsection
 
 @section('content')
-    {{--    @if(session()->get('pdf'))--}}
-    {{--        <script>--}}
-    {{--            $.ajax({--}}
-    {{--                url: '{{route('minchev_download')}}',--}}
-    {{--                success: function (data) {--}}
-    {{--                    $('.header_second').append(data)--}}
-    {{--                    $('.header_second').find('#submit').submit()--}}
-    {{--                }--}}
-    {{--            });--}}
-    {{--        </script>--}}
-    {{--    @endif--}}
     @php
         if($pdf = session()->get('exav')){
             if(\File::exists(public_path($pdf)))
