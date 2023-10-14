@@ -1,0 +1,15 @@
+[13-Feb-2023 23:57:35 Asia/Yerevan] PHP Fatal error:  Cannot use isset() on the result of an expression (you can use "null !== expression" instead) in /home/nhzl026omt1n/public_html/storage/framework/views/fc384e57eb2e5e666335fa0610fbb8972f24d7b3.php on line 67
+[14-Feb-2023 00:06:20 Asia/Yerevan] PHP Fatal error:  Can't use method return value in write context in /home/nhzl026omt1n/public_html/storage/framework/views/fc384e57eb2e5e666335fa0610fbb8972f24d7b3.php on line 68
+[15-Feb-2023 06:30:40 UTC] PHP Notice:  Undefined variable: product in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 403
+[15-Feb-2023 06:30:40 UTC] PHP Notice:  Undefined variable: product in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 403
+[15-Feb-2023 14:35:24 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 51
+[15-Feb-2023 14:58:54 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 51
+[15-Feb-2023 15:01:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 106
+[15-Feb-2023 15:39:40 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 51
+[15-Feb-2023 15:47:30 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 395
+[15-Feb-2023 15:47:32 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 395
+[15-Feb-2023 15:47:52 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home/nhzl026omt1n/public_html/app/Helpers/Functions.php on line 51
+[27-Feb-2023 17:29:56 Asia/Yerevan] PHP Fatal error:  Cannot use Illuminate\Support\Facades\URL as URL because the name is already in use in /home/nhzl026omt1n/public_html/app/Providers/AppServiceProvider.php on line 14
+[27-Feb-2023 17:29:57 Asia/Yerevan] PHP Fatal error:  Cannot use Illuminate\Support\Facades\URL as URL because the name is already in use in /home/nhzl026omt1n/public_html/app/Providers/AppServiceProvider.php on line 14
+[06-Apr-2023 12:17:54 Asia/Yerevan] PHP Fatal error:  Cannot declare class MyApp\Http\Middleware\HttpsProtocol, because the name is already in use in /home/nhzl026omt1n/public_html/app/Http/Middleware/HttpsProtocol.php on line 8
+[06-Apr-2023 12:17:58 Asia/Yerevan] PHP Fatal error:  Cannot declare class MyApp\Http\Middleware\HttpsProtocol, because the name is already in use in /home/nhzl026omt1n/public_html/app/Http/Middleware/HttpsProtocol.php on line 8

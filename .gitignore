@@ -1,0 +1,30 @@
+# IDE files
+/.idea
+/.vscode
+
+# Composer
+/vendor
+
+# PHPUnit
+/phpunit.xml
+/tests/*
+
+# Ignore all directories named "cache" and their contents recursively
+**/cache/*
+
+# Laravel storage directory
+/storage/*
+
+# Laravel Public
+/public/*
+#/public/database-backup/*
+#/public/demo_db/*
+#/public/public/*
+#/public/uploads/*
+
+# Laravel specific files
+.env
+
+# Other Directories in Laravel
+/Modules/*
+/images/*
