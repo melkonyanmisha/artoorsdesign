@@ -8,11 +8,9 @@ use App\Services\ContactService;
 use Illuminate\Http\Request;
 use Modules\FrontendCMS\Entities\DynamicPage;
 use Illuminate\Support\Facades\Auth;
-use Modules\Appearance\Entities\Header;
 use Modules\FrontendCMS\Entities\HomePageSection;
 use App\Repositories\ProductRepository;
 use Modules\Seller\Entities\SellerProduct;
-use Modules\Menu\Entities\Menu;
 use Modules\Product\Entities\Category;
 use Modules\Visitor\Entities\VisitorHistory;
 use Modules\Visitor\Entities\IgnoreIP;
@@ -24,9 +22,7 @@ use Stevebauman\Location\Facades\Location;
 use Carbon\Carbon;
 use Exception;
 use Browser;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Modules\Product\Entities\ProductTag;
 use Modules\MultiVendor\Entities\SellerAccount;
 use Modules\UserActivityLog\Traits\LogActivity;
 
@@ -60,10 +56,8 @@ class WelcomeController extends Controller
                 VisitorHistory::create(['visitors' => request()->ip(), 'date' => Carbon::now()->format('y-m-d'), 'agent' => Browser::browserFamily() . '-' . Browser::browserVersion() . '-' . Browser::browserEngine() . '-' . Browser::platformName(), 'device' => Browser::platformName(), 'location' => $location]);
             }
             $CategoryList = Category::where('parent_id', 0)->get();
-
-            $widgets = HomePageSection::all();
+            $widgets =  HomePageSection::all();
             $previous_route = session()->get('previous_user_last_route');
-            $previous_user_id = session()->get('previous_user_id');
             $home_info = HomeSeo::first();
             $about_us = AboutUs::select('home_page_title', 'home_page_description')->first();
             if ($previous_route != null) {
