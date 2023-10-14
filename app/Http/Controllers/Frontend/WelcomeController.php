@@ -68,8 +68,6 @@ class WelcomeController extends Controller
             }
             $CategoryList   = Category::where('parent_id', 0)->get();
             $widgets        = HomePageSection::all();
-            var_dump($widgets); exit;
-
             $previous_route = session()->get('previous_user_last_route');
             $home_info      = HomeSeo::first();
             $about_us       = AboutUs::select('home_page_title', 'home_page_description')->first();
