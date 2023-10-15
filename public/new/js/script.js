@@ -117,6 +117,10 @@ $('.sorts_drpdwn').on('mouseleave', function() {
     $('.sorts_drpdwn').toggleClass('sorts_drpdwn_active');
 });
 
+$('.for_catal').on('mouseleave', function() {
+    $('.for_catal').toggleClass('for_catal_active');
+});
+
 $('.messages_from_user').click( function() {
     $('.messages_from_user').removeClass('messages_from_user_active');
     $(this).addClass('messages_from_user_active');
