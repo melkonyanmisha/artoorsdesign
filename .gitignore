@@ -26,5 +26,4 @@
 .env
 
 # Other Directories in Laravel
-/Modules/*
 /images/*
