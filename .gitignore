@@ -16,11 +16,27 @@
 /storage/*
 
 # Laravel Public
-/public/*
-#/public/database-backup/*
-#/public/demo_db/*
-#/public/public/*
-#/public/uploads/*
+/public/analytics/*
+/public/api/*
+/public/backend/*
+/public/bulk_upload_sample/*
+/public/carrier/*
+/public/css/*
+/public/database-backup/*
+/public/demo_db/*
+/public/flags/*
+/public/frontend/*
+/public/google_analytics/*
+/public/images/*
+/public/js/*
+/public/modules/*
+/public/payment_gateway/*
+/public/pdf_fonts/*
+/public/product/*
+/public/public/*
+/public/svg/*
+/public/uploads/*
+/public/vendor/*
 
 # Laravel specific files
 .env
