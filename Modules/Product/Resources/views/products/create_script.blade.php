@@ -1111,7 +1111,6 @@
 
             let tagsInputHtml = $('.bootstrap-tagsinput').html();
             let currentProductSKU = $('#sku_single').val();
-            // let currentProductName = $('#product_name').val();
             let currentProductName = event.target.value;
 
             if (tagsInputHtml.indexOf(currentProductName) === -1) {
@@ -1123,9 +1122,9 @@
             }
         });
         
-        function addNewElementInTags(newTagVal) {
-            // Insert new tag
-            $('#tags').tagsinput('add', newTagVal);
+        function addNewElementInTags(newTag) {
+            // Insert the new tag
+            $('#tags').tagsinput('add', newTag);
         }
 
     })(jQuery);
