@@ -1093,22 +1093,40 @@
         }
 
         // tag
-
         $(document).on('click', '.tag-add', function(e){
             e.preventDefault();
             $('#tags').tagsinput('add', $(this).text());
         });
-        $(document).on('focusout', '#product_name', function(){
+
+
+        $(document).on('focusout', '#product_name', function (event) {
             // tag get
             $("#tag_show").html('<li></li>');
-            var sentence = $(this).val();
-            var ENDPOINT = "{{ url('/') }}";
-            var url = ENDPOINT + '/setup/getTagBySentence';
-            $.get(url,{sentence:sentence},function(result){
+            let sentence = $(this).val();
+            let ENDPOINT = "{{ url('/') }}";
+            let url = ENDPOINT + '/setup/getTagBySentence';
+            $.get(url, {sentence: sentence}, function (result) {
                 $("#tag_show").append(result);
             })
-        });
 
+            let tagsInputHtml = $('.bootstrap-tagsinput').html();
+            let currentProductSKU = $('#sku_single').val();
+            // let currentProductName = $('#product_name').val();
+            let currentProductName = event.target.value;
+
+            if (tagsInputHtml.indexOf(currentProductName) === -1) {
+                addNewElementInTags(currentProductName)
+            }
+
+            if (tagsInputHtml.indexOf(currentProductSKU) === -1) {
+                addNewElementInTags(currentProductSKU)
+            }
+        });
+        
+        function addNewElementInTags(newTagVal) {
+            // Insert new tag
+            $('#tags').tagsinput('add', newTagVal);
+        }
 
     })(jQuery);
 
