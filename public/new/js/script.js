@@ -1,5 +1,5 @@
 $('.chosen_lang').click( function (){
-    $(this).closest('.lang_drpdn').find('.dropdwn_choose').toggleClass('dropdown_active')
+    $(this).closest('.lang_drpdn').find('.dropdwn_choose').toggleClass('dropdown_active');
 });
 
 $('.lang_drpdn').mouseleave(function() {
@@ -7,7 +7,7 @@ $('.lang_drpdn').mouseleave(function() {
 });
 
 $('.menu_catalog').click( function() {
-    $(this).closest('.catalog_cl').find('.catalog_dropd').toggleClass('catalog_dropd_active')
+    $(this).closest('.catalog_cl').find('.catalog_dropd').toggleClass('catalog_dropd_active');
 });
 
 $('.profile_svg').click( function() {
@@ -110,7 +110,10 @@ $('.head_catal .head_icons_svg').click( function() {
 });
 
 $('.sortby_sp').click( function() {
-    console.log('aaaaaaaaaaaaaaaaaaa')
+    $('.sorts_drpdwn').toggleClass('sorts_drpdwn_active');
+});
+
+$('.sorts_drpdwn').on('mouseleave', function() {
     $('.sorts_drpdwn').toggleClass('sorts_drpdwn_active');
 });
 
@@ -119,18 +122,14 @@ $('.messages_from_user').click( function() {
     $(this).addClass('messages_from_user_active');
 });
 
-
-
-
 if (window.matchMedia('(max-width: 1024px)').matches) {
     $('.messages_from_user').click( function() {
         $('.message_block_').show(200);
-        $('.message_users_block').hide()
+        $('.message_users_block').hide();
     });
 }
 
 $('.edit_profile').click( function() {
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaa')
     $('.prof_menu_sp').removeClass('prof_menu_sp_active');
     $(this).addClass('prof_menu_sp_active');
     $('.for_edit_profile').show(200).addClass('for_edit_profile_active');
@@ -272,13 +271,7 @@ $('.payment_option_block').on('click', function() {
     $(this).addClass('payment_metod_item_active');
     $(this).find($('.chosen_area')).toggleClass('chosen_area_active');
     $(this).find('.chosen_svg').css('display','block');
-})
-
-
-
-
-
-
+});
 
 $('#myImg').click( function(){
     let url = $(this).attr("src");
@@ -291,9 +284,9 @@ $('#myImg').click( function(){
 if(document.querySelector(".for_catal_active") !== "null"){
     document.addEventListener("click", (event)=>{
         if(!document.querySelector(".head_catal").contains(event.target)){
-            document.querySelector(".for_catal").classList.remove("for_catal_active")
+            document.querySelector(".for_catal").classList.remove("for_catal_active");
         }
-    })
+    });
 }
 
 $('.close').click(function() {
@@ -304,14 +297,9 @@ $('.close').click(function() {
 let slideIndex = 1;
 showSlides(slideIndex);
 
-function plusSlides(n) {
-    showSlides(slideIndex += n);
-}
-
 function showSlides(n) {
     let i;
     let slides = document.getElementsByClassName("mySlides");
-    let captionText = document.getElementById("caption");
     if (n > slides.length) {slideIndex = 1}
     if (n < 1) {slideIndex = slides.length}
     for (i = 0; i < slides.length; i++) {
@@ -401,20 +389,17 @@ $('.toggle_fill').click( function (){
         .fail( function(xhr, textStatus, errorThrown) {
             console.log(xhr.responseText);
         });
-})
+});
 
 
 $(".textareaclass").keypress(function (e) {
-    console.log('textareaclass')
     if(e.which === 13 && !e.shiftKey) {
         e.preventDefault();
-        comment_store($('.comment_text').attr('data-id'),$('.for_comment').attr('data-slug'),$(this).attr('data-id'),$(this).val())
+        comment_store($('.comment_text').attr('data-id'),$('.for_comment').attr('data-slug'),$(this).attr('data-id'),$(this).val());
     }
 });
 
 $("#textareaa").keypress(function (e) {
-    console.log('textareaa')
-
     if(e.which === 13 && !e.shiftKey) {
         e.preventDefault();
         comment_store($('.comment_text').attr('data-id'),$('.for_comment').attr('data-slug'))
@@ -430,8 +415,8 @@ $('.reply_com').click(function() {
 if(document.querySelector(".for_catal_active") !== "null"){
     document.addEventListener("click", (event)=>{
         if(!document.querySelector(".head_catal").contains(event.target)){
-        document.querySelector(".for_catal").classList.remove("for_catal_active")
+        document.querySelector(".for_catal").classList.remove("for_catal_active");
         }
-    })
+    });
 }
 
