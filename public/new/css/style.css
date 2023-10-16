@@ -3115,3 +3115,7 @@ textarea {
 .about_us_section .about_us p{
     font-size: 22px;
 }
+
+.sort_sp_active {
+    color: #00aaad;
+}
