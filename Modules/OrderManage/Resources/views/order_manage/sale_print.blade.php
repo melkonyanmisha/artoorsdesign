@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('common.document') }}</title>
     <link rel="stylesheet" href="{{asset(asset_path('modules/ordermanage/css/my_sale_print.css'))}}" />
-
-
 </head>
 <body>
     <div class="invoice_wrapper">
@@ -446,7 +444,8 @@
 
             <table class="table border_table mb_30" >
                 <tr>
-                    <th scope="col" width="30%" class="text_left">{{ __('common.name') }}</th>
+                    <th scope="col" style="width: 30%" class="text_left">{{ __('common.name') }}</th>
+                    <th scope="col" style="width: 30%" class="text_left">{{ __('common.model_number') }}</th>
 {{--                    <th scope="col" class="text_left">{{ __('common.details') }}</th>--}}
                     <th scope="col" class="text-right">{{ __('common.price') }}</th>
                     <th scope="col" class="text-right">{{ __('common.total') }}</th>
@@ -489,6 +488,7 @@
 {{--                            @endif--}}
 {{--                        @endif--}}
 
+                        <td>{{ $package_product->seller_product_sku->sku->sku }}</td>
                         <td class="text-right">{{ single_price($package_product->price) }}</td>
                         <td class="text-right">{{ single_price($package_product->price * $package_product->qty) }}</td>
                     </tr>
@@ -497,7 +497,6 @@
             <hr>
         @endforeach
     </div>
-
 
     <script src="{{asset(asset_path('backend/js/jquery.min.js'))}}"></script>
     <script type="text/javascript">
