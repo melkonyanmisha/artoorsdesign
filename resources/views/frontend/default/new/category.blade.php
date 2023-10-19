@@ -123,6 +123,10 @@
                         </div>
                     @endif
                     @if(isset($products) && count($products))
+                        @php
+                            $sort_by = request('sort_by');
+                        @endphp
+
                         <div class="sort_by">
                             <div class="sortby_sp d_flex">
                                 Sort by
@@ -132,20 +136,21 @@
                                 </svg>
                             </div>
                             <div class="sorts_drpdwn ">
-                                <span class="sort_sp getFilterUpdateByIndex sort_sp_active"
+                                <span class="sort_sp getFilterUpdateByIndex <?= !$sort_by || $sort_by == 'new' ? 'sort_sp_active' : ''; ?>"
                                       data-id="new">{{ __('common.new') }}
                                 </span>
-                                <span class="sort_sp getFilterUpdateByIndex" data-id="old">{{ __('common.old') }}</span>
-                                <span class="sort_sp getFilterUpdateByIndex"
+                                <span class="sort_sp getFilterUpdateByIndex <?= $sort_by == 'old' ? 'sort_sp_active' : ''; ?>"
+                                      data-id="old">{{ __('common.old') }}</span>
+                                <span class="sort_sp getFilterUpdateByIndex <?= $sort_by == 'alpha_asc' ? 'sort_sp_active' : ''; ?>"
                                       data-id="alpha_asc">{{ __('defaultTheme.name_a_to_z') }}
                                 </span>
-                                <span class="sort_sp getFilterUpdateByIndex"
+                                <span class="sort_sp getFilterUpdateByIndex <?= $sort_by == 'alpha_desc' ? 'sort_sp_active' : ''; ?>"
                                       data-id="alpha_desc">{{ __('defaultTheme.name_z_to_a') }}
                                 </span>
-                                <span class="sort_sp getFilterUpdateByIndex"
+                                <span class="sort_sp getFilterUpdateByIndex <?= $sort_by == 'low_to_high' ? 'sort_sp_active' : ''; ?>"
                                       data-id="low_to_high">{{ __('defaultTheme.price_low_to_high') }}
                                 </span>
-                                <span class="sort_sp getFilterUpdateByIndex"
+                                <span class="sort_sp getFilterUpdateByIndex <?= $sort_by == 'high_to_low' ? 'sort_sp_active' : ''; ?>"
                                       data-id="high_to_low">{{ __('defaultTheme.price_high_to_low') }}
                                 </span>
                             </div>
@@ -170,31 +175,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('body').on('click', '.pagination a', function (e) {
+            const body = $('body');
+
+            $(body).on('click', '.pagination a', function (e) {
                 e.preventDefault();
                 let sorting = $('.sorts_drpdwn').find('.sort_sp_active').data('id');
-                let url = '{{Request::fullUrl()}}';
+                let url = window.location.href;
                 let pagination = $('.choose_pagination_quantity').find('.per_page_active').data('id');
                 let page = $(this).data('id');
-                let fullUrl = url;
+                let fullUrl = new URL(url);
 
-                if (sorting) {
-                    @if(isset($_GET['item']))
-                        fullUrl = fullUrl + '&sort_by=' + sorting;
-                    @else
-                        fullUrl = fullUrl + '?sort_by=' + sorting;
-                    @endif
-                }
-
-                if (pagination) {
-                    fullUrl = fullUrl + '&paginate_id=' + pagination;
-                }
-
-                fullUrl = fullUrl.replace("amp;", "");
-
-                if (page) {
-                    fullUrl = fullUrl + '&page=' + page;
-                }
+                fullUrl.searchParams.set('sort_by', sorting);
+                fullUrl.searchParams.set('paginate_id', pagination);
+                fullUrl.searchParams.set('page', page);
 
                 window.history.pushState('', '', fullUrl);
 
@@ -206,81 +199,38 @@
                     $('.sorts_drpdwn').find('.sort_sp_active').removeClass('sort_sp_active');
                     $(this).addClass('sort_sp_active');
                     let sorting = $(this).data('id');
-                    let url = '{{Request::fullUrl()}}';
+                    let url = window.location.href;
                     let pagination = $('.choose_pagination_quantity').find('.per_page_active').data('id');
+                    let page = $('.pagination').find('.pagination_sp_active').data('id');
+                    let fullUrl = new URL(url);
 
-                    let page = $('.pagination_block').find('.pagination_sp_active').data('id');
-
-                    $('body').on('click', '.pagination a', function (e) {
-                        e.preventDefault();
-
-                        page = $(this).data('id');
-                    });
-
-                    let fullUrl = url;
-
-                    if (sorting) {
-                        @if(isset($_GET['item']))
-                            fullUrl = fullUrl + '&sort_by=' + sorting;
-                        @else
-                            fullUrl = fullUrl + '?sort_by=' + sorting;
-                        @endif
-                    }
-
-                    if (pagination) {
-                        fullUrl = fullUrl + '&paginate_id=' + pagination;
-                    }
-
-                    fullUrl = fullUrl.replace("amp;", "");
-
-                    if (page) {
-                        fullUrl = fullUrl + '&page=' + page;
-                    }
+                    fullUrl.searchParams.set('sort_by', sorting);
+                    fullUrl.searchParams.set('paginate_id', pagination);
+                    fullUrl.searchParams.set('page', page);
 
                     window.history.pushState('', '', fullUrl);
 
                     sendAjaxQuery(fullUrl);
                 });
             });
-            $('.choose_pagination_quantity').find('.per_page').each(function () {
-                $(this).click(function () {
-                    $('.choose_pagination_quantity').find('.per_page_active').removeClass('per_page_active');
-                    $(this).addClass('per_page_active');
-                    let sorting = $('.sorts_drpdwn').find('.sort_sp_active').data('id');
-                    let url = '{{Request::fullUrl()}}';
-                    let pagination = $(this).data('id');
-                    let page = $('.pagination_block').find('.pagination_sp_active').data('id');
-                    let fullUrl = url;
 
-                    $('body').on('click', '.pagination a', function (e) {
-                        e.preventDefault();
+            $(body).on('click', '.choose_pagination_quantity .per_page', function (e) {
+                $('.choose_pagination_quantity').find('.per_page_active').removeClass('per_page_active');
+                $(this).addClass('per_page_active');
+                let sorting = $('.sorts_drpdwn').find('.sort_sp_active').data('id');
+                let url = window.location.href;
+                let pagination = $(this).data('id');
+                let fullUrl = new URL(url);
 
-                        page = $(this).data('id');
-                    });
+                fullUrl.searchParams.set('sort_by', sorting);
+                fullUrl.searchParams.set('paginate_id', pagination);
+                fullUrl.searchParams.set('page', '1');
 
-                    if (sorting) {
-                        @if(isset($_GET['item']))
-                            fullUrl = fullUrl + '&sort_by=' + sorting;
-                        @else
-                            fullUrl = fullUrl + '?sort_by=' + sorting;
-                        @endif
-                    }
+                window.history.pushState('', '', fullUrl.href);
 
-                    if (pagination) {
-                        fullUrl = fullUrl + '&paginate_id=' + pagination + '&page=1';
-                    }
+                sendAjaxQuery(fullUrl.href);
+            })
 
-                    fullUrl = fullUrl.replace("amp;", "");
-
-                    if (page) {
-                        fullUrl = fullUrl + '&page=' + page;
-                    }
-
-                    window.history.pushState('', '', fullUrl);
-
-                    sendAjaxQuery(fullUrl);
-                });
-            });
             $('.pagination_sp').each(function () {
                 $(this).click(function () {
                     $('.pagination_block').find('.pagination_sp_active').removeClass('pagination_sp_active');
@@ -289,25 +239,20 @@
             });
 
             function sendAjaxQuery(fullUrl) {
-                let page = fullUrl.charAt(fullUrl.length - 1);
                 $.ajax({
                     url: fullUrl,
                     data: {
                         type: 'ajax'
                     },
                     success: function (response) {
+
                         $('.products').empty();
                         $('.products').html(response.search);
 
                         @if((isset(request()->item) && request()->item == 'search'))
-                        if (page == 1 && '{{$products->lastPage()}}' != page && '{{$products->lastPage()}}' != 1) {
-                            document.querySelector("link").rel = 'next canonical';
-                        } else if ('{{$products->lastPage()}}' != 1 && page != '{{$products->lastPage()}}' && page != 1) {
-                            document.querySelector("link").rel = 'next prev canonical';
-                        } else if (page == '{{$products->lastPage()}}') {
-                            document.querySelector("link").rel = 'prev canonical';
-                        }
+                        document.querySelector("link").rel = 'prev';
                         @endif
+
                     },
                 });
             }
