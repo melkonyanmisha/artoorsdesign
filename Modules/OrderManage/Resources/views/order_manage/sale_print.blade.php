@@ -445,7 +445,7 @@
             <table class="table border_table mb_30" >
                 <tr>
                     <th scope="col" style="width: 30%" class="text_left">{{ __('common.name') }}</th>
-                    <th scope="col" style="width: 30%" class="text_left">{{ __('common.model_number') }}</th>
+                    <th scope="col" style="width: 30%" class="text_left">Model ID</th>
 {{--                    <th scope="col" class="text_left">{{ __('common.details') }}</th>--}}
                     <th scope="col" class="text-right">{{ __('common.price') }}</th>
                     <th scope="col" class="text-right">{{ __('common.total') }}</th>
