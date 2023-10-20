@@ -28,117 +28,145 @@
 </div>
 
 <script>
-    function generateRandomText(length) {
-        const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-        let randomText = '';
+    jQuery(document).ready(function ($) {
+        function generateRandomText(length) {
+            const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let randomText = '';
 
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            randomText += characters.charAt(randomIndex);
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                randomText += characters.charAt(randomIndex);
+            }
+
+            return randomText;
         }
 
-        return randomText;
-    }
-
-    document.getElementById('uploadBtn').addEventListener('click', function () {
-        const fileInput = document.getElementById('fileInput');
-        const progressBarContainer = document.querySelector('.progress-icon-container');
-        const progressBar = document.querySelector('.progress');
-        const progressBarText = progressBar.querySelector('.progress-bar');
-        const errorMessage = document.querySelector('.error-message');
-        progressBarText.style.backgroundColor = '#7C32FF';
-        const folderName = generateRandomText(10);
+        document.getElementById('uploadBtn').addEventListener('click', function () {
+            const fileInput = document.getElementById('fileInput');
+            const progressBarContainer = document.querySelector('.progress-icon-container');
+            const progressBar = document.querySelector('.progress');
+            const progressBarText = progressBar.querySelector('.progress-bar');
+            const errorMessage = document.querySelector('.error-message');
+            progressBarText.style.backgroundColor = '#7C32FF';
+            const folderName = generateRandomText(10);
 
 
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const chunkSize = 2 * 1024 * 1024; // 2 MB chunk size (adjust as needed)
-            let start = 0;
-            let chunkIndex = 0;
-            const totalChunks = Math.ceil(file.size / chunkSize);
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const chunkSize = 2 * 1024 * 1024; // 2 MB chunk size (adjust as needed)
+                let start = 0;
+                let chunkIndex = 0;
+                const totalChunks = Math.ceil(file.size / chunkSize);
 
-            errorMessage.style.display = 'none';
-            progressBar.style.display = 'block';
-            progressBarContainer.style.display = 'inline-block';
-            progressBarText.style.width = '0%';
-            progressBarText.textContent = '0%';
+                errorMessage.style.display = 'none';
+                progressBar.style.display = 'block';
+                progressBarContainer.style.display = 'inline-block';
+                progressBarText.style.width = '0%';
+                progressBarText.textContent = '0%';
 
-            function uploadNextChunk() {
-                const chunk = file.slice(start, start + chunkSize);
+                function uploadNextChunk() {
+                    const chunk = file.slice(start, start + chunkSize);
+                    const formData = new FormData();
+                    formData.append('_token', '{{ csrf_token() }}');
+                    formData.append('file_path', file.name);
+                    formData.append('chunk_index', chunkIndex);
+                    formData.append('chunk', chunk);
+                    formData.append('folder_name', folderName);
+
+                    fetch('{{ route("upload.chunk") }}', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            chunkIndex++;
+                            start += chunkSize;
+
+                            const percent = Math.min(100, Math.round((chunkIndex / totalChunks) * 100));
+                            progressBarText.style.width = percent + '%';
+                            progressBarText.textContent = percent + '%';
+
+                            if (chunkIndex < totalChunks) {
+                                uploadNextChunk();
+                            } else {
+                                completeUpload();
+                            }
+                        })
+                        .catch(error => {
+                            showUploadFailedError();
+                            console.error('Error uploading chunk:', error);
+                        });
+                }
+
+                function completeUpload() {
+                    const formData = new FormData();
+                    formData.append('_token', '{{ csrf_token() }}');
+                    formData.append('file_path', file.name);
+                    formData.append('folder_name', folderName);
+
+                    fetch('{{ route("upload.complete") }}', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('File upload complete:', data);
+                            jQuery('#video_link').val(data.file_path);
+
+                            // Show the success icon
+                            const successIcon = document.getElementById('successIcon');
+                            successIcon.style.display = 'inline-block';
+
+                            // Calculate the new width for the progress bar text
+                            const progressBar = document.querySelector('.progress');
+                            const progressBarText = progressBar.querySelector('.progress-bar');
+                            const progressBarWidth = progressBar.offsetWidth; // Total width of the progress bar
+                            const successIconWidth = successIcon.offsetWidth; // Width of the success icon
+                            const progressBarTextWidth = progressBarWidth - successIconWidth - 5; // Calculate new width
+                            progressBarText.style.width = progressBarTextWidth + 'px';
+                            progressBar.style.width = progressBarTextWidth + 'px';
+                            $("#chunk_upload_wrapper #fileInput").val('');
+                        })
+                        .catch(error => {
+                            showUploadFailedError();
+                            console.error('Error completing upload:', error);
+                        });
+                }
+
+                function showUploadFailedError() {
+                    errorMessage.style.display = 'block';
+                    errorMessage.style.color = 'red';
+                    progressBarText.style.backgroundColor = 'red';
+                }
+
+                uploadNextChunk();
+            }
+        });
+
+        $("#remove_uploaded_file").on("click", function () {
+            if (confirm("Are you sure you want to delete this?")) {
+                const filePath = @json($product->video_link);
                 const formData = new FormData();
-                formData.append('_token', '{{ csrf_token() }}');
-                formData.append('file_path', file.name);
-                formData.append('chunk_index', chunkIndex);
-                formData.append('chunk', chunk);
-                formData.append('folder_name', folderName);
 
-                fetch('{{ route("upload.chunk") }}', {
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('file_path', filePath);
+
+                fetch('{{ route("upload.destroy") }}', {
                     method: 'POST',
                     body: formData,
                 })
                     .then(response => response.json())
-                    .then(data => {
-                        chunkIndex++;
-                        start += chunkSize;
-
-                        const percent = Math.min(100, Math.round((chunkIndex / totalChunks) * 100));
-                        progressBarText.style.width = percent + '%';
-                        progressBarText.textContent = percent + '%';
-
-                        if (chunkIndex < totalChunks) {
-                            uploadNextChunk();
-                        } else {
-                            completeUpload();
+                    .then((data) => {
+                        if (data.success) {
+                            $('#video_link').val('')
                         }
+
+                        $('#remove_uploaded_file_status').html(data.message)
                     })
-                    .catch(error => {
-                        showUploadFailedError();
-                        console.error('Error uploading chunk:', error);
-                    });
+
+            } else {
+                return false;
             }
-
-            function completeUpload() {
-                const formData = new FormData();
-                formData.append('_token', '{{ csrf_token() }}');
-                formData.append('file_path', file.name);
-                formData.append('folder_name', folderName);
-
-                fetch('{{ route("upload.complete") }}', {
-                    method: 'POST',
-                    body: formData,
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('File upload complete:', data);
-                        jQuery('#video_link').val(data.file_path);
-
-                        // Show the success icon
-                        const successIcon = document.getElementById('successIcon');
-                        successIcon.style.display = 'inline-block';
-
-                        // Calculate the new width for the progress bar text
-                        const progressBar = document.querySelector('.progress');
-                        const progressBarText = progressBar.querySelector('.progress-bar');
-                        const progressBarWidth = progressBar.offsetWidth; // Total width of the progress bar
-                        const successIconWidth = successIcon.offsetWidth; // Width of the success icon
-                        const progressBarTextWidth = progressBarWidth - successIconWidth - 5; // Calculate new width
-                        progressBarText.style.width = progressBarTextWidth + 'px';
-                        progressBar.style.width = progressBarTextWidth + 'px';
-                        $("#chunk_upload_wrapper #fileInput").val('');
-                    })
-                    .catch(error => {
-                        showUploadFailedError();
-                        console.error('Error completing upload:', error);
-                    });
-            }
-
-            function showUploadFailedError() {
-                errorMessage.style.display = 'block';
-                errorMessage.style.color = 'red';
-                progressBarText.style.backgroundColor = 'red';
-            }
-
-            uploadNextChunk();
-        }
+        });
     });
 </script>

@@ -2,7 +2,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset(asset_path('backend/vendors/css/icon-picker.css')) }}" />
-
+    <link rel="stylesheet" href="{{asset(asset_path('modules/product/css/style.css'))}}" />
     <link rel="stylesheet" href="{{asset(asset_path('modules/product/css/product_edit.css'))}}" />
     <style>
         .link_color{
@@ -853,9 +853,21 @@
 {{--                                            </div>--}}
 {{--                                        </div>--}}
                                         @include('product::products.upload_file')
-                                        <input class="primary_input_field" name="video_link"
-                                               placeholder="Files Link" type="hidden"
-                                               value="{{ $product->video_link }}" id="video_link">
+{{--                                        todo@@@ continue--}}
+                                        <div class="uploaded_file_info">
+                                            <span class="text-info" id="remove_uploaded_file_status"></span>
+
+                                            <input class="primary_input_field col-sm-8" name="video_link"
+                                                   placeholder="Files Link" type="text"
+                                                   value="{{ basename($product->video_link) }}" id="video_link">
+                                            @if($product->video_link)
+                                                <button type="button" class="btn primary-btn small fix-gr-bg"
+                                                        id="remove_uploaded_file">
+                                                    Remove
+                                                </button>
+                                            @endif
+                                        </div>
+
                                         <div class="col-lg-12">
                                             <div class="main-title d-flex">
                                                 <h3 class="mb-3 mr-30">{{ __('product.others_info') }}</h3>

@@ -451,6 +451,7 @@ Route::group(['middleware' => ['auth','admin']], function(){
     Route::post('/upload/start', [UploadFileController::class, 'start'])->name('upload.start');
     Route::post('/upload/chunk', [UploadFileController::class, 'uploadChunk'])->name('upload.chunk');
     Route::post('/upload/complete', [UploadFileController::class, 'complete'])->name('upload.complete');
+    Route::post('/upload/destroy', [UploadFileController::class, 'destroy'])->name('upload.destroy');
 });
 
  //for profile
