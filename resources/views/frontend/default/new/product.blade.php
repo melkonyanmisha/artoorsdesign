@@ -423,7 +423,9 @@
                             </svg>
                         </a>
                     </div>
-
+                    <div class="product_copyright_text">
+                        Please note that all models on this page are not allowed to be resold, as doing so would be illegal.
+                    </div>
                 </div>
             </div>
             <div id='zoomed_prod' class='zoomed_prod'>
