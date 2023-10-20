@@ -1055,12 +1055,16 @@ main {
     top: -3px;
 }
 
+.download_product_btn{
+   height: 38px
+}
+
 .download_product_btn,
 .add_catalog_btnn {
     width: 100%;
     color: var(--white);
     display: flex;
-    margin-bottom: 12px;
+    margin-bottom: 0;
     align-items: center;
     justify-content: center;
     column-gap: 5px;
