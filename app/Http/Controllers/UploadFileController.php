@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -17,7 +18,7 @@ class UploadFileController extends Controller
 
     public function start(Request $request)
     {
-        $file = $request->file('file');
+        $file     = $request->file('file');
         $fileName = $file->getClientOriginalName();
         $filePath = $file->storeAs('temp', $fileName, 'local');
 
@@ -26,9 +27,9 @@ class UploadFileController extends Controller
 
     public function uploadChunk(Request $request)
     {
-        $filePath = $request->input('file_path');
+        $filePath   = $request->input('file_path');
         $chunkIndex = $request->input('chunk_index');
-        $chunk = $request->file('chunk');
+        $chunk      = $request->file('chunk');
         $folderName = $request->input('folder_name');
 
         $chunk->storeAs('temp/' . $folderName, $chunkIndex, 'local');
@@ -38,25 +39,28 @@ class UploadFileController extends Controller
 
     public function complete(Request $request)
     {
-        $filePath = $request->input('file_path');
+        $filePath   = $request->input('file_path');
         $folderName = $request->input('folder_name');
-        $chunks = Storage::disk('local')->files('temp/' . $folderName);
+        $chunks     = Storage::disk('local')->files('temp/' . $folderName);
 
         usort($chunks, function ($a, $b) {
-            $aIndex = (int) pathinfo($a, PATHINFO_FILENAME);
-            $bIndex = (int) pathinfo($b, PATHINFO_FILENAME);
+            $aIndex = (int)pathinfo($a, PATHINFO_FILENAME);
+            $bIndex = (int)pathinfo($b, PATHINFO_FILENAME);
+
             return $aIndex - $bIndex;
         });
 
         $originalFileName = basename($filePath);
-        $fileExtension = pathinfo($originalFileName, PATHINFO_EXTENSION);
+        $fileExtension    = pathinfo($originalFileName, PATHINFO_EXTENSION);
 
         $finalFilePath = 'product/' . $originalFileName;
-        $counter = 1;
+        $counter       = 1;
         while (File::exists(public_path($finalFilePath))) {
-            $uniqueFileName = Str::beforeLast($originalFileName,
-                                              '.' . $fileExtension) . '_' . $counter . '.' . $fileExtension;
-            $finalFilePath = 'product/' . $uniqueFileName;
+            $uniqueFileName = Str::beforeLast(
+                    $originalFileName,
+                    '.' . $fileExtension
+                ) . '_' . $counter . '.' . $fileExtension;
+            $finalFilePath  = 'product/' . $uniqueFileName;
             $counter++;
         }
 
@@ -76,9 +80,9 @@ class UploadFileController extends Controller
         return response()->json(['file_path' => "public/$finalFilePath"]);
     }
 
-    public function upload_image(Request $request){
-
-    	$request->validate([
+    public function upload_image(Request $request)
+    {
+        $request->validate([
             'files.*' => [
                 'required',
                 'image',
@@ -87,21 +91,38 @@ class UploadFileController extends Controller
         ], [], [
             'files.*' => 'File'
         ]);
-        if (!file_exists(asset_path('uploads/editor-image'))) {
+        if ( ! file_exists(asset_path('uploads/editor-image'))) {
             mkdir(asset_path('uploads/editor-image'), 0777, true);
         }
-    	$files = $request->files;
-    	$image_url = [];
+        $files     = $request->files;
+        $image_url = [];
         foreach ($files as $file) {
-        	foreach($file as $k => $f){
-
-	            $fileName = $f->getClientOriginalName() . time() . "." . $f->getClientOriginalExtension();
-	            $f->move(asset_path('uploads/editor-image/'), $fileName);
-	            $image_url[$k] = asset(asset_path('uploads/editor-image/') . $fileName);
-
-        	}
+            foreach ($file as $k => $f) {
+                $fileName = $f->getClientOriginalName() . time() . "." . $f->getClientOriginalExtension();
+                $f->move(asset_path('uploads/editor-image/'), $fileName);
+                $image_url[$k] = asset(asset_path('uploads/editor-image/') . $fileName);
+            }
         }
 
         return response()->json($image_url);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    public function destroy(Request $request): JsonResponse
+    {
+        $filePath = $request->input('file_path');
+
+        if (File::exists($filePath) && is_writable($filePath)) {
+            File::delete($filePath);
+
+            return response()->json(['success' => true, 'message' => 'File deleted successfully']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'File not found or not required permission'],
+                404);
+        }
     }
 }
