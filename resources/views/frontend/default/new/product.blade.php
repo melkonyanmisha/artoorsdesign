@@ -424,7 +424,9 @@
                         </a>
                     </div>
                     <div class="product_copyright_text">
-                        Please note that all models on this page are not allowed to be resold, as doing so would be illegal.
+                        <i>
+                            Please note that all models on this page are not allowed to be resold, as doing so would be illegal.
+                        </i>
                     </div>
                 </div>
             </div>
