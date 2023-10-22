@@ -145,6 +145,8 @@
 
         $("#remove_uploaded_file").on("click", function () {
             if (confirm("Are you sure you want to delete this?")) {
+                @if(!empty($product))
+
                 const filePath = @json($product->video_link);
                 const formData = new FormData();
 
@@ -163,7 +165,7 @@
 
                         $('#remove_uploaded_file_status').html(data.message)
                     })
-
+                @endif
             } else {
                 return false;
             }
