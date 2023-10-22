@@ -1,13 +1,13 @@
 @if (permissionCheck('marketing_module'))
     @php
         $marketting_admin = false;
-        if(request()->is('marketing/*'))
+        if(!request()->is('marketing/coupon') && request()->is('marketing/*'))
         {
             $marketting_admin = true;
         }
     @endphp
-    <li class="{{ $marketting_admin ?'mm-active' : '' }} sortable_li" data-position="{{ menuManagerCheck(1,10)->position }}" data-status="{{ menuManagerCheck(1,10)->status }}">
-        <a href="javascript:;" class="has-arrow" aria-expanded="{{ $marketting_admin ? 'true' : 'false' }}">
+    <li class=" {{ $marketting_admin ?'mm-active' : '' }} sortable_li" data-position="{{ menuManagerCheck(1,10)->position }}" data-status="{{ menuManagerCheck(1,10)->status }}">
+        <a href="javascript:" class="has-arrow" aria-expanded="{{ $marketting_admin ? 'true' : 'false' }}">
             <div class="nav_icon_small">
                 <span class="fas fa-user"></span>
             </div>
