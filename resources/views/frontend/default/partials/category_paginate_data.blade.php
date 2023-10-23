@@ -14,11 +14,11 @@
                     @if($product->discount != 0 )
                         <span class="sale_red"> -
                             @if($product->discount_type != 0)
-                                $ valod
+                                $
                             @endif
                             {{$product->discount}}
                             @if($product->discount_type == 0)
-                                % gevor
+                                %
                             @endif
                         </span>
                     @endif

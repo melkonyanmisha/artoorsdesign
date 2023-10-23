@@ -174,7 +174,7 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
                 { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
         });
 
-        function aaa(id){
+        function fill_message_block(id){
             $.post( "{{ route('find_user') }}",{ id }, function( data ) {
                 $( ".message_block_" ).html( data );
             });
