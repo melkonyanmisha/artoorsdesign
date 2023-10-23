@@ -497,6 +497,7 @@ Route::group(['middleware' => ['auth','admin']], function(){
  });
 
 Route::get('/message', [\App\Http\Controllers\MessageController::class,'index'])->name('message.index')->middleware('auth');
+Route::get('/{user_id}/message', [\App\Http\Controllers\MessageController::class,'getMessagesByUserId'])->name('message.get_by_user_id')->middleware('auth');
 Route::post('/delete/notif', [\App\Http\Controllers\Controller::class,'delete_notif'])->name('delete.notFif');
 Route::post('/block/user', [\App\Http\Controllers\Controller::class,'block_user'])->name('block/user');
 Route::post('/un/block/user', [\App\Http\Controllers\Controller::class,'un_block_user'])->name('un.block/user');
