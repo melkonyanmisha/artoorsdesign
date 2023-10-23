@@ -44,6 +44,8 @@ use App\Mail\SendMail;
 use  App\Models\HomeSeo;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+use App\Models\User;
+use \App\Models\Message;
 
 /*
 |--------------------------------------------------------------------------
@@ -497,7 +499,7 @@ Route::group(['middleware' => ['auth','admin']], function(){
  });
 
 Route::get('/message', [\App\Http\Controllers\MessageController::class,'index'])->name('message.index')->middleware('auth');
-Route::get('/{user_id}/message', [\App\Http\Controllers\MessageController::class,'getMessagesByUserId'])->name('message.get_by_user_id')->middleware('auth');
+Route::get('/admin/{user_id}/message', [\App\Http\Controllers\MessageController::class,'getMessagesByUserIdForSuperAdmin'])->name('message.get_by_user_id_for_super_admin')->middleware('auth');
 Route::post('/delete/notif', [\App\Http\Controllers\Controller::class,'delete_notif'])->name('delete.notFif');
 Route::post('/block/user', [\App\Http\Controllers\Controller::class,'block_user'])->name('block/user');
 Route::post('/un/block/user', [\App\Http\Controllers\Controller::class,'un_block_user'])->name('un.block/user');
@@ -570,24 +572,70 @@ Route::get('/download', function (Request $request){
 
 })->name('download');
 
-Route::get('/messages/{id}', function (Request $request){
-    \App\Models\Message::create([
-        'from_id' => auth()->id(),
-        'to_id' => \App\Models\User::find($request->id)->id,
-        'messages' => $request->message??'',
-        'image' => $imageName??null
-    ]);
+//Route::get('/messages/{id}', function (Request $request){
+//    Message::create([
+//        'from_id' => auth()->id(),
+//        'to_id' => User::find($request->id)->id,
+//        'messages' => $request->message??'',
+//        'image' => $imageName??null
+//    ]);
+//
+//    $conversations =  Message::where('from_id', auth()->id())
+//         ->orWhere('to_id', auth()->id())
+//         ->orderBy('created_at','desc')
+//         ->get();
+//
+//    $users = $conversations->map(function($conversation){
+//        if($conversation->from_id == auth()->id()) {
+//            return User::find($conversation->to_id);//$conversation->uxarkox;
+//        }
+//
+//        return User::find($conversation->from_id);
+//    })->unique();
+//
+//    return view(theme('new.message'), compact('users'));
+//})->name('message.second')->middleware('auth');
 
-    $conversations =  \App\Models\Message::where('from_id', auth()->id())
-        ->orWhere('to_id', auth()->id())
-        ->orderBy('created_at','desc')
-        ->get();
-    $users = $conversations->map(function($conversation){
-        if($conversation->from_id == auth()->id()) {
-            return \App\Models\User::find($conversation->to_id);//$conversation->uxarkox;
+
+Route::get('/messages/', function (Request $request) {
+    $allUsers   = User::with('role')->get();
+    $adminUsers = [];
+
+    foreach ($allUsers as $currentUser) {
+        if ($currentUser->role->type === 'admin') {
+            $adminUsers[] = $currentUser;
+        }
+    }
+
+    if (empty($adminUsers)) {
+        return redirect('/');
+    }
+
+    foreach ($adminUsers as $currentAdminUser) {
+        $toAdminId  = $currentAdminUser->id;
+        $oldMessage = Message::where('from_id', auth()->id())->where('to_id', $toAdminId)->first();
+
+        if ( ! $oldMessage) {
+            Message::create([
+                'from_id'  => auth()->id(),
+                'to_id'    => $toAdminId,
+                'messages' => $request->message ?? '',
+                'image'    => $imageName ?? null
+            ]);
+        }
+    }
+
+    $conversations = Message::where('from_id', auth()->id())
+                            ->orWhere('to_id', auth()->id())
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+
+    $users = $conversations->map(function ($conversation) {
+        if ($conversation->from_id == auth()->id()) {
+            return User::find($conversation->to_id);
         }
 
-        return \App\Models\User::find($conversation->from_id);
+        return User::find($conversation->from_id);
     })->unique();
 
     return view(theme('new.message'), compact('users'));
@@ -596,11 +644,27 @@ Route::get('/messages/{id}', function (Request $request){
 Route::post('/find_user', [App\Http\Controllers\Controller::class, 'find_user'])->name('find_user');
 Route::post('/delete_chat', [App\Http\Controllers\Controller::class, 'delete_chat'])->name('delete_chat');
 Route::post('/cat',function(Request $request){
-    return count(\App\Models\Message::where('to_id',auth()->id())->where([['messages' ,'!=', '']])->where('view','0')->get());
+    return count(Message::where('to_id',auth()->id())->where([['messages' ,'!=', '']])->where('view','0')->get());
 })->middleware('auth')->name('ggg');
 
 Route::post('/bbb',function(Request $request){
-    $to_user = \App\Models\User::find($request->id);
+
+//    todo@@@ continue from here need to send email and raname the function. also need to discuss with Artur about new message will from admin or superadmin
+
+    $users = User::with('role')->get();
+    $to_user = User::with('role')->find($request->id);
+
+//    foreach ($users as $user){
+//        if($user->id===$request->id){
+//
+//        }
+//    }
+
+//    var_dump($request->id);
+//    var_dump($to_user->role->type);
+//    var_dump($users = User::with('role')->get());
+//    exit;
+
 
     if(!empty(\App\Models\Block_user::where([['user_id' ,'=', auth()->id()],['second_user',"=",$request->id]])->orwhere([['second_user' ,'=', auth()->id()],['user_id',"=",$request->id]])->first())){
         return view('include',compact('to_user'));
@@ -612,7 +676,9 @@ Route::post('/bbb',function(Request $request){
         $request->file->move('images/message', $imageName);
     }
 
-    $data = \App\Models\Message::create([
+//    \Mail::to($user->email)->send(new SendMail($request->text));
+
+    $data = Message::create([
         'from_id' => auth()->id(),
         'to_id' => $request->id,
         'messages' => $request->message??'',

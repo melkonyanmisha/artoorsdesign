@@ -433,7 +433,7 @@ if ( ! auth()->check()) {
                 @foreach ($users as $user)
                     @if($user->role->type === 'admin')
                         @php
-                            $url = "/$user->id/message"
+                            $url = "/admin/$user->id/message"
                         @endphp
                         <li class="sortable_li" data-position="29" data-status="1">
                             <a href="{{ url($url) }}" aria-expanded="false" target="_blank">

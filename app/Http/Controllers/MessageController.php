@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use Illuminate\Support\Collection;
 use \App\Models\User;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use phpDocumentor\Parser\Exception;
 
 class MessageController extends Controller
 {
@@ -15,10 +17,10 @@ class MessageController extends Controller
      */
     public function index(): string
     {
-        $user_id = auth()->id();
-        $users   = $this->getUsers($user_id);
+        $currentUserId = auth()->id();
+        $users         = $this->getUsers($currentUserId);
 
-        return view(theme('new.message'), ['users' => $users, 'user_id' => $user_id]);
+        return view(theme('new.message'), ['users' => $users, 'user_id' => $currentUserId]);
     }
 
     /**
@@ -28,11 +30,16 @@ class MessageController extends Controller
      *
      * @return string
      */
-    public function getMessagesByUserId(int $user_id): string
+    public function getMessagesByUserIdForSuperAdmin(int $userId): string
     {
-        $users = $this->getUsers($user_id);
+        $currentUser = auth()->user();
+        if ($currentUser->role->type !== 'superadmin') {
+            throw new UnauthorizedHttpException("You are not authorized to perform this action.");
+        }
 
-        return view(theme('new.message'), ['users' => $users, 'user_id' => $user_id]);
+        $users = $this->getUsers($userId);
+
+        return view(theme('new.message'), ['users' => $users, 'userId' => $userId]);
     }
 
 
