@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 if ( ! auth()->check()) {
     return;
 }
@@ -414,7 +416,7 @@ if ( ! auth()->check()) {
             </li>
 
             <li class="sortable_li" data-position="28" data-status="1">
-                <a href="{{ url('/message') }}" aria-expanded="false">
+                <a href="{{ url('/message') }}" aria-expanded="false" target="_blank">
                     <div class="nav_icon_small">
                         <i class="fas fa-comment-alt" style="color: #415094"></i>
                     </div>
@@ -423,6 +425,29 @@ if ( ! auth()->check()) {
                     </div>
                 </a>
             </li>
+
+            @if(auth()->user()->role->type == 'superadmin')
+                @php
+                    $users = User::with('role')->get();
+                @endphp
+                @foreach ($users as $user)
+                    @if($user->role->type === 'admin')
+                        @php
+                            $url = "/$user->id/message"
+                        @endphp
+                        <li class="sortable_li" data-position="29" data-status="1">
+                            <a href="{{ url($url) }}" aria-expanded="false" target="_blank">
+                                <div class="nav_icon_small">
+                                    <i class="fas fa-comment-alt" style="color: #415094"></i>
+                                </div>
+                                <div class="nav_title">
+                                    <span>{{$user->name}} Messages {{$user->id}}</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
+            @endif
         @endif
     </ul>
 </nav>
