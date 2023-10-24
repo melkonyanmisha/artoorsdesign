@@ -6,8 +6,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\ContactUsController;
 use App\Http\Controllers\Frontend\AboutUsController;
-use App\Http\Controllers\Frontend\BlogController;
-use App\Http\Controllers\Frontend\CareerController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\MerchantController;
@@ -16,7 +14,6 @@ use App\Http\Controllers\Frontend\ReturnExchangeController;
 use App\Http\Controllers\Frontend\LanguageController;
 use Modules\OrderManage\Http\Controllers\OrderManageController;
 use App\Http\Controllers\Auth\MerchantRegisterController;
-use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Frontend\CompareController;
 use App\Http\Controllers\Frontend\CouponController;
 use App\Http\Controllers\Frontend\FlashDealController;
@@ -37,8 +34,6 @@ use Modules\FrontendCMS\Entities\DynamicPage;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UploadFileController;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Modules\SidebarManager\Entities\Sidebar;
 use Illuminate\Http\Request;
 use App\Mail\SendMail;
 use  App\Models\HomeSeo;
@@ -500,6 +495,7 @@ Route::group(['middleware' => ['auth','admin']], function(){
 
 Route::get('/message', [\App\Http\Controllers\MessageController::class,'index'])->name('message.index')->middleware('auth');
 Route::get('/admin/{user_id}/message', [\App\Http\Controllers\MessageController::class,'getMessagesByUserIdForSuperAdmin'])->name('message.get_by_user_id_for_super_admin')->middleware('auth');
+Route::post('/send_message',[\App\Http\Controllers\MessageController::class,'sendMessage'])->name('message.send')->middleware('auth');
 Route::post('/delete/notif', [\App\Http\Controllers\Controller::class,'delete_notif'])->name('delete.notFif');
 Route::post('/block/user', [\App\Http\Controllers\Controller::class,'block_user'])->name('block/user');
 Route::post('/un/block/user', [\App\Http\Controllers\Controller::class,'un_block_user'])->name('un.block/user');
@@ -646,50 +642,6 @@ Route::post('/delete_chat', [App\Http\Controllers\Controller::class, 'delete_cha
 Route::post('/cat',function(Request $request){
     return count(Message::where('to_id',auth()->id())->where([['messages' ,'!=', '']])->where('view','0')->get());
 })->middleware('auth')->name('ggg');
-
-Route::post('/bbb',function(Request $request){
-
-//    todo@@@ continue from here need to send email and raname the function. also need to discuss with Artur about new message will from admin or superadmin
-
-    $users = User::with('role')->get();
-    $to_user = User::with('role')->find($request->id);
-
-//    foreach ($users as $user){
-//        if($user->id===$request->id){
-//
-//        }
-//    }
-
-//    var_dump($request->id);
-//    var_dump($to_user->role->type);
-//    var_dump($users = User::with('role')->get());
-//    exit;
-
-
-    if(!empty(\App\Models\Block_user::where([['user_id' ,'=', auth()->id()],['second_user',"=",$request->id]])->orwhere([['second_user' ,'=', auth()->id()],['user_id',"=",$request->id]])->first())){
-        return view('include',compact('to_user'));
-    }
-
-    $imageName = null;
-    if($request->file){
-        $imageName   = time() . '.' . $request->file->getClientOriginalExtension();
-        $request->file->move('images/message', $imageName);
-    }
-
-//    \Mail::to($user->email)->send(new SendMail($request->text));
-
-    $data = Message::create([
-        'from_id' => auth()->id(),
-        'to_id' => $request->id,
-        'messages' => $request->message??'',
-        'image' => $imageName??null
-    ]);
-
-    event(new \App\Events\FormSubmited($to_user));
-
-    return view('include',compact('to_user'));
-
-})->name('bbb');
 
 Route::post('/aabb',function(Request $request){
     $to_user = \App\Models\User::find($request->id);

@@ -126,10 +126,10 @@
                  fill="#323232"/>
            </svg>
         </span>
-        <textarea onkeypress="onTestChange()" name="messege_text" id="sms" class="messege_text" placeholder="Comment..."
-                  rows="1" cols="1"></textarea>
+        <textarea name="messege_text" id="sms" class="messege_text" placeholder="Comment..." rows="1"
+                  cols="1"></textarea>
         <button class="send_sms" type="submit"
-                @if(!(\App\Models\Block_user::where('user_id', $userId)->where('second_user',$to_user->id)->first())) onclick="bbb('{{ $to_user->id }}')" @endif>
+                @if(!(\App\Models\Block_user::where('user_id', $userId)->where('second_user',$to_user->id)->first())) onclick="sendMessage({{$userId}}, {{$to_user->id }})" @endif>
             <svg width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M29.8878 12.5832C30.6888 12.932 30.6888 14.068 29.8878 14.4168L2.39243 26.3906C1.73192 26.6783 0.993165 26.1942 0.993165 25.4738L0.993165 16.2622C0.993165 15.7793 1.3382 15.3654 1.81318 15.2785L7.48706 14.2403C8.51796 14.0517 8.60121 12.6059 7.59877 12.3002L1.70147 10.5017C1.28067 10.3734 0.993166 9.98514 0.993166 9.54521L0.993166 1.52619C0.993166 0.805771 1.73193 0.321716 2.39243 0.609357L29.8878 12.5832Z"
                       fill="#00AAAD"/>
@@ -137,13 +137,12 @@
         </button>
     </div>
     <script>
-        function onTestChange() {
+        $('#sms').on('keydown', function (event) {
+            if (event.which === 13 && !event.shiftKey) { // Check for "Enter" key with keycode 13
+                event.preventDefault(); // Prevent the default behavior of Enter (newline)
 
-            var e = window.event.keyCode;
-
-            if (e === 13) {
-                bbb('{{ $to_user->id }}')
+                sendMessage({{$userId}}, {{$to_user->id }})
             }
-        }
+        });
     </script>
 @endif

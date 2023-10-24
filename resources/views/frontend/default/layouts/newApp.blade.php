@@ -188,29 +188,43 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
 
     </script>
     <script>
-        function bbb(id){
-            let message = $('.messege_text').val()
-            $('.messege_text').val('')
+        function sendMessage(fromUserId, toUserId) {
+            const messege_text = $('.messege_text');
 
-            var data = new FormData();
-            var files = $('#file')[0].files[0]??null;
+            let message = $(messege_text).val().trim();
+            $(messege_text).val('')
 
-            data.append('id',id);
-            data.append('message',message);
+            if (!message) {
+                return false;
+            }
 
-            if(files){
-                data.append('file',files);
+            const urlParams = new URLSearchParams(window.location.search);
+            const insteadOfAdminValue = parseInt(urlParams.get("instead_of_admin"));
+            const data = new FormData();
+            const files = $('#file')[0].files[0] ?? null;
+
+            data.append('toUserId', toUserId);
+            data.append('message', message);
+
+            // The case when superadmin sends a message instead of Admin
+            if (insteadOfAdminValue) {
+                data.append('insteadOfAdmin', insteadOfAdminValue);
+                data.append('fromUserId', fromUserId);
+            }
+
+            if (files) {
+                data.append('file', files);
             }
 
             $.ajax({
-                url: "{{ route('bbb') }}",
+                url: "{{ route('message.send') }}",
                 type: 'post',
                 data: data,
                 contentType: false,
                 processData: false,
-                success: function(response){
-                    $( "#sms_area" ).html( response );
-                    $( ".messege_text" ).val('');
+                success: function (response) {
+                    $("#sms_area").html(response);
+                    $(".messege_text").val('');
                     $('.file_svg').html(`
                     <input type="file" id="file">
                                 <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -219,8 +233,6 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
                     `)
                 },
             })
-
-
         }
     </script>
     <script>
