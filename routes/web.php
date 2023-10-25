@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Frontend\CategoryController;
@@ -39,7 +38,6 @@ use App\Mail\SendMail;
 use  App\Models\HomeSeo;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
-use App\Models\User;
 use \App\Models\Message;
 
 /*
