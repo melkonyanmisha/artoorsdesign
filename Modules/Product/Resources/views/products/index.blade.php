@@ -14,9 +14,9 @@
                                 @if (permissionCheck('product.create'))
                                     <ul class="d-flex">
                                         <li><a class="primary-btn radius_30px mr-10 fix-gr-bg" href="{{route("product.create")}}"><i class="ti-plus"></i>{{__('product.add_new_product')}}</a></li>
-                                        <li><a class="primary-btn radius_30px mr-10 fix-gr-bg yuhu">Отключение</a></li>
+                                        <li><a class="primary-btn radius_30px mr-10 fix-gr-bg yuhu">Disconnection</a></li>
                                         <li><a class="primary-btn radius_30px mr-10 fix-gr-bg yuhu1">Delete</a></li>
-                                        <li><a class="primary-btn radius_30px mr-10 fix-gr-bg" data-toggle="modal" data-target="#modalLoginForm">Скидка</a></li>
+                                        <li><a class="primary-btn radius_30px mr-10 fix-gr-bg" data-toggle="modal" data-target="#modalLoginForm">Discount</a></li>
                                     </ul>
                                 @endif
                                 @if (permissionCheck('product.get-data'))
@@ -174,7 +174,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Скидка</h4>
+                    <h4 class="modal-title w-100 font-weight-bold">Discount</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

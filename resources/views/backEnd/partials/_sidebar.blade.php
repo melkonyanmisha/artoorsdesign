@@ -40,7 +40,7 @@ if ( ! auth()->check()) {
                     <li class="nav-item mb_5">
                         <a class="nav-link {{request()->is('popap') ? 'active' : ''}}"
                            href="{{route('admin.popap')}}">
-                            Best Discount
+                            Discount Timer
                         </a>
                     </li>
                     @if (permissionCheck('product.category.index') && menuManagerCheck(2,12,'product.category.index')->status == 1)
@@ -88,7 +88,7 @@ if ( ! auth()->check()) {
                         <li data-position="{{ menuManagerCheck(2,3,'appearance.header.index')->position }}">
                             <a href="{{route('appearance.header.setup',1)}}"
                                class="{{request()->is('appearance/headers*') ? 'active' : ''}}">
-                                {{__('appearance.header')}}
+                                Slider
                             </a>
                         </li>
                     @endif

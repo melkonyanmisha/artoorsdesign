@@ -10,7 +10,7 @@
     <div class="container-fluid p-0">
 
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-12 mb_10">
+            <div class="col-lg-2 col-md-2 col-sm-12 mb_10">
                 <div class="main-title d-flex">
                     <h3 class="mb-0 mr-3 text-nowrap">{{ __('common.summary') }} </h3>
                     @if(isModuleActive('MultiVendor'))
@@ -25,14 +25,24 @@
             </div>
 
             @if (permissionCheck('widget_card'))
-            <div class="col-lg-8 col-md-8 col-sm-12">
+            <div class="col-lg-10 col-md-10 col-sm-12">
                 <div class="float-md-right float-none pos_tab_btn justify-content-end">
                     <ul class="nav">
                         <li class="nav-item mb_5">
+                            <a class="nav-link  active" href="{{route('appearance.header.setup',1)}}">Slider</a>
+                        </li>
+                        <li class="nav-item mb_5">
+                            <a class="nav-link  active" href="{{route('admin.popap')}}">Discount Timer</a>
+                        </li>
+                        <li class="nav-item mb_5">
+                            <a class="nav-link  active" href="{{route('product.create')}}">Add New Product</a>
+                        </li>
+                        <li class="nav-item mb_5">
+                            <a class="nav-link  active" href="{{ route('product.index')}}">Product List</a>
+                        </li>
+                        <li class="nav-item mb_5">
                             <a class="nav-link  active" href="{{route('product.index',['id'=>'1'])}}">Discounted products</a>
                         </li>
-
-
                         <li class="nav-item mb_5">
                             <a class="nav-link filtering active today" data-type="today" href="javascript:void(0)">{{
                                 __('dashboard.today') }}</a>

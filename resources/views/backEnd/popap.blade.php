@@ -8,7 +8,7 @@
             @csrf
             <div class="modal-content" style="width: 700px">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Скидка</h4>
+                    <h4 class="modal-title w-100 font-weight-bold">Discount</h4>
 {{--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
 {{--                        <span aria-hidden="true">&times;</span>--}}
 {{--                    </button>--}}
