@@ -493,8 +493,8 @@ Route::group(['middleware' => ['auth','admin']], function(){
      }
  });
 
-Route::get('/message', [\App\Http\Controllers\MessageController::class,'index'])->name('message.index')->middleware('auth');
-Route::get('/admin/{user_id}/message', [\App\Http\Controllers\MessageController::class,'getMessagesByUserIdForSuperAdmin'])->name('message.get_by_user_id_for_super_admin')->middleware('auth');
+Route::get('/messages', [\App\Http\Controllers\MessageController::class,'index'])->name('message.index')->middleware('auth');
+Route::get('/admin/{user_id}/messages', [\App\Http\Controllers\MessageController::class,'getMessagesByUserIdForSuperAdmin'])->name('message.get_by_user_id_for_super_admin')->middleware('auth');
 Route::post('/send_message',[\App\Http\Controllers\MessageController::class,'sendMessage'])->name('message.send')->middleware('auth');
 Route::post('/delete/notif', [\App\Http\Controllers\Controller::class,'delete_notif'])->name('delete.notFif');
 Route::post('/block/user', [\App\Http\Controllers\Controller::class,'block_user'])->name('block/user');
@@ -567,75 +567,6 @@ Route::get('/download', function (Request $request){
     }
 
 })->name('download');
-
-//Route::get('/messages/{id}', function (Request $request){
-//    Message::create([
-//        'from_id' => auth()->id(),
-//        'to_id' => User::find($request->id)->id,
-//        'messages' => $request->message??'',
-//        'image' => $imageName??null
-//    ]);
-//
-//    $conversations =  Message::where('from_id', auth()->id())
-//         ->orWhere('to_id', auth()->id())
-//         ->orderBy('created_at','desc')
-//         ->get();
-//
-//    $users = $conversations->map(function($conversation){
-//        if($conversation->from_id == auth()->id()) {
-//            return User::find($conversation->to_id);//$conversation->uxarkox;
-//        }
-//
-//        return User::find($conversation->from_id);
-//    })->unique();
-//
-//    return view(theme('new.message'), compact('users'));
-//})->name('message.second')->middleware('auth');
-
-
-Route::get('/messages/', function (Request $request) {
-    $allUsers   = User::with('role')->get();
-    $adminUsers = [];
-
-    foreach ($allUsers as $currentUser) {
-        if ($currentUser->role->type === 'admin') {
-            $adminUsers[] = $currentUser;
-        }
-    }
-
-    if (empty($adminUsers)) {
-        return redirect('/');
-    }
-
-    foreach ($adminUsers as $currentAdminUser) {
-        $toAdminId  = $currentAdminUser->id;
-        $oldMessage = Message::where('from_id', auth()->id())->where('to_id', $toAdminId)->first();
-
-        if ( ! $oldMessage) {
-            Message::create([
-                'from_id'  => auth()->id(),
-                'to_id'    => $toAdminId,
-                'messages' => $request->message ?? '',
-                'image'    => $imageName ?? null
-            ]);
-        }
-    }
-
-    $conversations = Message::where('from_id', auth()->id())
-                            ->orWhere('to_id', auth()->id())
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-
-    $users = $conversations->map(function ($conversation) {
-        if ($conversation->from_id == auth()->id()) {
-            return User::find($conversation->to_id);
-        }
-
-        return User::find($conversation->from_id);
-    })->unique();
-
-    return view(theme('new.message'), compact('users'));
-})->name('message.second')->middleware('auth');
 
 Route::post('/find_user', [App\Http\Controllers\Controller::class, 'find_user'])->name('find_user');
 Route::post('/delete_chat', [App\Http\Controllers\Controller::class, 'delete_chat'])->name('delete_chat');

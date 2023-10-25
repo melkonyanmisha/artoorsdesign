@@ -599,7 +599,7 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
         @endauth
         @auth
 
-            <a @if(auth()->id() != 6) href="{{route('message.second',['id' => 6])}}" @else href="{{route('message.index')}}" @endif class="head_sms head_icons">
+            <a href="{{route('message.index')}}" class="head_sms head_icons">
                 <svg class="head_icons_svg" width="29" height="22" viewBox="0 0 29 22" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path d="M25.8228 0.0829468H2.67132C1.1687 0.0829468 0 1.3073 0 2.75427V18.7822C0 20.2848 1.1687 21.4535 2.67132 21.4535H25.8228C27.2698 21.4535 28.4941 20.2848 28.4941 18.7822V2.75427C28.4941 1.3073 27.2698 0.0829468 25.8228 0.0829468ZM25.8228 2.75427V5.03603C24.5428 6.09342 22.5393 7.6517 18.3097 10.9909C17.3636 11.7143 15.5271 13.4952 14.2471 13.4396C12.9114 13.4952 11.0749 11.7143 10.1288 10.9909C5.89917 7.6517 3.89568 6.09342 2.67132 5.03603V2.75427H25.8228ZM2.67132 18.7822V8.48648C3.89568 9.48823 5.73221 10.9352 8.45919 13.1056C9.68355 14.0517 11.854 16.1665 14.2471 16.1109C16.5845 16.1665 18.6993 14.0517 19.9793 13.1056C22.7062 10.9352 24.5428 9.48823 25.8228 8.48648V18.7822H2.67132Z"
@@ -1036,11 +1036,10 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
     <div class="d_flex foot_bar">
         <a href="{{url('/blog')}}" class="f_a_bar">Blog</a>
         <a href="{{url('/terms/conditions')}}" class="f_a_bar">Terms & Conditions</a>
-        <a @auth @if(auth()->id() != 6) href="{{route('message.second',['id' => 6])}}" @else href="{{route('message.index')}}" @endif @endauth class=" @guest login_btn @endguest f_a_bar">Complain & suggestions</a>
-{{--                    <a href="{{url('/terms-of-use')}}" class="f_a_bar">Terms of use</a>--}}
+        <a @auth href="{{route('message.index')}}" @endauth class=" @guest login_btn @endguest f_a_bar">Complain & suggestions</a>
         <a href="{{url('/privacy/policy')}}" class="f_a_bar">Privacy Policy</a>
 
-        <a @auth @if(auth()->id() != 6) href="{{route('message.second',['id' => 6])}}" @else href="{{route('message.index')}}" @endif @endauth class=" @guest login_btn @endguest  our_mail d_flex">
+        <a @auth href="{{route('message.index')}}" @endauth class=" @guest login_btn @endguest  our_mail d_flex">
             <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path opacity="0.7"
                       d="M17.7347 0.661377H1.83462C0.802647 0.661377 0 1.50225 0 2.496V13.5037C0 14.5357 0.802647 15.3384 1.83462 15.3384H17.7347C18.7284 15.3384 19.5693 14.5357 19.5693 13.5037V2.496C19.5693 1.50225 18.7284 0.661377 17.7347 0.661377ZM17.7347 2.496V4.06307C16.8556 4.78928 15.4796 5.85947 12.5748 8.15275C11.925 8.64963 10.6637 9.87271 9.78465 9.83449C8.86734 9.87271 7.60604 8.64963 6.95628 8.15275C4.05146 5.85947 2.67549 4.78928 1.83462 4.06307V2.496H17.7347ZM1.83462 13.5037V6.43279C2.67549 7.12078 3.93679 8.11453 5.80964 9.60516C6.65051 10.2549 8.14114 11.7073 9.78465 11.6691C11.3899 11.7073 12.8424 10.2549 13.7214 9.60516C15.5943 8.11453 16.8556 7.12078 17.7347 6.43279V13.5037H1.83462Z"

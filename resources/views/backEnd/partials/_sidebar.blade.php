@@ -416,7 +416,7 @@ if ( ! auth()->check()) {
             </li>
 
             <li class="sortable_li" data-position="28" data-status="1">
-                <a href="{{ url('/message') }}" aria-expanded="false" target="_blank">
+                <a href="{{ url('/messages') }}" aria-expanded="false" target="_blank">
                     <div class="nav_icon_small">
                         <i class="fas fa-comment-alt" style="color: #415094"></i>
                     </div>
@@ -433,7 +433,7 @@ if ( ! auth()->check()) {
                 @foreach ($users as $user)
                     @if($user->role->type === 'admin')
                         @php
-                            $url = "/admin/$user->id/message?instead_of_admin=1"
+                            $url = "/admin/$user->id/messages?instead_of_admin=1"
                         @endphp
                         <li class="sortable_li" data-position="29" data-status="1">
                             <a href="{{ url($url) }}" aria-expanded="false" target="_blank">
