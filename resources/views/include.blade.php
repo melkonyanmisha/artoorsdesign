@@ -1,8 +1,19 @@
 @php
-    /* @var App\Models\User $to_user */
+    /**
+    * @var App\Models\User $to_user
+    */
 
-    $user_id = session()->has('user_id') ? session('user_id') : auth()->id();
-    $pop = \App\Models\Message::where([['from_id' ,'=', $user_id],['to_id',"=",$to_user->id]])->orwhere([['to_id' ,'=', $user_id],['from_id',"=",$to_user->id]])->get();
+    use App\Models\Message;
+
+    $user_id = session()->has('userId') ? session('userId') : auth()->id();
+
+    $pop = Message::where([
+            ['from_id' ,'=', $user_id],
+            ['to_id',"=",$to_user->id]
+        ])->orwhere([
+            ['to_id' ,'=', $user_id],
+            ['from_id',"=",$to_user->id]
+        ])->get();
 @endphp
 
 <div class="sms_block">

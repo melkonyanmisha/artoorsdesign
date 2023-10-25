@@ -6,8 +6,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\ContactUsController;
 use App\Http\Controllers\Frontend\AboutUsController;
-use App\Http\Controllers\Frontend\BlogController;
-use App\Http\Controllers\Frontend\CareerController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\MerchantController;
@@ -16,7 +14,6 @@ use App\Http\Controllers\Frontend\ReturnExchangeController;
 use App\Http\Controllers\Frontend\LanguageController;
 use Modules\OrderManage\Http\Controllers\OrderManageController;
 use App\Http\Controllers\Auth\MerchantRegisterController;
-use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Frontend\CompareController;
 use App\Http\Controllers\Frontend\CouponController;
 use App\Http\Controllers\Frontend\FlashDealController;
@@ -37,13 +34,13 @@ use Modules\FrontendCMS\Entities\DynamicPage;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UploadFileController;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Modules\SidebarManager\Entities\Sidebar;
 use Illuminate\Http\Request;
 use App\Mail\SendMail;
 use  App\Models\HomeSeo;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+use App\Models\User;
+use \App\Models\Message;
 
 /*
 |--------------------------------------------------------------------------
@@ -496,8 +493,9 @@ Route::group(['middleware' => ['auth','admin']], function(){
      }
  });
 
-Route::get('/message', [\App\Http\Controllers\MessageController::class,'index'])->name('message.index')->middleware('auth');
-Route::get('/{user_id}/message', [\App\Http\Controllers\MessageController::class,'getMessagesByUserId'])->name('message.get_by_user_id')->middleware('auth');
+Route::get('/messages', [\App\Http\Controllers\MessageController::class,'index'])->name('message.index')->middleware('auth');
+Route::get('/admin/{user_id}/messages', [\App\Http\Controllers\MessageController::class,'getMessagesByUserIdForSuperAdmin'])->name('message.get_by_user_id_for_super_admin')->middleware('auth');
+Route::post('/send_message',[\App\Http\Controllers\MessageController::class,'sendMessage'])->name('message.send')->middleware('auth');
 Route::post('/delete/notif', [\App\Http\Controllers\Controller::class,'delete_notif'])->name('delete.notFif');
 Route::post('/block/user', [\App\Http\Controllers\Controller::class,'block_user'])->name('block/user');
 Route::post('/un/block/user', [\App\Http\Controllers\Controller::class,'un_block_user'])->name('un.block/user');
@@ -570,60 +568,11 @@ Route::get('/download', function (Request $request){
 
 })->name('download');
 
-Route::get('/messages/{id}', function (Request $request){
-    \App\Models\Message::create([
-        'from_id' => auth()->id(),
-        'to_id' => \App\Models\User::find($request->id)->id,
-        'messages' => $request->message??'',
-        'image' => $imageName??null
-    ]);
-
-    $conversations =  \App\Models\Message::where('from_id', auth()->id())
-        ->orWhere('to_id', auth()->id())
-        ->orderBy('created_at','desc')
-        ->get();
-    $users = $conversations->map(function($conversation){
-        if($conversation->from_id == auth()->id()) {
-            return \App\Models\User::find($conversation->to_id);//$conversation->uxarkox;
-        }
-
-        return \App\Models\User::find($conversation->from_id);
-    })->unique();
-
-    return view(theme('new.message'), compact('users'));
-})->name('message.second')->middleware('auth');
-
 Route::post('/find_user', [App\Http\Controllers\Controller::class, 'find_user'])->name('find_user');
 Route::post('/delete_chat', [App\Http\Controllers\Controller::class, 'delete_chat'])->name('delete_chat');
 Route::post('/cat',function(Request $request){
-    return count(\App\Models\Message::where('to_id',auth()->id())->where([['messages' ,'!=', '']])->where('view','0')->get());
+    return count(Message::where('to_id',auth()->id())->where([['messages' ,'!=', '']])->where('view','0')->get());
 })->middleware('auth')->name('ggg');
-
-Route::post('/bbb',function(Request $request){
-    $to_user = \App\Models\User::find($request->id);
-
-    if(!empty(\App\Models\Block_user::where([['user_id' ,'=', auth()->id()],['second_user',"=",$request->id]])->orwhere([['second_user' ,'=', auth()->id()],['user_id',"=",$request->id]])->first())){
-        return view('include',compact('to_user'));
-    }
-
-    $imageName = null;
-    if($request->file){
-        $imageName   = time() . '.' . $request->file->getClientOriginalExtension();
-        $request->file->move('images/message', $imageName);
-    }
-
-    $data = \App\Models\Message::create([
-        'from_id' => auth()->id(),
-        'to_id' => $request->id,
-        'messages' => $request->message??'',
-        'image' => $imageName??null
-    ]);
-
-    event(new \App\Events\FormSubmited($to_user));
-
-    return view('include',compact('to_user'));
-
-})->name('bbb');
 
 Route::post('/aabb',function(Request $request){
     $to_user = \App\Models\User::find($request->id);

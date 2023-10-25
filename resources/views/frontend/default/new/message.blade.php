@@ -1,9 +1,11 @@
 @php
-    /* @var int $user_id */
+    /* @var int $userId */
 
 use App\Models\Message;
 use App\Models\Block_user;
 use Carbon\Carbon;
+
+$userId = $userId ?? auth()->id();
 @endphp
 
 @extends('frontend.default.layouts.newApp')
@@ -71,7 +73,7 @@ use Carbon\Carbon;
                                             @endif
                                         </div>
                                         @php
-                                            $pop = Message::where([['from_id' ,'=', $user_id],['to_id',"=",$user->id]])->orwhere([['to_id' ,'=', $user_id],['from_id',"=",$user->id]])->latest()->first();
+                                            $pop = Message::where([['from_id' ,'=', $userId],['to_id',"=",$user->id]])->orwhere([['to_id' ,'=', $userId],['from_id',"=",$user->id]])->latest()->first();
                                         @endphp
                                         <p class="under_name_mess">
                                             {{Illuminate\Support\Str::substr($pop->messages, 0, 60)}}
@@ -83,8 +85,8 @@ use Carbon\Carbon;
                     </div>
                     @if(!empty($users[0]))
                         @php
-                            // user_id can be the id of current or a specified user
-                            session(['user_id' => $user_id]);
+                            // userId can be the id of current or a specified user
+                            session(['userId' => $userId]);
                         @endphp
                         <div class="message_block_">
                         </div>
