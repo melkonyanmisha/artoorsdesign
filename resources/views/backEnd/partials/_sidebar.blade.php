@@ -15,6 +15,21 @@ if ( ! auth()->check()) {
     </div>
     <ul id="sidebar_menu">
         @if(auth()->user()->role->type == 'superadmin')
+
+            <li class="sortable_li {{ request()->is('admin-dashboard') || request()->is('seller/dashboard') ?'mm-active' : '' }}"
+                data-position="1"
+                data-status="{{ menuManagerCheck(1,1)->status }}">
+                <a href="{{ route('admin.dashboard') }}" aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <span class="fas fa-th"></span>
+                    </div>
+                    <div class="nav_title">
+                        {{--                        //todo@@@--}}
+                        <span>{{ __('common.dashboard') }}</span>
+                    </div>
+                </a>
+            </li>
+
             @php
                 $artoors_included_pages = [
                     'popap',
@@ -27,7 +42,9 @@ if ( ! auth()->check()) {
                     'marketing/coupon',
                 ];
             @endphp
-            <li class="{{ request()->is($artoors_included_pages) ? 'mm-active' : '' }}" data-position="0">
+
+            <li class="sortable_li {{ request()->is($artoors_included_pages) ? 'mm-active' : '' }}" data-position="2"
+                data-status="{{ menuManagerCheck(1,1)->status }}">
                 <a href="javascript:" class="has-arrow" aria-expanded="false">
                     <div class="nav_icon_small">
                         <span class="fas fa-user"></span>
@@ -103,26 +120,46 @@ if ( ! auth()->check()) {
                 </ul>
             </li>
 
+            <li class="sortable_li {{ request()->is($artoors_included_pages) ? 'mm-active' : '' }}" data-position="3"
+                data-status="{{ menuManagerCheck(1,1)->status }}">
+                <a href="javascript:" class="has-arrow" aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <span class="fas fa-user"></span>
+                    </div>
+                    <div class="nav_title">
+                        <span>SEO STATIC PAGES</span>
+                    </div>
+                </a>
+                <ul>
+                    <li class="nav-item mb_5">
+                        <a class="nav-link  active" href="{{route('admin.home-page')}}">HOME PAGE</a>
+                    </li>
+                    <li class="nav-item mb_5">
+                        <a class="nav-link  active" href="{{route('front.privacy-policy-page')}}">Privacy Policy
+                            PAGE</a>
+                    </li>
+                    <li class="nav-item mb_5">
+                        <a class="nav-link  active" href="{{route('front.terms-conditions-page')}}">Terms &
+                            Conditions
+                            PAGE</a>
+                    </li>
+
+                    <li class="nav-item mb_5">
+                        <a class="nav-link  active" href="{{route('front.contact-us-page')}}">Message PAGE</a>
+                    </li>
+                    <li class="nav-item mb_5">
+                        <a class="nav-link  active" href="{{route('front.blog-page')}}">Blog PAGE</a>
+                    </li>
+                </ul>
+            </li>
+
+            @include('ordermanage::menu')
+
             @include('marketing::menu')
 
             @if(isModuleActive('Affiliate') && permissionCheck('page_builder'))
                 @include('pagebuilder::menu')
             @endif
-
-            @include('ordermanage::menu')
-
-            <li class="sortable_li {{ request()->is('admin-dashboard') || request()->is('seller/dashboard') ?'mm-active' : '' }}"
-                data-position="{{ menuManagerCheck(1,1)->position }}"
-                data-status="{{ menuManagerCheck(1,1)->status }}">
-                <a href="{{ route('admin.dashboard') }}" aria-expanded="false">
-                    <div class="nav_icon_small">
-                        <span class="fas fa-th"></span>
-                    </div>
-                    <div class="nav_title">
-                        <span>{{ __('common.dashboard') }}</span>
-                    </div>
-                </a>
-            </li>
 
             @php
                 $media_manager_backend = false;
@@ -290,40 +327,6 @@ if ( ! auth()->check()) {
                     </a>
                 </li>
             @endif
-        @endif
-
-        @if (auth()->user()->role->type == 'superadmin')
-            <li class="" data-position="1">
-                <a href="javascript:;" class="has-arrow" aria-expanded="false">
-                    <div class="nav_icon_small">
-                        <span class="fas fa-user"></span>
-                    </div>
-                    <div class="nav_title">
-                        <span>SEO STATIC PAGES</span>
-                    </div>
-                </a>
-                <ul>
-                    <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('admin.home-page')}}">HOME PAGE</a>
-                    </li>
-                    <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('front.privacy-policy-page')}}">Privacy Policy
-                            PAGE</a>
-                    </li>
-                    <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('front.terms-conditions-page')}}">Terms &
-                            Conditions
-                            PAGE</a>
-                    </li>
-
-                    <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('front.contact-us-page')}}">Message PAGE</a>
-                    </li>
-                    <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('front.blog-page')}}">Blog PAGE</a>
-                    </li>
-                </ul>
-            </li>
         @endif
 
         @if(permissionCheck('customer_panel') && isModuleActive('MultiVendor'))
