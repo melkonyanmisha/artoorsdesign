@@ -120,7 +120,17 @@ if ( ! auth()->check()) {
                 </ul>
             </li>
 
-            <li class="sortable_li {{ request()->is($artoors_included_pages) ? 'mm-active' : '' }}" data-position="3"
+            @php
+                $seo_included_pages = [
+                    'admin/home-page/seo',
+                    'edit/privacy-policy-page',
+                    'edit/terms-conditions-page',
+                    'edit/contact-us-page',
+                    'edit/blog-page'
+                ];
+            @endphp
+
+            <li class="sortable_li {{ request()->is($seo_included_pages) ? 'mm-active' : '' }}" data-position="3"
                 data-status="{{ menuManagerCheck(1,1)->status }}">
                 <a href="javascript:" class="has-arrow" aria-expanded="false">
                     <div class="nav_icon_small">
@@ -132,23 +142,23 @@ if ( ! auth()->check()) {
                 </a>
                 <ul>
                     <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('admin.home-page')}}">HOME PAGE</a>
+                        <a class="nav-link {{request()->is('admin/home-page/seo') ? 'active' : ''}}" href="{{route('admin.home-page')}}">HOME PAGE</a>
                     </li>
                     <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('front.privacy-policy-page')}}">Privacy Policy
+                        <a class="nav-link {{request()->is('edit/privacy-policy-page') ? 'active' : ''}}" href="{{route('front.privacy-policy-page')}}">Privacy Policy
                             PAGE</a>
                     </li>
                     <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('front.terms-conditions-page')}}">Terms &
+                        <a class="nav-link {{request()->is('edit/terms-conditions-page') ? 'active' : ''}}" href="{{route('front.terms-conditions-page')}}">Terms &
                             Conditions
                             PAGE</a>
                     </li>
 
                     <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('front.contact-us-page')}}">Message PAGE</a>
+                        <a class="nav-link {{request()->is('edit/contact-us-page') ? 'active' : ''}}" href="{{route('front.contact-us-page')}}">Message PAGE</a>
                     </li>
                     <li class="nav-item mb_5">
-                        <a class="nav-link  active" href="{{route('front.blog-page')}}">Blog PAGE</a>
+                        <a class="nav-link {{request()->is('edit/blog-page') ? 'active' : ''}}" href="{{route('front.blog-page')}}">Blog PAGE</a>
                     </li>
                 </ul>
             </li>
