@@ -17,7 +17,8 @@
             <h2>{{$popupContent->title}}</h2>
             <span class="under_title">{{$popupContent->subtitle}}</span>
             <div class="add_mail_section d_flex" id="modalSubscriptionForm">
-                <input autocomplete="off" type="email" id="modalSubscription_email_id"  class="add_email_adr" placeholder="Email">
+                <input type="email" id="modalSubscription_email_id"  class="add_email_adr" placeholder="Email"
+                       readonly="readonly" onfocus="this.removeAttribute('readonly');">
                 <button id="modalSubscribeBtn" class="subs_btn">{{__('defaultTheme.subscribe')}}</button>
                 <div class="col-lg-12 message_div_modal d-none">
             </div>
