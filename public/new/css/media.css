@@ -195,10 +195,6 @@
         width: 55%;
     }
 
-    .chosen_img {
-        height: 650px;
-    }
-
     .close_zoom {
         left: 105%;
     }
@@ -441,10 +437,6 @@
 }
 
 @media only screen and (max-width: 768px) {
-    .chosen_img {
-        height: 500px;
-    }
-
     .close_zoom {
         left: 107%;
     }
@@ -724,10 +716,6 @@
 
     .menu_catalog {
         font-size: 0;
-    }
-
-    .chosen_img {
-        height: 335px;
     }
 
     .zoom_imgs_block svg {
