@@ -374,21 +374,23 @@
                         </a>
                     @endif
 
-                    <div @if(!empty(\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id))
-                             data-wish="{{\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id}}"
-                         @endif
-                         @if(!auth()->check())
-                         class="prod_like d_flex add_to_wishlist add_catalog_btnn login_btn"
-                         @else
-                             class="prod_like d_flex add_to_wishlist add_catalog_btnn"
-                         @endif
+                    @if( !\App\Services\CartService::isProductPurchased(@$product->product()->first()))
+                        <div @if(!empty(\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id))
+                                 data-wish="{{\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id}}"
+                             @endif
+                             @if(!auth()->check())
+                             class="prod_like d_flex add_to_wishlist add_catalog_btnn login_btn"
+                             @else
+                                 class="prod_like d_flex add_to_wishlist add_catalog_btnn"
+                             @endif
+                             data-product_id="{{$product->id}}"
+                             data-seller_id="{{$product->user_id}}">
+                            <span style="color: #FFFFFF; font-size: 18px;">
+                                Add To Wishlist
+                            </span>
+                        </div>
+                    @endif
 
-                         data-product_id="{{$product->id}}"
-                         data-seller_id="{{$product->user_id}}">
-                        <span style="color: #FFFFFF; font-size: 18px;">
-                            Add To Wishlist
-                        </span>
-                    </div>
                     <span class="twenty_sp">Share with friends</span>
                     <div class="d_flex soc_prod">
                         <a href="http://pinterest.com/pin/create/button/?url={{request()->url()}}&media=@if($product->thum_img != null){{showImage($product->thum_img)}} @else {{showImage($product->product->thumbnail_image_source)}} @endif&description={{$product->product_name}}" class="pin-it-button" count-layout="horizontal" class="soc_svgs" target="_blank">
