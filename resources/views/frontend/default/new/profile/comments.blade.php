@@ -7,7 +7,7 @@
     <h3>My Comments</h3>
 
     @php
-        $products = Comment::where('user_id',auth()->id())->latest()->paginate(request()->comment_id??4);
+        $products = Comment::where('user_id',auth()->id())->latest()->paginate(request()->comment_id??20);
     @endphp
     <div class="d_flex sto_ my_comm_block">
         @foreach($products as $product)
@@ -50,51 +50,7 @@
         @endforeach
     </div>
 
-    @if($products->appends(['a' => 'comments'])->lastPage() > 1)
-        <div class="d_flex pagination">
-            <div class='choose_pagination_quantity d_flex'><span> Per page: </span>
-                <a href="{{route('frontend.customer_profile',['comment_id'=>12,'a' => 'comments'])}}">12</a>
-                <a href="{{route('frontend.customer_profile',['comment_id'=>24,'a' => 'comments'])}}">24</a>
-                <a href="{{route('frontend.customer_profile',['comment_id'=>36,'a' => 'comments'])}}">36</a>
-                <a href="{{route('frontend.customer_profile',['comment_id'=>72,'a' => 'comments'])}}">72</a>
-                <a href="{{route('frontend.customer_profile',['comment_id'=>144,'a' => 'comments'])}}">144</a>
-            </div>
-            <div class="d_flex pagination_block">
-                <a href="{{ $products->appends(['a' => 'comments'])->previousPageUrl() }}" class="prev_next_page">
-                    <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 1.25L2 7.25L8 13.25" stroke="#282828" stroke-width="2.25"/>
-                    </svg>
-                </a>
-                @if($products->appends(['a' => 'comments'])->lastPage() > 1)
-                    <a href="{{ $products->appends(['a' => 'comments'])->url(1) }}"
-                       class="pagination_sp @if($products->appends(['a' => 'comments'])->currentPage() == 1) pagination_sp_active @endif">
-                        1
-                    </a>
-                @endif
-                @if($products->lastPage() > 2)
-                    <a href="{{ $products->appends(['a' => 'comments'])->url(2) }}"
-                       class="pagination_sp @if($products->appends(['a' => 'comments'])->currentPage() == 2) pagination_sp_active @endif">
-                        2
-                    </a>
-                @endif
-                @if($products->appends(['a' => 'comments'])->lastPage() > 3)
-                    <a href="{{ $products->appends(['a' => 'comments'])->url(3) }}"
-                       class="pagination_sp @if($products->appends(['a' => 'comments'])->currentPage() == 3) pagination_sp_active @endif">
-                        3
-                    </a>
-                @endif
-                @if( $products->appends(['a' => 'comments'])->lastPage() > 4)
-                    <a>...</a>
-                @endif
-                <a href="{{ $products->appends(['a' => 'comments'])->url($products->appends(['a' => 'comments'])->lastPage()) }}"
-                   class="pagination_sp  @if($products->appends(['a' => 'comments'])->currentPage() == $products->appends(['a' => 'comments'])->lastPage()) pagination_sp_active @endif">{{ $products->lastPage() }}</a>
-                <a href="{{ $products->appends(['a' => 'comments'])->nextPageUrl()  }}" class="prev_next_page">
-                    <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.25 1.25L7.25 7.25L1.25 13.25" stroke="#282828" stroke-width="2.25"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    @endif
-
+    @php
+        drawProfilePagination($products, 'comments');
+    @endphp
 </div>

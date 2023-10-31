@@ -4,11 +4,6 @@
     <main>
         @include('frontend.default.includes.mainInclude')
         <section class="wrapper">
-            {{--            <div class="d_flex from_to">--}}
-            {{--                <a class="from_this" href="{{url('/')}}">Home</a>--}}
-            {{--                <span class="slashes">/</span>--}}
-            {{--                <span class="this_page">My Profile</span>--}}
-            {{--            </div>--}}
             @section('breadcrumb')
                 My Profile
             @endsection

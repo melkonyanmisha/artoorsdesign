@@ -1,15 +1,15 @@
 @if($paginator->lastPage() > 1)
     @php
-        $paginate_id = intval(request('paginate_id'));
+        $paginateID = intval(request('paginate_id'));
     @endphp
 
     <div class='choose_pagination_quantity'>
         <span> Per page: </span>
-        <a class="<?= !$paginate_id || $paginate_id === 12 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="12">12</a>
-        <a class="<?= $paginate_id === 24 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="24">24</a>
-        <a class="<?= $paginate_id === 36 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="36">36</a>
-        <a class="<?= $paginate_id === 72 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="72">72</a>
-        <a class="<?= $paginate_id === 144 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="144">144</a>
+        <a class="<?= !$paginateID || $paginateID === 12 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="12">12</a>
+        <a class="<?= $paginateID === 24 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="24">24</a>
+        <a class="<?= $paginateID === 36 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="36">36</a>
+        <a class="<?= $paginateID === 72 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="72">72</a>
+        <a class="<?= $paginateID === 144 ? 'per_page per_page_active' : 'per_page'; ?>" data-id="144">144</a>
     </div>
     <div class="pagination">
 
@@ -30,7 +30,7 @@
                    }
                 }
 
-                if($startPageToDisplay < 0){
+                if($startPageToDisplay <= 0){
                     $startPageToDisplay = 1;
                 }
             @endphp

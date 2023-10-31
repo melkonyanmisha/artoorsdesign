@@ -1,5 +1,6 @@
 @php
     use App\Models\Wishlist;
+    use App\Services\CartService;
 @endphp
 
 <div class="for_my_favorites">
@@ -32,15 +33,20 @@
                     </div>
                 </a>
                 @if($product->product->discount != 0 )
-                    <span class="sale_red"> -@if($product->product->discount_type != 0)
+                    <span class="sale_red">
+                        -
+                        @if($product->product->discount_type != 0)
                             $
-                        @endif {{$product->product->discount}} @if($product->product->discount_type == 0)
+                        @endif
+                        {{$product->product->discount}}
+                        @if($product->product->discount_type == 0)
                             %
-                        @endif</span>
+                        @endif
+                    </span>
                 @endif
                 <div class="add_to_fav add_to_wishlist"
-                     @if(!empty(\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->product->id)->first()->id))
-                         data-wish="{{\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->product->id)->first()->id}}"
+                     @if(!empty(Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->product->id)->first()->id))
+                         data-wish="{{Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->product->id)->first()->id}}"
                      @endif
                      data-product_id="{{$product->product->id}}" data-seller_id="{{$product->product->user_id}}">
                     @guest
@@ -51,7 +57,7 @@
                         </svg>
                     @endguest
                     @auth
-                        @if(!empty(\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->product->id)->first()->id))
+                        @if(!empty(Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->product->id)->first()->id))
                             <svg width="28" height="24" viewBox="0 0 28 24" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path d="M24.2611 2C21.2879 -0.511827 16.7256 -0.152994 13.9062 2.76893C11.0355 -0.152994 6.47324 -0.511827 3.50005 2C-0.344584 5.22949 0.219297 10.5095 2.98743 13.3289L11.9583 22.5047C12.4709 23.0173 13.1373 23.3249 13.9062 23.3249C14.6239 23.3249 15.2903 23.0173 15.8029 22.5047L24.825 13.3289C27.5418 10.5095 28.1057 5.22949 24.2611 2Z"
@@ -82,18 +88,18 @@
                     <div class="d_flex sto_ for_sale_height">
                         @php
                             $reviews = @$product->product->reviews->where('status',1)->pluck('rating');
-                              if(count($reviews)>0){
-                                  $value = 0;
-                                  $rating = 0;
-                                  foreach($reviews as $review){
-                                      $value += $review;
-                                  }
-                                  $rating = $value/count($reviews);
-                                  $total_review = count($reviews);
-                              }else{
-                                  $rating = 0;
-                                  $total_review = 0;
-                              }
+                            if(count($reviews)>0){
+                                $value = 0;
+                                $rating = 0;
+                                foreach($reviews as $review){
+                                    $value += $review;
+                                }
+                                $rating = $value/count($reviews);
+                                $total_review = count($reviews);
+                            }else{
+                                $rating = 0;
+                                $total_review = 0;
+                            }
                         @endphp
                         <div class="d_flex eye_cool">
                             <div class="watched_">
@@ -140,7 +146,7 @@
                                         @endif
                                     @else
                                         {{(single_price(@$product->product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->product->skus->first()->selling_price)}}
-                                        {{--                                            {{single_price(@$product->skus->first()->selling_price)}}--}}
+                                        {{--                                        {{single_price(@$product->skus->first()->selling_price)}}--}}
                                     @endif
 
                                 @endif
@@ -148,13 +154,13 @@
                         </div>
                     </div>
 
-                    @if( \App\Services\CartService::isProductPurchased(@$product->product()->first()))
+                    @if(CartService::isProductPurchased(@$product->product()->first()))
 
                         @include('product::products.download_product_partial', ['product' => $product->product()->first()])
                     @else
                         @php
                             $disabledAddToCartClass = "";
-                            if( \App\Services\CartService::isProductInCart(@$product->product->skus->first()->id)) {
+                            if(CartService::isProductInCart(@$product->product->skus->first()->id)) {
                               $disabledAddToCartClass = "disabled";
                             }
                         @endphp

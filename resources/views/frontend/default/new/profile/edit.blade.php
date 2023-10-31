@@ -1,6 +1,5 @@
 @php
     use Modules\Customer\Entities\CustomerAddress;
-
 @endphp
 
 

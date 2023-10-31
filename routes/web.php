@@ -590,5 +590,4 @@ Route::post('/store_comment',[\App\Http\Controllers\Controller::class,'store_com
 Route::post('/delete_comment',[\App\Http\Controllers\Controller::class,'delete_comment'])->name('delete_comment');
 Route::post('/store/notif',[\App\Http\Controllers\Controller::class,'store_notif'])->name('store_notif');
 
-Route::get('category/{slug}',[CategoryController::class,'productByCategory'])->name('frontend.category-product');
 Route::get('category/{slug}',[CategoryController::class,'productByCategory'])->name('frontend.category_slug');

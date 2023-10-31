@@ -6,7 +6,7 @@
     <h2>My Purchases</h2>
     <div class="purchases_section">
         @php
-            $orders = Order::where('customer_id',auth()->id())->latest()->paginate(request()->paginate_id??1);
+            $orders = Order::where('customer_id',auth()->id())->latest()->paginate(request()->paginate_id??20);
         @endphp
 
         <table class="purchases_block_">
@@ -44,7 +44,7 @@
                         </td>
 
                         <td>
-{{--                            todo@@@ need to change in the future --}}
+                            {{--                            todo@@@ need to change in the future --}}
                             Test
                         </td>
 
@@ -83,6 +83,5 @@
         @php
             drawProfilePagination($orders, 'purchases');
         @endphp
-
     </div>
 </div>
