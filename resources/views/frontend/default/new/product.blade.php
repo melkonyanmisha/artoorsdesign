@@ -1074,45 +1074,46 @@
         </section>
 
     </main>
+@endsection
 
-    <script>
-        $('.rate_model').click(function (){
-            console.log($(this).attr('data-like') )
-            if($(this).attr('data-like') !== undefined){
-                id =  likes($(this).attr('data-id'),$(this).attr('data-like'));
+@section('js')
+<script>
+    $(document).ready(function () {
 
-                comment_store($(this).attr('data-id'),$(this).attr('data-slug'),null,$('#textareaa1').val(),$(this).attr('data-like'))
+        $('.rate_model').click(function () {
+            console.log($(this).attr('data-like'))
+            if ($(this).attr('data-like') !== undefined) {
+                id = likes($(this).attr('data-id'), $(this).attr('data-like'));
 
-            }else {
+                comment_store($(this).attr('data-id'), $(this).attr('data-slug'), null, $('#textareaa1').val(), $(this).attr('data-like'))
+
+            } else {
                 // $('.negative_').css('background-color','red')
             }
-
-
         })
 
-
-            const slides = Array.from(document.querySelector(".zoom_imgs_block").children)
-        document.querySelector(".general_big_img").addEventListener("click", ()=>{
-            document.querySelectorAll(".mySlides").forEach((slide)=>{
+        const slides = Array.from(document.querySelector(".zoom_imgs_block").children)
+        document.querySelector(".general_big_img").addEventListener("click", () => {
+            document.querySelectorAll(".mySlides").forEach((slide) => {
                 slide.style.display = "none"
             })
-            const current = slides.find(el=> el.children[0].src == document.querySelector(".general_big_img").src)
+            const current = slides.find(el => el.children[0].src == document.querySelector(".general_big_img").src)
             current.style.display = "block"
         })
-        document.querySelector(".prev").addEventListener("click", ()=>{
+        document.querySelector(".prev").addEventListener("click", () => {
             const current = slides.find(el => el.style.display == "block")
             let count = slides.indexOf(current) - 1
-            if(count <= 1){
+            if (count <= 1) {
                 count = slides.length - 1
             }
 
             document.querySelector(".zoom_imgs_block").children[count].style.display = "block"
             current.style.display = "none"
         })
-        document.querySelector(".next").addEventListener("click", ()=>{
+        document.querySelector(".next").addEventListener("click", () => {
             const current = slides.find(el => el.style.display == "block")
             let count = slides.indexOf(current) + 1
-            if(count >= slides.length){
+            if (count >= slides.length) {
                 count = 1
             }
 
@@ -1120,7 +1121,20 @@
             current.style.display = "none"
         })
 
+        // The case when clicked "Review" in Dashboard/My Purchases page
+        if (window.location.href.includes("review")) {
+            const targetOffset = $("._reviews").offset().top - 400;
 
-    </script>
+            setTimeout(function (){
+                $("html, body").animate({
+                    scrollTop: targetOffset
+                }, 300)
+                
+                $('._reviews').trigger('click');
+                $('.write_review').trigger('click');
+            }, 2000)
+        }
+    })
+</script>
 @endsection
 

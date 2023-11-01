@@ -857,11 +857,14 @@ main {
 }
 
 .model_product {
-    max-width: 304px;
     width: 23%;
     box-shadow: 0 4.05293px 20.2646px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
     position: relative;
+}
+
+.products_slide .model_product {
+    max-width: 304px;
 }
 
 .zoomed_prod {
@@ -1054,20 +1057,17 @@ main {
     top: -3px;
 }
 
-.download_product_btn{
-   height: 38px
+.download_product_btn {
+    height: 38px
 }
 
 .download_product_btn,
 .add_catalog_btnn {
-    width: 100%;
     color: var(--white);
     display: flex;
-    margin-bottom: 0;
     align-items: center;
     justify-content: center;
     column-gap: 5px;
-    font-size: 18px;
     padding: 18px 0;
     border-radius: 5px;
     cursor: pointer;
@@ -1076,6 +1076,22 @@ main {
     position: relative;
     top: 0;
     transition: top ease 0.4s;
+}
+
+.about_model .download_product_btn, .about_prod_model .download_product_btn {
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 0;
+
+}
+
+.purchases_section .download_product_btn {
+    width: 85%;
+    margin: auto;
+}
+
+.purchases_section .purchases_block .simple-link {
+    color: #00AAAD
 }
 
 .download_product_btn:hover,
@@ -1888,7 +1904,7 @@ footer {
     margin-top: 16px;
 }
 
-.product_copyright_text{
+.product_copyright_text {
     margin-top: 16px;
 }
 
@@ -2364,6 +2380,10 @@ textarea {
     flex-direction: column;
 }
 
+.pagination-section {
+    width: 100%;
+}
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -2371,13 +2391,16 @@ textarea {
     flex-wrap: wrap;
     row-gap: 12px;
 }
-.pagination_numbers{
+
+.pagination_numbers {
     display: flex;
     align-content: center;
+    align-items: center;
+
 }
 
-.pagination-dots{
-   padding-top: 8px;
+.pagination-dots {
+    padding-top: 8px;
 }
 
 .pagination_block {
@@ -2953,11 +2976,19 @@ textarea {
 
 }
 
-.purchases_block_ {
-    display: flex;
-    flex-direction: column;
-    row-gap: 16px;
+table.purchases_block {
     width: 100%;
+    text-align: center;
+
+}
+
+table.purchases_block, table.purchases_block th, table.purchases_block td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table.purchases_block th, table.purchases_block td {
+    height: 100px;
 }
 
 .purch_block span {

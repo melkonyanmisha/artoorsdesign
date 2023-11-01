@@ -240,116 +240,123 @@
                 </div>
                 <div class="for_my_purchases">
                     <h2>My Purchases</h2>
-                    <div class="purchases_section">
-                        <div class="purchases_block_">
-                            <div class="purch_block d_flex sto_">
-                                <span class="for_descrip">Model Name</span>
-                                <span class="for_item">
-                                    Grand total
-                                </span>
-                                <span class="for_model">{{__('common.order_id')}}</span>
-                                <span class="for_date">{{__('defaultTheme.order_date')}}</span>
+                    <tr class="purchases_section">
+                        @php
+                            $orders = \App\Models\Order::where('customer_id',auth()->id())->latest()->paginate(request()->paginate_id??25);
+                        @endphp
 
-                                <span class="for_descrip">Status</span>
-                                <span class="for_amount">Discount total</span>
-                                <span class="for_amount">Generate Invoice</span>
-                            </div>
-{{--                            @if(session()->get('pdf'))--}}
-{{--                                <script>--}}
-{{--                                    $.ajax({--}}
-{{--                                        url: '{{route('minchev_download')}}',--}}
-{{--                                        success: function (data) {--}}
-{{--                                            $('.for_amount').append(data)--}}
-{{--                                            $('.for_amount').find('#submit').submit()--}}
-{{--                                        }--}}
-{{--                                    });--}}
-{{--                                </script>--}}
-{{--                            @endif--}}
-                            @php
-                                if($pdf = session()->get('exav')){
-                                    if(\File::exists(public_path($pdf)))
-                                    \File::delete(public_path($pdf));
+                        <table class="purchases_block_">
+                            <tr>
+                                <th>Model Name</th>
+                                <th>Download Total</th>
+                                <th>Grand total</th>
+                                <th>{{__('common.order_id')}}</th>
+                                <th>{{__('defaultTheme.order_date')}}</th>
+                                <th>Status</th>
+                                <th>Discount total</th>
+                                <th>Generate Invoice</th>
+                            </tr>
 
-                                    session()->forget('exav');
-                                }
-
-                            @endphp
-
-                            @php
-                                $orders = \App\Models\Order::where('customer_id',auth()->id())->latest()->paginate(request()->paginate_id??25);
-                            @endphp
                             @foreach($orders as $order)
                                 @foreach ($order->packages[0]->products as $product)
-                                    <div class="puchas_sp purch_block d_flex sto_">
-                                        @if(!empty($product->seller_product_sku))
-                                        <a style="color: #00AAAD" href="{{singleProductURL($product->seller_product_sku->product->seller->slug, $product->seller_product_sku->product->slug, $product->seller_product_sku->product->product->categories[0]->slug)}}" class="for_descrip descrip_text">
-                                            @if($product->seller_product_sku->product->product_name != null)
-                                                {{$product->seller_product_sku->product->product_name}}
-                                            @else {{ $product->seller_product_sku->product->product->product_name}} @endif
-                                        </a>
-                                        @else
-                                            <a style="color: rgba(113, 113, 113, 0.7)" disabled class="for_descrip descrip_text">
-                                                Product removed
-                                            </a>
-                                        @endif
+                                    <tr>
+                                        <td>
+                                            @if(!empty($product->seller_product_sku))
+
+                                                <a style="color: #00AAAD" href="{{singleProductURL($product->seller_product_sku->product->seller->slug, $product->seller_product_sku->product->slug, $product->seller_product_sku->product->product->categories[0]->slug)}}" class="for_descrip descrip_text">
+                                                    @if($product->seller_product_sku->product->product_name != null)
+                                                        {{$product->seller_product_sku->product->product_name}}
+                                                    @else {{ $product->seller_product_sku->product->product->product_name}} @endif
+                                                </a>
+                                            @else
+                                                <a style="color: rgba(113, 113, 113, 0.7)" disabled class="for_descrip descrip_text">
+                                                    Product removed
+                                                </a>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            kkkkk
+                                        </td>
+
+                                        <td>
                                             <span class="item_img for_item">
                                                 {{$order->grand_total}}$
-        {{--                                        <img src="img/proff.jpg" alt="">--}}
                                             </span>
-                                        <span class="for_model">{{ $order->order_number }}</span>
-                                        <span class="for_date">{{$order->created_at->toDateString()}}</span>
+                                        </td>
+
+                                        <td>
+                                            <span class="for_model">{{ $order->order_number }}</span>
+                                        </td>
+
+                                        <td>
+                                            <span class="for_date">{{$order->created_at->toDateString()}}</span>
+                                        </td>
+
+                                        <td>
+                                            <span class="for_model">{{ $order->status() }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="for_amount"> {{$order->discount_total }}$</span>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{ route('order_manage.print_order_details', $order->id) }}"
+                                               target="_blank"
+                                               class="for_amount" style="color: #00AAAD">Generate </a>
+                                        </td>
 
 
-
-                                        <span class="for_model">{{ $order->status() }}</span>
-                                        <span class="for_amount"> {{$order->discount_total }}$</span>
-                                        <a href="{{ route('order_manage.print_order_details', $order->id) }}"
-                                           target="_blank"
-                                           class="for_amount" style="color: #00AAAD">Generate </a>
-                                    </div>
+                                    </tr>
                                 @endforeach
                             @endforeach
+]
+                        </table>
 
-                        </div>
-                    </div>
 
-
-                @if($orders->appends(['a' => 'purchases'])->lastPage() > 1)
-                        <div class="d_flex pagination">
-                            <div class='choose_pagination_quantity d_flex'> <span> Per page: </span>
-                                <a href="{{route('frontend.customer_profile',['paginate_id'=>12,'a' => 'purchases'])}}">12</a>
-                                <a href="{{route('frontend.customer_profile',['paginate_id'=>24,'a' => 'purchases'])}}">24</a>
-                                <a href="{{route('frontend.customer_profile',['paginate_id'=>36,'a' => 'purchases'])}}">36</a>
-                                <a href="{{route('frontend.customer_profile',['paginate_id'=>72,'a' => 'purchases'])}}">72</a>
-                                <a href="{{route('frontend.customer_profile',['paginate_id'=>144,'a' => 'purchases'])}}">144</a>
+{{--                        @if($orders->appends(['a' => 'purchases'])->lastPage() > 1)--}}
+                            <div class="d_flex pagination">
+                                @php
+//                                var_dump($orders->total()); exit;
+                                @endphp
+{{--                                <div class='choose_pagination_quantity d_flex'> <span> Per page: </span>--}}
+{{--                                    <a href="{{route('frontend.customer_profile',['paginate_id'=>12,'a' => 'purchases'])}}">12</a>--}}
+{{--                                    <a href="{{route('frontend.customer_profile',['paginate_id'=>24,'a' => 'purchases'])}}">24</a>--}}
+{{--                                    <a href="{{route('frontend.customer_profile',['paginate_id'=>36,'a' => 'purchases'])}}">36</a>--}}
+{{--                                    <a href="{{route('frontend.customer_profile',['paginate_id'=>72,'a' => 'purchases'])}}">72</a>--}}
+{{--                                    <a href="{{route('frontend.customer_profile',['paginate_id'=>144,'a' => 'purchases'])}}">144</a>--}}
+{{--                                </div>--}}
+                                <div class="d_flex pagination_block">
+                                    <a href="{{ $orders->appends(['a' => 'purchases'])->previousPageUrl() }}" class="prev_next_page">
+                                        <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8 1.25L2 7.25L8 13.25" stroke="#282828" stroke-width="2.25"/>
+                                        </svg>
+                                    </a>
+                                    @if($orders->appends(['a' => 'purchases'])->lastPage() > 1)
+                                        <a href="{{ $orders->appends(['a' => 'purchases'])->url(1) }}" class="pagination_sp @if($orders->appends(['a' => 'purchases'])->currentPage() == 1) pagination_sp_active @endif">1</a>
+                                    @endif
+                                    @if($orders->lastPage() > 2)
+                                        <a href="{{ $orders->appends(['a' => 'purchases'])->url(2) }}" class="pagination_sp @if($orders->appends(['a' => 'purchases'])->currentPage() == 2) pagination_sp_active @endif">2</a>
+                                    @endif
+                                    @if($orders->appends(['a' => 'purchases'])->lastPage() > 3)
+                                        <a href="{{ $orders->appends(['a' => 'purchases'])->url(3) }}" class="pagination_sp @if($orders->appends(['a' => 'purchases'])->currentPage() == 3) pagination_sp_active @endif">3</a>
+                                    @endif
+                                    @if( $orders->appends(['a' => 'purchases'])->lastPage() > 4)
+                                        <a>...</a>
+                                    @endif
+                                    <a href="{{ $orders->appends(['a' => 'purchases'])->url($orders->appends(['a' => 'purchases'])->lastPage()) }}" class="pagination_sp  @if($orders->appends(['a' => 'purchases'])->currentPage() == $orders->appends(['a' => 'purchases'])->lastPage()) pagination_sp_active @endif">{{ $orders->appends(['a' => 'purchases'])->lastPage() }}</a>
+                                    <a href="{{ $orders->appends(['a' => 'purchases'])->nextPageUrl()  }}" class="prev_next_page">
+                                        <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1.25 1.25L7.25 7.25L1.25 13.25" stroke="#282828" stroke-width="2.25"/>
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="d_flex pagination_block">
-                                <a href="{{ $orders->appends(['a' => 'purchases'])->previousPageUrl() }}" class="prev_next_page">
-                                    <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M8 1.25L2 7.25L8 13.25" stroke="#282828" stroke-width="2.25"/>
-                                    </svg>
-                                </a>
-                                @if($orders->appends(['a' => 'purchases'])->lastPage() > 1)
-                                    <a href="{{ $orders->appends(['a' => 'purchases'])->url(1) }}" class="pagination_sp @if($orders->appends(['a' => 'purchases'])->currentPage() == 1) pagination_sp_active @endif">1</a>
-                                @endif
-                                @if($orders->lastPage() > 2)
-                                    <a href="{{ $orders->appends(['a' => 'purchases'])->url(2) }}" class="pagination_sp @if($orders->appends(['a' => 'purchases'])->currentPage() == 2) pagination_sp_active @endif">2</a>
-                                @endif
-                                @if($orders->appends(['a' => 'purchases'])->lastPage() > 3)
-                                    <a href="{{ $orders->appends(['a' => 'purchases'])->url(3) }}" class="pagination_sp @if($orders->appends(['a' => 'purchases'])->currentPage() == 3) pagination_sp_active @endif">3</a>
-                                @endif
-                                @if( $orders->appends(['a' => 'purchases'])->lastPage() > 4)
-                                    <a>...</a>
-                                @endif
-                                <a href="{{ $orders->appends(['a' => 'purchases'])->url($orders->appends(['a' => 'purchases'])->lastPage()) }}" class="pagination_sp  @if($orders->appends(['a' => 'purchases'])->currentPage() == $orders->appends(['a' => 'purchases'])->lastPage()) pagination_sp_active @endif">{{ $orders->appends(['a' => 'purchases'])->lastPage() }}</a>
-                                <a href="{{ $orders->appends(['a' => 'purchases'])->nextPageUrl()  }}" class="prev_next_page">
-                                    <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1.25 1.25L7.25 7.25L1.25 13.25" stroke="#282828" stroke-width="2.25"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    @endif
+{{--                    @endif--}}
+
+                </div>
+
+
                 </div>
                 <div class="for_my_comments">
                     <h3>My Comments</h3>
@@ -557,6 +564,7 @@
                                 </div>
 
                                 @if( \App\Services\CartService::isProductPurchased(@$product->product()->first()))
+
                                     @include('product::products.download_product_partial', ['product' => $product->product()->first()])
                                 @else
                                 @php
