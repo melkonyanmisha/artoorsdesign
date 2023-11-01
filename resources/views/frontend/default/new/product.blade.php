@@ -1,6 +1,15 @@
+@php
+    use App\Services\CartService;
+    use App\Models\Wishlist;
+    use App\Models\Comment;
+    use \App\Services\ProductService;
+@endphp
+
 @extends('frontend.default.layouts.newApp')
 
-@section('title'){{$product->product->product_name}}@endsection
+@section('title')
+    {{$product->product->product_name}}
+@endsection
 
 @section('share_meta')
     @php
@@ -15,14 +24,15 @@
     <meta name="description" content="{{$product->product->meta_description}}"/>
     <meta property="og:title" content="{{$product->product->meta_title}}"/>
     <meta property="og:description" content="{{$product->product->meta_description}}"/>
-    <meta property="og:url" content="{{URL::full()}}" />
-    <meta property="og:image" content="@if ($product->thum_img != null){{showImage($product->thum_img)}}@else{{showImage($product->product->thumbnail_image_source)}}@endif" />
+    <meta property="og:url" content="{{URL::full()}}"/>
+    <meta property="og:image"
+          content="@if ($product->thum_img != null){{showImage($product->thum_img)}}@else{{showImage($product->product->thumbnail_image_source)}}@endif"/>
     <meta property="og:image:width" content="400"/>
     <meta property="og:image:height" content="300"/>
     <meta property="og:image:alt" content="{{$product->product->product_name}}"/>
     <meta property="og:type" content="website"/>
     <meta property="og:locale" content="en_EN"/>
-    <meta name ="keywords" content="{{$product->product->meta_keyword}}">
+    <meta name="keywords" content="{{$product->product->meta_keyword}}">
 @endsection
 
 @section('content')
@@ -31,10 +41,14 @@
 
         <section class="wrapper">
             <div class="d_flex from_to">
-                <a class="from_this" href="{{url('/')}}">Home</a>
+                <a class="from_this" href="{{url('/')}}">
+                    Home
+                </a>
                 <span class="slashes">/</span>
-{{--                <a class="from_this" href="{{route('frontend.category-product',['slug' => $product->product->categories[0]->slug, 'item' =>'category'])}}">{{$product->product->categories[0]['name']}}</a>--}}
-                <a class="from_this" href="{{route('frontend.category_slug',['slug' => $product->product->categories[0]->slug])}}">{{$product->product->categories[0]['name']}}</a>
+                <a class="from_this"
+                   href="{{route('frontend.category_slug',['slug' => $product->product->categories[0]->slug])}}">
+                    {{$product->product->categories[0]['name']}}
+                </a>
                 <span class="slashes">/</span>
                 <span class="this_page">{{$product->product_name}}</span>
             </div>
@@ -55,7 +69,8 @@
                                         $image = $product->product->gallary_images[$i]
                                     @endphp
                                     <div class="prod_mini_">
-                                        <img class="prod_mini_img" src="{{showImage($image->images_source)}}" alt="{{isset($images_array[$i]) ? $images_array[$i] : ''}}">
+                                        <img class="prod_mini_img" src="{{showImage($image->images_source)}}"
+                                             alt="{{isset($images_array[$i]) ? $images_array[$i] : ''}}">
                                     </div>
                                 @endif
                                 @php
@@ -65,11 +80,12 @@
 
                         </div>
                     @endif
-                        <div class="d_flex general_and_mini">
+                    <div class="d_flex general_and_mini">
                         <div class="general_prod_img" id='myImg'>
                             <img class="general_big_img"
                                  @if ($product->thum_img != null) src="{{showImage($product->thum_img)}}"
-                                 @else src="{{showImage($product->product->thumbnail_image_source)}}" @endif alt="{{$images_array[0]}}">
+                                 @else src="{{showImage($product->product->thumbnail_image_source)}}"
+                                 @endif alt="{{$images_array[0]}}">
                             <div class="zoom_prod">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +101,8 @@
                                         $image = $product->product->gallary_images[$i]
                                     @endphp
                                     <div class="prod_mini_">
-                                        <img class="prod_mini_img" src="{{showImage($image->images_source)}}" alt="{{isset($images_array[$i]) ? $images_array[$i] : ''}}">
+                                        <img class="prod_mini_img" src="{{showImage($image->images_source)}}"
+                                             alt="{{isset($images_array[$i]) ? $images_array[$i] : ''}}">
                                     </div>
                                 @endif
                                 @php
@@ -121,23 +138,17 @@
                                     });
                                 }
                             </script>
-                                @auth
-{{--                            <a href="{{route('download',['filename' => $product->product->pdf])}}" class='download_' @if($product->skus->first()->selling_price != 0.0 || is_null($product->product->pdf)) style='display:none'  @endif>--}}
-{{--                                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                    <path d="M16.5 9H13.5938L15.0625 7.5625C16 6.625 15.3125 5 14 5H12V1.5C12 0.6875 11.3125 0 10.5 0H7.5C6.65625 0 6 0.6875 6 1.5V5H4C2.65625 5 1.96875 6.625 2.9375 7.5625L4.375 9H1.5C0.65625 9 0 9.6875 0 10.5V14.5C0 15.3438 0.65625 16 1.5 16H16.5C17.3125 16 18 15.3438 18 14.5V10.5C18 9.6875 17.3125 9 16.5 9ZM4 6.5H7.5V1.5H10.5V6.5H14L9 11.5L4 6.5ZM16.5 14.5H1.5V10.5H5.875L7.9375 12.5625C8.5 13.1562 9.46875 13.1562 10.0312 12.5625L12.0938 10.5H16.5V14.5ZM13.75 12.5C13.75 12.9375 14.0625 13.25 14.5 13.25C14.9062 13.25 15.25 12.9375 15.25 12.5C15.25 12.0938 14.9062 11.75 14.5 11.75C14.0625 11.75 13.75 12.0938 13.75 12.5Z" fill="#323232"/>--}}
-{{--                                </svg>--}}
-{{--                                <span> {{$product->product->downloads}}</span>--}}
-{{--                            </a>--}}
-                                @endauth
-{{--                            <a class="like_post d_flex" tabindex="-1"--}}
-{{--                               @auth onclick="likes('{{$product->id}}')" @endauth>--}}
-{{--                                <svg width="18" height="18" viewBox="0 0 15 16" fill="none"--}}
-{{--                                     xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                    <path d="M14.5625 8.96875C14.8438 8.5 15 8 15 7.40625C15 6.03125 13.8125 4.75 12.3125 4.75H11.1562C11.3125 4.34375 11.4375 3.875 11.4375 3.28125C11.4375 1 10.25 0 8.46875 0C6.53125 0 6.65625 2.96875 6.21875 3.40625C5.5 4.125 4.65625 5.5 4.0625 6H1C0.4375 6 0 6.46875 0 7V14.5C0 15.0625 0.4375 15.5 1 15.5H3C3.4375 15.5 3.84375 15.1875 3.9375 14.7812C5.34375 14.8125 6.3125 16 9.5 16C9.75 16 10 16 10.2188 16C12.625 16 13.6875 14.7812 13.7188 13.0312C14.1562 12.4688 14.375 11.6875 14.2812 10.9375C14.5938 10.375 14.6875 9.6875 14.5625 8.96875ZM12.625 10.6562C13.0312 11.3125 12.6562 12.1875 12.1875 12.4688C12.4375 13.9688 11.625 14.5 10.5312 14.5H9.34375C7.125 14.5 5.65625 13.3438 4 13.3438V7.5H4.3125C5.21875 7.5 6.4375 5.3125 7.28125 4.46875C8.15625 3.59375 7.875 2.09375 8.46875 1.5C9.9375 1.5 9.9375 2.53125 9.9375 3.28125C9.9375 4.5 9.0625 5.0625 9.0625 6.25H12.3125C12.9688 6.25 13.4688 6.84375 13.5 7.4375C13.5 8 13.0938 8.59375 12.7812 8.59375C13.2188 9.0625 13.3125 10.0312 12.625 10.6562ZM2.75 13.5C2.75 13.9375 2.40625 14.25 2 14.25C1.5625 14.25 1.25 13.9375 1.25 13.5C1.25 13.0938 1.5625 12.75 2 12.75C2.40625 12.75 2.75 13.0938 2.75 13.5Z"--}}
-{{--                                          fill="#717171"></path>--}}
-{{--                                </svg>--}}
-{{--                                <span class="likes">{{count(\App\Models\Like::where('product_id',$product->id)->get())}}</span>--}}
-{{--                            </a>--}}
+{{--                            @auth--}}
+{{--                                    <a class="like_post d_flex" tabindex="-1"--}}
+{{--                                       @auth onclick="likes('{{$product->id}}')" @endauth>--}}
+{{--                                        <svg width="18" height="18" viewBox="0 0 15 16" fill="none"--}}
+{{--                                             xmlns="http://www.w3.org/2000/svg">--}}
+{{--                                            <path d="M14.5625 8.96875C14.8438 8.5 15 8 15 7.40625C15 6.03125 13.8125 4.75 12.3125 4.75H11.1562C11.3125 4.34375 11.4375 3.875 11.4375 3.28125C11.4375 1 10.25 0 8.46875 0C6.53125 0 6.65625 2.96875 6.21875 3.40625C5.5 4.125 4.65625 5.5 4.0625 6H1C0.4375 6 0 6.46875 0 7V14.5C0 15.0625 0.4375 15.5 1 15.5H3C3.4375 15.5 3.84375 15.1875 3.9375 14.7812C5.34375 14.8125 6.3125 16 9.5 16C9.75 16 10 16 10.2188 16C12.625 16 13.6875 14.7812 13.7188 13.0312C14.1562 12.4688 14.375 11.6875 14.2812 10.9375C14.5938 10.375 14.6875 9.6875 14.5625 8.96875ZM12.625 10.6562C13.0312 11.3125 12.6562 12.1875 12.1875 12.4688C12.4375 13.9688 11.625 14.5 10.5312 14.5H9.34375C7.125 14.5 5.65625 13.3438 4 13.3438V7.5H4.3125C5.21875 7.5 6.4375 5.3125 7.28125 4.46875C8.15625 3.59375 7.875 2.09375 8.46875 1.5C9.9375 1.5 9.9375 2.53125 9.9375 3.28125C9.9375 4.5 9.0625 5.0625 9.0625 6.25H12.3125C12.9688 6.25 13.4688 6.84375 13.5 7.4375C13.5 8 13.0938 8.59375 12.7812 8.59375C13.2188 9.0625 13.3125 10.0312 12.625 10.6562ZM2.75 13.5C2.75 13.9375 2.40625 14.25 2 14.25C1.5625 14.25 1.25 13.9375 1.25 13.5C1.25 13.0938 1.5625 12.75 2 12.75C2.40625 12.75 2.75 13.0938 2.75 13.5Z"--}}
+{{--                                                  fill="#717171"></path>--}}
+{{--                                        </svg>--}}
+{{--                                        <span class="likes">{{count(\App\Models\Like::where('product_id',$product->id)->get())}}</span>--}}
+{{--                                    </a>--}}
+{{--                            @endauth--}}
                         </div>
                     </div>
                     <h1 class="prod_name">{{$product->product_name}}</h1>
@@ -160,9 +171,11 @@
                                     <span class="this_moment_price">{{single_price(selling_price(@$product->skus->first()->selling_price,@$product->discount_type,@$product->discount))}}</span>
                                     <span class="sale_for">
                                          @if($product->discount != 0 )
-                                             -@if($product->discount_type != 0)
-                                                    $@endif {{$product->discount}} @if($product->discount_type == 0)
-                                                    %@endif
+                                            -@if($product->discount_type != 0)
+                                                $
+                                            @endif {{$product->discount}} @if($product->discount_type == 0)
+                                                %
+                                            @endif
                                         @endif
                                     </span>
                                 @else
@@ -197,77 +210,77 @@
                         @endif
 
                     </div>
-                    @if($product->skus->max('selling_price') != '0.0')
+                    {{--                    @if($product->skus->max('selling_price') != '0.0')--}}
 
-{{--                    <div class="start_block d_flex">--}}
+                    {{--                    <div class="start_block d_flex">--}}
 
-{{--                            <span class="star_span" data-value="1" id="1">--}}
-{{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                              fill="#D3D3D3"/>--}}
-{{--                                    </svg>--}}
-{{--                                </span>--}}
-{{--                            <span class="star_span" data-value="2" id="2">--}}
-{{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                              fill="#D3D3D3"/>--}}
-{{--                                    </svg>--}}
-{{--                                </span>--}}
-{{--                            <span class="star_span" data-value="3" id="3">--}}
-{{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                              fill="#D3D3D3"/>--}}
-{{--                                    </svg>--}}
-{{--                                </span>--}}
-{{--                            <span class="star_span" data-value="4" id="4">--}}
-{{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                              fill="#D3D3D3"/>--}}
-{{--                                    </svg>--}}
-{{--                                </span>--}}
-{{--                            <span class="star_span" data-value="5" id="5">--}}
-{{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                              fill="#D3D3D3"/>--}}
-{{--                                    </svg>--}}
-{{--                                </span>--}}
+                    {{--                            <span class="star_span" data-value="1" id="1">--}}
+                    {{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                    {{--                                         xmlns="http://www.w3.org/2000/svg">--}}
+                    {{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                    {{--                                              fill="#D3D3D3"/>--}}
+                    {{--                                    </svg>--}}
+                    {{--                                </span>--}}
+                    {{--                            <span class="star_span" data-value="2" id="2">--}}
+                    {{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                    {{--                                         xmlns="http://www.w3.org/2000/svg">--}}
+                    {{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                    {{--                                              fill="#D3D3D3"/>--}}
+                    {{--                                    </svg>--}}
+                    {{--                                </span>--}}
+                    {{--                            <span class="star_span" data-value="3" id="3">--}}
+                    {{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                    {{--                                         xmlns="http://www.w3.org/2000/svg">--}}
+                    {{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                    {{--                                              fill="#D3D3D3"/>--}}
+                    {{--                                    </svg>--}}
+                    {{--                                </span>--}}
+                    {{--                            <span class="star_span" data-value="4" id="4">--}}
+                    {{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                    {{--                                         xmlns="http://www.w3.org/2000/svg">--}}
+                    {{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                    {{--                                              fill="#D3D3D3"/>--}}
+                    {{--                                    </svg>--}}
+                    {{--                                </span>--}}
+                    {{--                            <span class="star_span" data-value="5" id="5">--}}
+                    {{--                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                    {{--                                         xmlns="http://www.w3.org/2000/svg">--}}
+                    {{--                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                    {{--                                              fill="#D3D3D3"/>--}}
+                    {{--                                    </svg>--}}
+                    {{--                                </span>--}}
 
-                            @php
-                                $astxers = \App\Models\Astx::where('product_id',$product->id)->pluck('astx');
-                                $xz[1] = 0;
-                                $xz[2] = 0;
-                                $xz[3] = 0;
-                                $xz[4] = 0;
-                                $xz[5] = 0;
-                                foreach ($astxers as $astx){
-                                    if($astx == 1)$xz[1]++;
-                                    if($astx == 2)$xz[2]++;
-                                    if($astx == 3)$xz[3]++;
-                                    if($astx == 4)$xz[4]++;
-                                    if($astx == 5)$xz[5]++;
-                                }
-                                $max = max($xz);
-                                if(!empty($astxers[0])){
-                                    $tokos = $astxers->sum() / count($astxers);
-                                    $tiv= round($tokos);
-                                }
+                    {{--                            @php--}}
+                    {{--                                $astxers = \App\Models\Astx::where('product_id',$product->id)->pluck('astx');--}}
+                    {{--                                $xz[1] = 0;--}}
+                    {{--                                $xz[2] = 0;--}}
+                    {{--                                $xz[3] = 0;--}}
+                    {{--                                $xz[4] = 0;--}}
+                    {{--                                $xz[5] = 0;--}}
+                    {{--                                foreach ($astxers as $astx){--}}
+                    {{--                                    if($astx == 1)$xz[1]++;--}}
+                    {{--                                    if($astx == 2)$xz[2]++;--}}
+                    {{--                                    if($astx == 3)$xz[3]++;--}}
+                    {{--                                    if($astx == 4)$xz[4]++;--}}
+                    {{--                                    if($astx == 5)$xz[5]++;--}}
+                    {{--                                }--}}
+                    {{--                                $max = max($xz);--}}
+                    {{--                                if(!empty($astxers[0])){--}}
+                    {{--                                    $tokos = $astxers->sum() / count($astxers);--}}
+                    {{--                                    $tiv= round($tokos);--}}
+                    {{--                                }--}}
 
-                            @endphp
+                    {{--                            @endphp--}}
 
 
-{{--                    </div>--}}
-                        @endif
+                    {{--                    </div>--}}
+                    {{--                    @endif--}}
 
                     <div class="d_flex sto_">
                         <span class="twenty_sp">3D model format</span>
                         <span class="twenty_sp">
                             @php
-                                $productFileTypesTxts =\App\Services\ProductService::getProductFileTypes($product);
+                                $productFileTypesTxts = ProductService::getProductFileTypes($product);
                                 echo implode(", ", $productFileTypesTxts)
                             @endphp
                         </span>
@@ -312,76 +325,20 @@
                         <span class="twenty_sp">{{$product->created_at->toDateString()}}</span>
                     </div>
 
-                    @if( \App\Services\CartService::isProductPurchased(@$product->product()->first()))
+                    @if( CartService::isProductPurchased(@$product->product()->first()) || intval($product->skus->max('selling_price')) === 0)
                         @include('product::products.download_product_partial', ['product' => $product->product()->first()])
                     @else
-                        @php
-                            $disabledAddToCartClass = "";
-                            if( \App\Services\CartService::isProductInCart(@$product->skus->first()->id)) {
-                              $disabledAddToCartClass = "disabled";
-                            }
-                        @endphp
-                        <a @if(single_price($product->skus->max('selling_price')) == '$ 0.00')
-                               @auth
-                                   href="{{$product->product->video_link}}"
-                           class="add_catalog_btn"
-                           @else
-                               class="add_catalog_btn login_btn"
-
-                           @endauth
-                           @else
-                               @auth class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
-                           @elseif(single_price($product->skus->max('selling_price')) == '$ 0.00') class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
-                           @else class="add_catalog_btn login_btn" @endauth
-                           @endif
-                           tabindex="-1"
-                           data-producttype="{{ @$product->product->product_type }}"
-                           data-seller={{ $product->user_id }} data-product-sku={{ @$product->skus->first()->id }}
-                           @if(@$product->hasDeal)
-                                   data-base-price={{ selling_price(@$product->skus->first()->selling_price,@$product->hasDeal->discount_type,@$product->hasDeal->discount) }}
-                           @else
-                           @if(@$product->hasDiscount == 'yes')
-                                   data-base-price={{ selling_price(@$product->skus->first()->selling_price,@$product->discount_type,@$product->discount) }}
-                           @else
-                                   data-base-price={{ @$product->skus->first()->selling_price }}
-                           @endif
-                           @endif
-                                   data-shipping-method=0
-                           data-product-id={{ $product->id }}
-                                   data-stock_manage="{{$product->stock_manage}}"
-                           data-stock="{{@$product->skus->first()->product_stock}}"
-                           data-min_qty="{{$product->product->minimum_order_qty}}"
-                        >
-                            @if(single_price($product->skus->max('selling_price')) == '$ 0.00')
-                                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_794_15016)">
-                                        <path d="M16.5 9H13.5938L15.0625 7.5625C16 6.625 15.3125 5 14 5H12V1.5C12 0.6875 11.3125 0 10.5 0H7.5C6.65625 0 6 0.6875 6 1.5V5H4C2.65625 5 1.96875 6.625 2.9375 7.5625L4.375 9H1.5C0.65625 9 0 9.6875 0 10.5V14.5C0 15.3438 0.65625 16 1.5 16H16.5C17.3125 16 18 15.3438 18 14.5V10.5C18 9.6875 17.3125 9 16.5 9ZM4 6.5H7.5V1.5H10.5V6.5H14L9 11.5L4 6.5ZM16.5 14.5H1.5V10.5H5.875L7.9375 12.5625C8.5 13.1562 9.46875 13.1562 10.0312 12.5625L12.0938 10.5H16.5V14.5ZM13.75 12.5C13.75 12.9375 14.0625 13.25 14.5 13.25C14.9062 13.25 15.25 12.9375 15.25 12.5C15.25 12.0938 14.9062 11.75 14.5 11.75C14.0625 11.75 13.75 12.0938 13.75 12.5Z" fill="white"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_794_15016">
-                                            <rect width="18" height="16" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-
-                            @else
-                                +
-                                <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19.645 2.25H5.33643L5.02002 0.703125C4.94971 0.316406 4.59815 0 4.21143 0H0.695801C0.449707 0 0.273926 0.210938 0.273926 0.421875V1.26562C0.273926 1.51172 0.449707 1.6875 0.695801 1.6875H3.5083L5.93408 14.2031C5.54736 14.625 5.33643 15.1523 5.33643 15.75C5.33643 17.0156 6.3208 18 7.58643 18C8.8169 18 9.83643 17.0156 9.83643 15.75C9.83643 15.3633 9.6958 14.9766 9.52002 14.625H14.6177C14.4419 14.9766 14.3364 15.3633 14.3364 15.75C14.3364 17.0156 15.3208 18 16.5864 18C17.8169 18 18.8364 17.0156 18.8364 15.75C18.8364 15.1172 18.5552 14.5547 18.1333 14.1328L18.1685 13.9922C18.2739 13.4648 17.8872 12.9375 17.3247 12.9375H7.41065L7.09424 11.25H18.063C18.4849 11.25 18.8013 11.0039 18.9067 10.6172L20.4888 3.30469C20.5942 2.77734 20.2075 2.25 19.645 2.25ZM7.58643 16.5938C7.09424 16.5938 6.74268 16.2422 6.74268 15.75C6.74268 15.293 7.09424 14.9062 7.58643 14.9062C8.04346 14.9062 8.43018 15.293 8.43018 15.75C8.43018 16.2422 8.04346 16.5938 7.58643 16.5938ZM16.5864 16.5938C16.0942 16.5938 15.7427 16.2422 15.7427 15.75C15.7427 15.293 16.0942 14.9062 16.5864 14.9062C17.0435 14.9062 17.4302 15.293 17.4302 15.75C17.4302 16.2422 17.0435 16.5938 16.5864 16.5938ZM17.395 9.5625H6.74268L5.65283 3.9375H18.6255L17.395 9.5625Z"
-                                          fill="white"/>
-                                </svg>
-                            @endif
-                        </a>
+                        @include('product::products.add_to_cart_partial', ['product' => $product])
                     @endif
 
-                    @if( !\App\Services\CartService::isProductPurchased(@$product->product()->first()))
-                        <div @if(!empty(\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id))
-                                 data-wish="{{\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id}}"
+                    @if( !CartService::isProductPurchased(@$product->product()->first()))
+                        <div @if(!empty(Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id))
+                                 data-wish="{{Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id}}"
                              @endif
                              @if(!auth()->check())
-                             class="prod_like d_flex add_to_wishlist add_catalog_btnn login_btn"
+                                 class="prod_like d_flex add_to_wishlist add_catalog_btn login_btn"
                              @else
-                                 class="prod_like d_flex add_to_wishlist add_catalog_btnn"
+                                 class="prod_like d_flex add_to_wishlist add_catalog_btn"
                              @endif
                              data-product_id="{{$product->id}}"
                              data-seller_id="{{$product->user_id}}">
@@ -393,7 +350,8 @@
 
                     <span class="twenty_sp">Share with friends</span>
                     <div class="d_flex soc_prod">
-                        <a href="http://pinterest.com/pin/create/button/?url={{request()->url()}}&media=@if($product->thum_img != null){{showImage($product->thum_img)}} @else {{showImage($product->product->thumbnail_image_source)}} @endif&description={{$product->product_name}}" class="pin-it-button" count-layout="horizontal" class="soc_svgs" target="_blank">
+                        <a href="http://pinterest.com/pin/create/button/?url={{request()->url()}}&media=@if($product->thum_img != null){{showImage($product->thum_img)}} @else {{showImage($product->product->thumbnail_image_source)}} @endif&description={{$product->product_name}}"
+                           class="pin-it-button" count-layout="horizontal" class="soc_svgs" target="_blank">
                             <svg width="29" height="30" viewBox="0 0 29 30" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.7"
@@ -401,7 +359,8 @@
                                       fill="#717171"/>
                             </svg>
                         </a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{request()->url()}}" class="soc_svgs" target="_blank">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{request()->url()}}" class="soc_svgs"
+                           target="_blank">
                             <svg width="29" height="30" viewBox="0 0 29 30" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.7"
@@ -409,14 +368,19 @@
                                       fill="#717171"/>
                             </svg>
                         </a>
-                        <a href="https://twitter.com/intent/tweet?url={{request()->url()}}" class="soc_svgs" target="_blank">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="29px" height="30px" clip-rule="evenodd" baseProfile="basic">
+                        <a href="https://twitter.com/intent/tweet?url={{request()->url()}}" class="soc_svgs"
+                           target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="29px" height="30px"
+                                 clip-rule="evenodd" baseProfile="basic">
                                 <polygon fill="#616161" points="41,6 9.929,42 6.215,42 37.287,6"/>
-                                <polygon fill="#fff" fill-rule="evenodd" points="31.143,41 7.82,7 16.777,7 40.1,41" clip-rule="evenodd"/>
-                                <path fill="#616161" d="M15.724,9l20.578,30h-4.106L11.618,9H15.724 M17.304,6H5.922l24.694,36h11.382L17.304,6L17.304,6z"/>
+                                <polygon fill="#fff" fill-rule="evenodd" points="31.143,41 7.82,7 16.777,7 40.1,41"
+                                         clip-rule="evenodd"/>
+                                <path fill="#616161"
+                                      d="M15.724,9l20.578,30h-4.106L11.618,9H15.724 M17.304,6H5.922l24.694,36h11.382L17.304,6L17.304,6z"/>
                             </svg>
                         </a>
-                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{request()->url()}}" class="soc_svgs" target="_blank">
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{request()->url()}}"
+                           class="soc_svgs" target="_blank">
                             <svg width="29" height="30" viewBox="0 0 29 30" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.7"
@@ -427,7 +391,8 @@
                     </div>
                     <div class="product_copyright_text">
                         <i>
-                            Please note that all models on this page are not allowed to be resold, as doing so would be illegal.
+                            Please note that all models on website are not allowed to be resold, as doing so would be
+                            illegal.
                         </i>
                     </div>
                 </div>
@@ -435,7 +400,8 @@
             <div id='zoomed_prod' class='zoomed_prod'>
                 <div class='zoom_imgs_block'>
                             <span class="close_zoom">
-                                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg width="17" height="17" viewBox="0 0 17 17" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 1L16 16M16 1L1 16" stroke="#717171"/>
                                 </svg>
                             </span>
@@ -471,20 +437,20 @@
                     @endif
 
 
-{{--                    @foreach($product->product->gallary_images as $image)--}}
-{{--                        <div class="mySlides">--}}
-{{--                            <img src="{{showImage($image->images_source)}}" class="chosen_img">--}}
-{{--                        </div>--}}
-{{--                    @endforeach--}}
+                    {{--                    @foreach($product->product->gallary_images as $image)--}}
+                    {{--                        <div class="mySlides">--}}
+                    {{--                            <img src="{{showImage($image->images_source)}}" class="chosen_img">--}}
+                    {{--                        </div>--}}
+                    {{--                    @endforeach--}}
 
                 </div>
                 <div class="position">
-                    <div class="prev" >
+                    <div class="prev">
                         <svg width="12" height="18" viewBox="0 0 12 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 2L3 9L10 16" stroke="#717171" stroke-width="3"/>
                         </svg>
                     </div>
-                    <div class="next" >
+                    <div class="next">
                         <svg width="12" height="18" viewBox="0 0 12 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 2L9 9L2 16" stroke="#717171" stroke-width="3"/>
                         </svg>
@@ -502,26 +468,28 @@
                     </div>
                     <div class="for_description for_description_active">
                         <p>
-                            @auth
+                        @auth
                             @php
                                 echo $product->product->description_guest.'<br>'.$product->product->description;
                             @endphp
-                            @else
-                                @php
-                                    echo $product->product->description_guest.'<br>';
-                                @endphp
-                                <div class='d_flex log_in_to_see'>
-                                    <div class='login_closed d_flex login_btn'>
-                                        <svg width="72" height="58" viewBox="0 0 72 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M64.8001 32.625V23.5625C64.8001 18.5781 60.7502 14.5 55.8002 14.5C50.9628 14.5 46.8004 18.5781 46.8004 23.5625V32.625C42.7504 32.625 39.6005 35.9102 39.6005 39.875V50.75C39.6005 54.8281 42.7504 58 46.8004 58H64.8001C68.7375 58 72 54.8281 72 50.75V39.875C72 35.9102 68.7375 32.625 64.8001 32.625ZM50.4003 23.5625C50.4003 20.6172 52.7628 18.125 55.8002 18.125C58.7252 18.125 61.2002 20.6172 61.2002 23.5625V32.625H50.4003V23.5625ZM68.4001 50.75C68.4001 52.7891 66.7126 54.375 64.8001 54.375H46.8004C44.7754 54.375 43.2004 52.7891 43.2004 50.75V39.875C43.2004 37.9492 44.7754 36.25 46.8004 36.25H64.8001C66.7126 36.25 68.4001 37.9492 68.4001 39.875V50.75ZM55.8002 42.5938C54.2253 42.5938 53.1003 43.8398 53.1003 45.3125C53.1003 46.8984 54.2253 48.0312 55.8002 48.0312C57.2627 48.0312 58.5002 46.8984 58.5002 45.3125C58.5002 43.8398 57.2627 42.5938 55.8002 42.5938ZM25.2007 29C33.0756 29 39.6005 22.543 39.6005 14.5C39.6005 6.57031 33.0756 0 25.2007 0C17.2133 0 10.8009 6.57031 10.8009 14.5C10.8009 22.543 17.2133 29 25.2007 29ZM25.2007 3.625C31.0506 3.625 36.0005 8.60938 36.0005 14.5C36.0005 20.5039 31.0506 25.375 25.2007 25.375C19.2383 25.375 14.4009 20.5039 14.4009 14.5C14.4009 8.60938 19.2383 3.625 25.2007 3.625ZM19.4633 38.0625H30.8256C31.9506 38.0625 32.9631 38.2891 33.9756 38.4023C35.1005 38.7422 36.2255 37.7227 36.0005 36.5898C36.0005 36.5898 36.0005 36.5898 36.0005 36.4766C35.888 35.6836 35.3255 35.0039 34.5381 34.8906C33.4131 34.6641 32.1756 34.4375 30.8256 34.4375H19.4633C8.66344 34.4375 -0.111429 43.2734 0.00106977 54.1484C0.00106977 56.3008 1.68854 58 3.82601 58H34.2006C35.1005 58 36.0005 57.207 36.0005 56.1875C36.0005 55.2812 35.1005 54.375 34.2006 54.375H3.82601C3.71351 54.375 3.60102 54.2617 3.60102 54.1484C3.48852 45.3125 10.6884 38.0625 19.4633 38.0625Z" fill="#00AAAD"/>
-                                        </svg>
-                                    </div>
-                                    <span class='login_descrip_toosee'>
+                        @else
+                            @php
+                                echo $product->product->description_guest.'<br>';
+                            @endphp
+                            <div class='d_flex log_in_to_see'>
+                                <div class='login_closed d_flex login_btn'>
+                                    <svg width="72" height="58" viewBox="0 0 72 58" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M64.8001 32.625V23.5625C64.8001 18.5781 60.7502 14.5 55.8002 14.5C50.9628 14.5 46.8004 18.5781 46.8004 23.5625V32.625C42.7504 32.625 39.6005 35.9102 39.6005 39.875V50.75C39.6005 54.8281 42.7504 58 46.8004 58H64.8001C68.7375 58 72 54.8281 72 50.75V39.875C72 35.9102 68.7375 32.625 64.8001 32.625ZM50.4003 23.5625C50.4003 20.6172 52.7628 18.125 55.8002 18.125C58.7252 18.125 61.2002 20.6172 61.2002 23.5625V32.625H50.4003V23.5625ZM68.4001 50.75C68.4001 52.7891 66.7126 54.375 64.8001 54.375H46.8004C44.7754 54.375 43.2004 52.7891 43.2004 50.75V39.875C43.2004 37.9492 44.7754 36.25 46.8004 36.25H64.8001C66.7126 36.25 68.4001 37.9492 68.4001 39.875V50.75ZM55.8002 42.5938C54.2253 42.5938 53.1003 43.8398 53.1003 45.3125C53.1003 46.8984 54.2253 48.0312 55.8002 48.0312C57.2627 48.0312 58.5002 46.8984 58.5002 45.3125C58.5002 43.8398 57.2627 42.5938 55.8002 42.5938ZM25.2007 29C33.0756 29 39.6005 22.543 39.6005 14.5C39.6005 6.57031 33.0756 0 25.2007 0C17.2133 0 10.8009 6.57031 10.8009 14.5C10.8009 22.543 17.2133 29 25.2007 29ZM25.2007 3.625C31.0506 3.625 36.0005 8.60938 36.0005 14.5C36.0005 20.5039 31.0506 25.375 25.2007 25.375C19.2383 25.375 14.4009 20.5039 14.4009 14.5C14.4009 8.60938 19.2383 3.625 25.2007 3.625ZM19.4633 38.0625H30.8256C31.9506 38.0625 32.9631 38.2891 33.9756 38.4023C35.1005 38.7422 36.2255 37.7227 36.0005 36.5898C36.0005 36.5898 36.0005 36.5898 36.0005 36.4766C35.888 35.6836 35.3255 35.0039 34.5381 34.8906C33.4131 34.6641 32.1756 34.4375 30.8256 34.4375H19.4633C8.66344 34.4375 -0.111429 43.2734 0.00106977 54.1484C0.00106977 56.3008 1.68854 58 3.82601 58H34.2006C35.1005 58 36.0005 57.207 36.0005 56.1875C36.0005 55.2812 35.1005 54.375 34.2006 54.375H3.82601C3.71351 54.375 3.60102 54.2617 3.60102 54.1484C3.48852 45.3125 10.6884 38.0625 19.4633 38.0625Z"
+                                              fill="#00AAAD"/>
+                                    </svg>
+                                </div>
+                                <span class='login_descrip_toosee'>
                                         You need to login or register to see the content
                                     </span>
-                                </div>
+                            </div>
                             @endauth
-                        </p>
+                            </p>
                     </div>
 
                     <div class="for_comment d_flex sto_" data-slug="{{$product->slug}}" id="for_comment">
@@ -534,14 +502,14 @@
                                              alt="">
                                     </div>
                                     <textarea name="" id="textareaa" cols="30" rows="6"
-                                              placeholder="Leave a comment, shaere your feedback." class="comment_text"
+                                              placeholder="Leave a comment, share your feedback." class="comment_text"
                                               data-id="{{$product->id}}"></textarea>
                                 @endauth
 
                             </div>
                             {{--                            <button onclick="comment_store('{{$product->id}}')">comment</button>--}}
                             @php
-                                $comments = \App\Models\Comment::where('product_id',$product->id)->whereNull('to_user_id')->latest()->get();
+                                $comments = Comment::where('product_id',$product->id)->whereNull('to_user_id')->latest()->get();
                             @endphp
 
 
@@ -581,18 +549,23 @@
 
                                         </span>
                                             @auth
-                                        @if(\App\Models\Paymant_products::where('user_id',$user_info->id)->where('product_id',$product->id)->first())
-                                         <div class='this_user_already_ d_flex'>
-                                                <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9.42857 3.5C9.42857 1.58594 7.875 0 6 0C4.09821 0 2.57143 1.58594 2.57143 3.5H0V11.8125C0 13.043 0.9375 14 2.14286 14H9.85714C11.0357 14 12 13.043 12 11.8125V3.5H9.42857ZM6 1.3125C7.17857 1.3125 8.14286 2.29688 8.14286 3.5H3.85714C3.85714 2.29688 4.79464 1.3125 6 1.3125ZM10.7143 11.8125C10.7143 12.3047 10.3125 12.6875 9.85714 12.6875H2.14286C1.66071 12.6875 1.28571 12.3047 1.28571 11.8125V4.8125H2.57143V5.90625C2.57143 6.28906 2.83929 6.5625 3.21429 6.5625C3.5625 6.5625 3.85714 6.28906 3.85714 5.90625V4.8125H8.14286V5.90625C8.14286 6.28906 8.41071 6.5625 8.78571 6.5625C9.13393 6.5625 9.42857 6.28906 9.42857 5.90625V4.8125H10.7143V11.8125Z" fill="white"/>
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M15 13C15 10.7909 13.2091 9 11 9C8.79086 9 7 10.7909 7 13C7 15.2091 8.79086 17 11 17C13.2091 17 15 15.2091 15 13ZM12.2094 11.5196L10.3429 13.386L9.60334 12.6464L9.55624 12.6049C9.36009 12.4523 9.07648 12.4662 8.89623 12.6464C8.70097 12.8417 8.70097 13.1583 8.89623 13.3536L9.98939 14.4467L10.0365 14.4883C10.2326 14.6408 10.5163 14.6269 10.6965 14.4467L12.9165 12.2267L12.9581 12.1796C13.1106 11.9834 13.0968 11.6998 12.9165 11.5196C12.7213 11.3243 12.4047 11.3243 12.2094 11.5196Z" fill="white"/>
-                                                <path d="M10.3429 13.386L12.2094 11.5196C12.4047 11.3243 12.7213 11.3243 12.9165 11.5196C13.0968 11.6998 13.1106 11.9834 12.9581 12.1796L12.9165 12.2267L10.6965 14.4467C10.5163 14.6269 10.2326 14.6408 10.0365 14.4883L9.98939 14.4467L8.89623 13.3536C8.70097 13.1583 8.70097 12.8417 8.89623 12.6464C9.07648 12.4662 9.36009 12.4523 9.55624 12.6049L9.60334 12.6464L10.3429 13.386Z" fill="#00AAAD"/>
-                                                </svg>
-                                                Already Bought
-                                         </div>
-                                        @endif
+                                                @if(\App\Models\Paymant_products::where('user_id',$user_info->id)->where('product_id',$product->id)->first())
+                                                    <div class='this_user_already_ d_flex'>
+                                                        <svg width="15" height="17" viewBox="0 0 15 17" fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M9.42857 3.5C9.42857 1.58594 7.875 0 6 0C4.09821 0 2.57143 1.58594 2.57143 3.5H0V11.8125C0 13.043 0.9375 14 2.14286 14H9.85714C11.0357 14 12 13.043 12 11.8125V3.5H9.42857ZM6 1.3125C7.17857 1.3125 8.14286 2.29688 8.14286 3.5H3.85714C3.85714 2.29688 4.79464 1.3125 6 1.3125ZM10.7143 11.8125C10.7143 12.3047 10.3125 12.6875 9.85714 12.6875H2.14286C1.66071 12.6875 1.28571 12.3047 1.28571 11.8125V4.8125H2.57143V5.90625C2.57143 6.28906 2.83929 6.5625 3.21429 6.5625C3.5625 6.5625 3.85714 6.28906 3.85714 5.90625V4.8125H8.14286V5.90625C8.14286 6.28906 8.41071 6.5625 8.78571 6.5625C9.13393 6.5625 9.42857 6.28906 9.42857 5.90625V4.8125H10.7143V11.8125Z"
+                                                                  fill="white"/>
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                  d="M15 13C15 10.7909 13.2091 9 11 9C8.79086 9 7 10.7909 7 13C7 15.2091 8.79086 17 11 17C13.2091 17 15 15.2091 15 13ZM12.2094 11.5196L10.3429 13.386L9.60334 12.6464L9.55624 12.6049C9.36009 12.4523 9.07648 12.4662 8.89623 12.6464C8.70097 12.8417 8.70097 13.1583 8.89623 13.3536L9.98939 14.4467L10.0365 14.4883C10.2326 14.6408 10.5163 14.6269 10.6965 14.4467L12.9165 12.2267L12.9581 12.1796C13.1106 11.9834 13.0968 11.6998 12.9165 11.5196C12.7213 11.3243 12.4047 11.3243 12.2094 11.5196Z"
+                                                                  fill="white"/>
+                                                            <path d="M10.3429 13.386L12.2094 11.5196C12.4047 11.3243 12.7213 11.3243 12.9165 11.5196C13.0968 11.6998 13.1106 11.9834 12.9581 12.1796L12.9165 12.2267L10.6965 14.4467C10.5163 14.6269 10.2326 14.6408 10.0365 14.4883L9.98939 14.4467L8.89623 13.3536C8.70097 13.1583 8.70097 12.8417 8.89623 12.6464C9.07648 12.4662 9.36009 12.4523 9.55624 12.6049L9.60334 12.6464L10.3429 13.386Z"
+                                                                  fill="#00AAAD"/>
+                                                        </svg>
+                                                        Already Bought
+                                                    </div>
+                                                @endif
                                             @endauth
-                                    </div>
+                                        </div>
                                         <p class="twenty_sp">{{$comment->text}}</p>
                                         @auth
                                             <span class="reply_com">Reply</span>
@@ -602,7 +575,7 @@
                                                       data-id="{{$comment->id}}"></textarea>
                                         </form>
                                         @php
-                                            $repliks = \App\Models\Comment::where('product_id',$product->id)->where('to_user_id',$comment->id)->latest()->get()
+                                            $repliks = Comment::where('product_id',$product->id)->where('to_user_id',$comment->id)->latest()->get()
                                         @endphp
                                         @foreach($repliks as $replik)
                                             <div class="d_flex added_comms sto_">
@@ -637,17 +610,22 @@
 
 
                                                 </span>
-                                                @if(\App\Models\Paymant_products::where('user_id',$user_info->id)->where('product_id',$product->id)->first())
-                                                   <div class="this_user_already_ d_flex">
-                                                       <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                       <path d="M9.42857 3.5C9.42857 1.58594 7.875 0 6 0C4.09821 0 2.57143 1.58594 2.57143 3.5H0V11.8125C0 13.043 0.9375 14 2.14286 14H9.85714C11.0357 14 12 13.043 12 11.8125V3.5H9.42857ZM6 1.3125C7.17857 1.3125 8.14286 2.29688 8.14286 3.5H3.85714C3.85714 2.29688 4.79464 1.3125 6 1.3125ZM10.7143 11.8125C10.7143 12.3047 10.3125 12.6875 9.85714 12.6875H2.14286C1.66071 12.6875 1.28571 12.3047 1.28571 11.8125V4.8125H2.57143V5.90625C2.57143 6.28906 2.83929 6.5625 3.21429 6.5625C3.5625 6.5625 3.85714 6.28906 3.85714 5.90625V4.8125H8.14286V5.90625C8.14286 6.28906 8.41071 6.5625 8.78571 6.5625C9.13393 6.5625 9.42857 6.28906 9.42857 5.90625V4.8125H10.7143V11.8125Z" fill="white"></path>
-                                                       <path fill-rule="evenodd" clip-rule="evenodd" d="M15 13C15 10.7909 13.2091 9 11 9C8.79086 9 7 10.7909 7 13C7 15.2091 8.79086 17 11 17C13.2091 17 15 15.2091 15 13ZM12.2094 11.5196L10.3429 13.386L9.60334 12.6464L9.55624 12.6049C9.36009 12.4523 9.07648 12.4662 8.89623 12.6464C8.70097 12.8417 8.70097 13.1583 8.89623 13.3536L9.98939 14.4467L10.0365 14.4883C10.2326 14.6408 10.5163 14.6269 10.6965 14.4467L12.9165 12.2267L12.9581 12.1796C13.1106 11.9834 13.0968 11.6998 12.9165 11.5196C12.7213 11.3243 12.4047 11.3243 12.2094 11.5196Z" fill="white"></path>
-                                                       <path d="M10.3429 13.386L12.2094 11.5196C12.4047 11.3243 12.7213 11.3243 12.9165 11.5196C13.0968 11.6998 13.1106 11.9834 12.9581 12.1796L12.9165 12.2267L10.6965 14.4467C10.5163 14.6269 10.2326 14.6408 10.0365 14.4883L9.98939 14.4467L8.89623 13.3536C8.70097 13.1583 8.70097 12.8417 8.89623 12.6464C9.07648 12.4662 9.36009 12.4523 9.55624 12.6049L9.60334 12.6464L10.3429 13.386Z" fill="#00AAAD"></path>
-                                                       </svg>
-                                                       Already Bought
-                                                </div>
-                                                @endif
-                                               </div>
+                                                        @if(\App\Models\Paymant_products::where('user_id',$user_info->id)->where('product_id',$product->id)->first())
+                                                            <div class="this_user_already_ d_flex">
+                                                                <svg width="15" height="17" viewBox="0 0 15 17"
+                                                                     fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9.42857 3.5C9.42857 1.58594 7.875 0 6 0C4.09821 0 2.57143 1.58594 2.57143 3.5H0V11.8125C0 13.043 0.9375 14 2.14286 14H9.85714C11.0357 14 12 13.043 12 11.8125V3.5H9.42857ZM6 1.3125C7.17857 1.3125 8.14286 2.29688 8.14286 3.5H3.85714C3.85714 2.29688 4.79464 1.3125 6 1.3125ZM10.7143 11.8125C10.7143 12.3047 10.3125 12.6875 9.85714 12.6875H2.14286C1.66071 12.6875 1.28571 12.3047 1.28571 11.8125V4.8125H2.57143V5.90625C2.57143 6.28906 2.83929 6.5625 3.21429 6.5625C3.5625 6.5625 3.85714 6.28906 3.85714 5.90625V4.8125H8.14286V5.90625C8.14286 6.28906 8.41071 6.5625 8.78571 6.5625C9.13393 6.5625 9.42857 6.28906 9.42857 5.90625V4.8125H10.7143V11.8125Z"
+                                                                          fill="white"></path>
+                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                          d="M15 13C15 10.7909 13.2091 9 11 9C8.79086 9 7 10.7909 7 13C7 15.2091 8.79086 17 11 17C13.2091 17 15 15.2091 15 13ZM12.2094 11.5196L10.3429 13.386L9.60334 12.6464L9.55624 12.6049C9.36009 12.4523 9.07648 12.4662 8.89623 12.6464C8.70097 12.8417 8.70097 13.1583 8.89623 13.3536L9.98939 14.4467L10.0365 14.4883C10.2326 14.6408 10.5163 14.6269 10.6965 14.4467L12.9165 12.2267L12.9581 12.1796C13.1106 11.9834 13.0968 11.6998 12.9165 11.5196C12.7213 11.3243 12.4047 11.3243 12.2094 11.5196Z"
+                                                                          fill="white"></path>
+                                                                    <path d="M10.3429 13.386L12.2094 11.5196C12.4047 11.3243 12.7213 11.3243 12.9165 11.5196C13.0968 11.6998 13.1106 11.9834 12.9581 12.1796L12.9165 12.2267L10.6965 14.4467C10.5163 14.6269 10.2326 14.6408 10.0365 14.4883L9.98939 14.4467L8.89623 13.3536C8.70097 13.1583 8.70097 12.8417 8.89623 12.6464C9.07648 12.4662 9.36009 12.4523 9.55624 12.6049L9.60334 12.6464L10.3429 13.386Z"
+                                                                          fill="#00AAAD"></path>
+                                                                </svg>
+                                                                Already Bought
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                     <p class="twenty_sp">{{$replik->text}}</p>
 
                                                 </div>
@@ -659,101 +637,101 @@
                             @endforeach
                         </div>
 
-{{--                        @if($product->skus->max('selling_price') != '0.0')--}}
-{{--                            <div class="d_flex rating_block">--}}
-{{--                                <span class="avarage_rat">avarage rating</span>--}}
-{{--                                <div class="d_flex nums_start">--}}
-{{--                                    @if(isset($max) && $max != 0)--}}
-{{--                                    <div class="nums_row d_flex">--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">1</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: {{$xz[1]/$max*100}}%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">2</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: {{$xz[2]/$max*100}}%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">3</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: {{$xz[3]/$max*100}}%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">4</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: {{$xz[4]/$max*100}}%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">5</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: {{$xz[5]/$max*100}}%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    @else--}}
-{{--                                    <div class="nums_row d_flex">--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">1</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">2</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">3</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">4</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="nums_lines d_flex">--}}
-{{--                                            <span class="numbers_l">5</span>--}}
-{{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    @endif--}}
-{{--                                    <div class="reviews_ d_flex">--}}
-{{--                                        <span class="rev_num">{{$tokos??0.0}}</span>--}}
-{{--                                        <div class="start_block d_flex">--}}
-{{--                                                <span class="star_span 1" data-value="1">--}}
-{{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                                              fill="#D3D3D3"></path>--}}
-{{--                                                    </svg>--}}
-{{--                                                </span>--}}
-{{--                                            <span class="star_span 2" id="2" data-value="2">--}}
-{{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                                              fill="#D3D3D3"></path>--}}
-{{--                                                    </svg>--}}
-{{--                                                </span>--}}
-{{--                                            <span class="star_span 3" id="3" data-value="3">--}}
-{{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                                              fill="#D3D3D3"></path>--}}
-{{--                                                    </svg>--}}
-{{--                                                </span>--}}
-{{--                                            <span class="star_span 4" id="4" data-value="4">--}}
-{{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                                              fill="#D3D3D3"></path>--}}
-{{--                                                    </svg>--}}
-{{--                                                </span>--}}
-{{--                                            <span class="star_span 5" id="5" data-value="5">--}}
-{{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
-{{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
-{{--                                                              fill="#D3D3D3"></path>--}}
-{{--                                                    </svg>--}}
-{{--                                                </span>--}}
-{{--                                        </div>--}}
-{{--                                        <span class="rev_last">based on {{$product->viewed}} reviews</span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        @endif--}}
+                        {{--                        @if($product->skus->max('selling_price') != '0.0')--}}
+                        {{--                            <div class="d_flex rating_block">--}}
+                        {{--                                <span class="avarage_rat">avarage rating</span>--}}
+                        {{--                                <div class="d_flex nums_start">--}}
+                        {{--                                    @if(isset($max) && $max != 0)--}}
+                        {{--                                    <div class="nums_row d_flex">--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">1</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: {{$xz[1]/$max*100}}%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">2</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: {{$xz[2]/$max*100}}%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">3</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: {{$xz[3]/$max*100}}%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">4</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: {{$xz[4]/$max*100}}%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">5</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: {{$xz[5]/$max*100}}%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                    </div>--}}
+                        {{--                                    @else--}}
+                        {{--                                    <div class="nums_row d_flex">--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">1</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">2</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">3</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">4</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <div class="nums_lines d_flex">--}}
+                        {{--                                            <span class="numbers_l">5</span>--}}
+                        {{--                                            <span class="lines_n" ><span style="width: 0%" class="review_line"></span></span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                    </div>--}}
+                        {{--                                    @endif--}}
+                        {{--                                    <div class="reviews_ d_flex">--}}
+                        {{--                                        <span class="rev_num">{{$tokos??0.0}}</span>--}}
+                        {{--                                        <div class="start_block d_flex">--}}
+                        {{--                                                <span class="star_span 1" data-value="1">--}}
+                        {{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                        {{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
+                        {{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                        {{--                                                              fill="#D3D3D3"></path>--}}
+                        {{--                                                    </svg>--}}
+                        {{--                                                </span>--}}
+                        {{--                                            <span class="star_span 2" id="2" data-value="2">--}}
+                        {{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                        {{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
+                        {{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                        {{--                                                              fill="#D3D3D3"></path>--}}
+                        {{--                                                    </svg>--}}
+                        {{--                                                </span>--}}
+                        {{--                                            <span class="star_span 3" id="3" data-value="3">--}}
+                        {{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                        {{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
+                        {{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                        {{--                                                              fill="#D3D3D3"></path>--}}
+                        {{--                                                    </svg>--}}
+                        {{--                                                </span>--}}
+                        {{--                                            <span class="star_span 4" id="4" data-value="4">--}}
+                        {{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                        {{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
+                        {{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                        {{--                                                              fill="#D3D3D3"></path>--}}
+                        {{--                                                    </svg>--}}
+                        {{--                                                </span>--}}
+                        {{--                                            <span class="star_span 5" id="5" data-value="5">--}}
+                        {{--                                                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none"--}}
+                        {{--                                                         xmlns="http://www.w3.org/2000/svg">--}}
+                        {{--                                                        <path d="M13.7147 0.878115C13.8045 0.601722 14.1955 0.601722 14.2853 0.878115L17.3004 10.1574C17.3405 10.2811 17.4557 10.3647 17.5857 10.3647H27.3425C27.6332 10.3647 27.754 10.7366 27.5189 10.9075L19.6254 16.6424C19.5203 16.7188 19.4763 16.8542 19.5164 16.9778L22.5315 26.2571C22.6213 26.5335 22.3049 26.7634 22.0698 26.5925L14.1763 20.8576C14.0712 20.7812 13.9288 20.7812 13.8237 20.8576L5.93019 26.5925C5.69508 26.7634 5.37873 26.5335 5.46854 26.2571L8.48358 16.9778C8.52374 16.8542 8.47974 16.7188 8.3746 16.6424L0.481122 10.9075C0.246008 10.7366 0.36684 10.3647 0.657457 10.3647H10.4143C10.5443 10.3647 10.6595 10.2811 10.6996 10.1575L13.7147 0.878115Z"--}}
+                        {{--                                                              fill="#D3D3D3"></path>--}}
+                        {{--                                                    </svg>--}}
+                        {{--                                                </span>--}}
+                        {{--                                        </div>--}}
+                        {{--                                        <span class="rev_last">based on {{$product->viewed}} reviews</span>--}}
+                        {{--                                    </div>--}}
+                        {{--                                </div>--}}
+                        {{--                            </div>--}}
+                        {{--                        @endif--}}
                     </div>
                     <div class="for_reviews">
                         <div class="prod_rev_and_btn">
@@ -762,15 +740,19 @@
                                     <span class="prdr_vsp"> Product Review </span>
                                     <div class="d_flex eye_cool">
                                         <div class="watched_">
-                                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M3 5H1C0.4375 5 0 5.4375 0 5.96875V12.9375C0 13.4688 0.4375 13.9062 1 13.9062H3C3.53125 13.9062 4 13.4688 4 12.9375V6C4 5.46875 3.53125 5 3 5ZM16 6.09375C16 4.96875 15.0312 4.03125 13.9062 4.03125H10.7812C11.0625 3.25 11.25 2.5625 11.25 2.15625C11.25 1.09375 10.4062 0.03125 9.03125 0.03125C7.59375 0.03125 7.1875 1.03125 6.875 1.84375C5.875 4.375 5 3.90625 5 4.75C5 5.15625 5.3125 5.5 5.75 5.5C5.90625 5.5 6.0625 5.46875 6.1875 5.34375C8.59375 3.4375 8 1.53125 9.03125 1.53125C9.5625 1.53125 9.75 1.90625 9.75 2.15625C9.75 2.40625 9.5 3.40625 8.9375 4.40625C8.875 4.53125 8.84375 4.65625 8.84375 4.78125C8.84375 5.21875 9.1875 5.5 9.59375 5.5H13.875C14.2188 5.53125 14.5 5.78125 14.5 6.09375C14.5 6.40625 14.25 6.6875 13.9375 6.6875C13.5312 6.71875 13.2188 7.0625 13.2188 7.4375C13.2188 7.9375 13.5938 7.9375 13.5938 8.34375C13.5938 9.125 12.5 8.71875 12.5 9.65625C12.5 10 12.6875 10.0625 12.6875 10.3438C12.6875 11.0625 11.75 10.7812 11.75 11.625C11.75 11.7812 11.8125 11.8125 11.8125 11.9375C11.8125 12.25 11.5312 12.5312 11.2188 12.5312H9.5625C8.75 12.5312 7.96875 12.25 7.34375 11.7812L6.1875 10.9062C6.0625 10.8125 5.90625 10.75 5.75 10.75C5.3125 10.75 4.96875 11.125 4.96875 11.5C4.96875 11.75 5.09375 11.9688 5.28125 12.125L6.4375 12.9688C7.34375 13.6562 8.4375 14 9.5625 14H11.2188C12.3125 14 13.2188 13.1562 13.2812 12.0625C13.8438 11.6875 14.1875 11.0625 14.1875 10.3438C14.1875 10.25 14.1875 10.1562 14.1875 10.0625C14.7188 9.6875 15.0938 9.0625 15.0938 8.34375C15.0938 8.1875 15.0625 8.03125 15.0312 7.84375C15.5938 7.46875 16 6.84375 16 6.09375Z" fill="#323232"/>
+                                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M3 5H1C0.4375 5 0 5.4375 0 5.96875V12.9375C0 13.4688 0.4375 13.9062 1 13.9062H3C3.53125 13.9062 4 13.4688 4 12.9375V6C4 5.46875 3.53125 5 3 5ZM16 6.09375C16 4.96875 15.0312 4.03125 13.9062 4.03125H10.7812C11.0625 3.25 11.25 2.5625 11.25 2.15625C11.25 1.09375 10.4062 0.03125 9.03125 0.03125C7.59375 0.03125 7.1875 1.03125 6.875 1.84375C5.875 4.375 5 3.90625 5 4.75C5 5.15625 5.3125 5.5 5.75 5.5C5.90625 5.5 6.0625 5.46875 6.1875 5.34375C8.59375 3.4375 8 1.53125 9.03125 1.53125C9.5625 1.53125 9.75 1.90625 9.75 2.15625C9.75 2.40625 9.5 3.40625 8.9375 4.40625C8.875 4.53125 8.84375 4.65625 8.84375 4.78125C8.84375 5.21875 9.1875 5.5 9.59375 5.5H13.875C14.2188 5.53125 14.5 5.78125 14.5 6.09375C14.5 6.40625 14.25 6.6875 13.9375 6.6875C13.5312 6.71875 13.2188 7.0625 13.2188 7.4375C13.2188 7.9375 13.5938 7.9375 13.5938 8.34375C13.5938 9.125 12.5 8.71875 12.5 9.65625C12.5 10 12.6875 10.0625 12.6875 10.3438C12.6875 11.0625 11.75 10.7812 11.75 11.625C11.75 11.7812 11.8125 11.8125 11.8125 11.9375C11.8125 12.25 11.5312 12.5312 11.2188 12.5312H9.5625C8.75 12.5312 7.96875 12.25 7.34375 11.7812L6.1875 10.9062C6.0625 10.8125 5.90625 10.75 5.75 10.75C5.3125 10.75 4.96875 11.125 4.96875 11.5C4.96875 11.75 5.09375 11.9688 5.28125 12.125L6.4375 12.9688C7.34375 13.6562 8.4375 14 9.5625 14H11.2188C12.3125 14 13.2188 13.1562 13.2812 12.0625C13.8438 11.6875 14.1875 11.0625 14.1875 10.3438C14.1875 10.25 14.1875 10.1562 14.1875 10.0625C14.7188 9.6875 15.0938 9.0625 15.0938 8.34375C15.0938 8.1875 15.0625 8.03125 15.0312 7.84375C15.5938 7.46875 16 6.84375 16 6.09375Z"
+                                                      fill="#323232"/>
                                             </svg>
 
                                             <span>{{count(\App\Models\Like::where('product_id',$product->id)->where('type',1)->get())}}</span>
                                         </div>
-                                        <div class="watched_"  tabindex="-1">
-                                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z" fill="#323232"/>
+                                        <div class="watched_" tabindex="-1">
+                                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z"
+                                                      fill="#323232"/>
                                             </svg>
 
                                             <span class="likes">{{count(\App\Models\Like::where('product_id',$product->id)->where('type',0)->get())}}</span>
@@ -779,12 +761,12 @@
                                 </div>
 
                                 @php
-                                if(count(\App\Models\Like::where('product_id',$product->id)->where('type',1)->get()) + count(\App\Models\Like::where('product_id',$product->id)->where('type',0)->get()) == 0){
-                                    $tokos = 50;
-                                }else{
-                                    $tokos = count(\App\Models\Like::where('product_id',$product->id)->where('type',1)->get())/(count(\App\Models\Like::where('product_id',$product->id)->where('type',1)->get()) + count(\App\Models\Like::where('product_id',$product->id)->where('type',0)->get()));
-                                    $tokos *= 100;
-                                }
+                                    if(count(\App\Models\Like::where('product_id',$product->id)->where('type',1)->get()) + count(\App\Models\Like::where('product_id',$product->id)->where('type',0)->get()) == 0){
+                                        $tokos = 50;
+                                    }else{
+                                        $tokos = count(\App\Models\Like::where('product_id',$product->id)->where('type',1)->get())/(count(\App\Models\Like::where('product_id',$product->id)->where('type',1)->get()) + count(\App\Models\Like::where('product_id',$product->id)->where('type',0)->get()));
+                                        $tokos *= 100;
+                                    }
 
                                 @endphp
                                 <div class="like_dislike_colors">
@@ -793,7 +775,7 @@
                             </div>
 
                             @if(\App\Models\Paymant_products::where('user_id',auth()->id())->where('product_id',$product->id)->first())
-                            <span class="write_review">Write Review</span>
+                                <span class="write_review">Write Review</span>
                             @endif
                             <div class="write_review_popup_block">
                                 <div class='name_rev'>
@@ -801,78 +783,92 @@
                                     <span class='rev_nameof_prod'>{{$product->product->product_name}}</span>
                                 </div>
                                 <div class='revo_p'>
-                                    Dear users your rating and user names will be shown publicly. You can edit your ratings in the future. Dear users please leave reviews fairly and in any incomprehensible situation please contact us. Sincerely Artoorsdesign.
+                                    Dear users your rating and user names will be shown publicly. You can edit your
+                                    ratings in the future. Dear users please leave reviews fairly and in any
+                                    incomprehensible situation please contact us. Sincerely Artoorsdesign.
                                 </div>
                                 <div class='close_revo'>
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.8799 9.00008L16.6132 3.28008C16.8643 3.02901 17.0054 2.68849 17.0054 2.33342C17.0054 1.97835 16.8643 1.63782 16.6132 1.38675C16.3622 1.13568 16.0217 0.994629 15.6666 0.994629C15.3115 0.994629 14.971 1.13568 14.7199 1.38675L8.99992 7.12008L3.27992 1.38675C3.02885 1.13568 2.68832 0.994629 2.33325 0.994629C1.97818 0.994629 1.63766 1.13568 1.38659 1.38675C1.13551 1.63782 0.994463 1.97835 0.994463 2.33342C0.994463 2.68849 1.13551 3.02901 1.38659 3.28008L7.11992 9.00008L1.38659 14.7201C1.26161 14.844 1.16242 14.9915 1.09473 15.154C1.02704 15.3165 0.992188 15.4907 0.992188 15.6667C0.992188 15.8428 1.02704 16.017 1.09473 16.1795C1.16242 16.342 1.26161 16.4895 1.38659 16.6134C1.51054 16.7384 1.658 16.8376 1.82048 16.9053C1.98296 16.973 2.15724 17.0078 2.33325 17.0078C2.50927 17.0078 2.68354 16.973 2.84602 16.9053C3.0085 16.8376 3.15597 16.7384 3.27992 16.6134L8.99992 10.8801L14.7199 16.6134C14.8439 16.7384 14.9913 16.8376 15.1538 16.9053C15.3163 16.973 15.4906 17.0078 15.6666 17.0078C15.8426 17.0078 16.0169 16.973 16.1794 16.9053C16.3418 16.8376 16.4893 16.7384 16.6132 16.6134C16.7382 16.4895 16.8374 16.342 16.9051 16.1795C16.9728 16.017 17.0076 15.8428 17.0076 15.6667C17.0076 15.4907 16.9728 15.3165 16.9051 15.154C16.8374 14.9915 16.7382 14.844 16.6132 14.7201L10.8799 9.00008Z" fill="#6B6B6B"></path>
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.8799 9.00008L16.6132 3.28008C16.8643 3.02901 17.0054 2.68849 17.0054 2.33342C17.0054 1.97835 16.8643 1.63782 16.6132 1.38675C16.3622 1.13568 16.0217 0.994629 15.6666 0.994629C15.3115 0.994629 14.971 1.13568 14.7199 1.38675L8.99992 7.12008L3.27992 1.38675C3.02885 1.13568 2.68832 0.994629 2.33325 0.994629C1.97818 0.994629 1.63766 1.13568 1.38659 1.38675C1.13551 1.63782 0.994463 1.97835 0.994463 2.33342C0.994463 2.68849 1.13551 3.02901 1.38659 3.28008L7.11992 9.00008L1.38659 14.7201C1.26161 14.844 1.16242 14.9915 1.09473 15.154C1.02704 15.3165 0.992188 15.4907 0.992188 15.6667C0.992188 15.8428 1.02704 16.017 1.09473 16.1795C1.16242 16.342 1.26161 16.4895 1.38659 16.6134C1.51054 16.7384 1.658 16.8376 1.82048 16.9053C1.98296 16.973 2.15724 17.0078 2.33325 17.0078C2.50927 17.0078 2.68354 16.973 2.84602 16.9053C3.0085 16.8376 3.15597 16.7384 3.27992 16.6134L8.99992 10.8801L14.7199 16.6134C14.8439 16.7384 14.9913 16.8376 15.1538 16.9053C15.3163 16.973 15.4906 17.0078 15.6666 17.0078C15.8426 17.0078 16.0169 16.973 16.1794 16.9053C16.3418 16.8376 16.4893 16.7384 16.6132 16.6134C16.7382 16.4895 16.8374 16.342 16.9051 16.1795C16.9728 16.017 17.0076 15.8428 17.0076 15.6667C17.0076 15.4907 16.9728 15.3165 16.9051 15.154C16.8374 14.9915 16.7382 14.844 16.6132 14.7201L10.8799 9.00008Z"
+                                              fill="#6B6B6B"></path>
                                     </svg>
                                 </div>
                                 <span class='rating_s'>Leave a rating</span>
                                 <div class='name_rev'>
                                     <div class='negative_ positive_' data-id="1">
-                                        <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 5H1C0.4375 5 0 5.4375 0 5.96875V12.9375C0 13.4688 0.4375 13.9062 1 13.9062H3C3.53125 13.9062 4 13.4688 4 12.9375V6C4 5.46875 3.53125 5 3 5ZM16 6.09375C16 4.96875 15.0312 4.03125 13.9062 4.03125H10.7812C11.0625 3.25 11.25 2.5625 11.25 2.15625C11.25 1.09375 10.4062 0.03125 9.03125 0.03125C7.59375 0.03125 7.1875 1.03125 6.875 1.84375C5.875 4.375 5 3.90625 5 4.75C5 5.15625 5.3125 5.5 5.75 5.5C5.90625 5.5 6.0625 5.46875 6.1875 5.34375C8.59375 3.4375 8 1.53125 9.03125 1.53125C9.5625 1.53125 9.75 1.90625 9.75 2.15625C9.75 2.40625 9.5 3.40625 8.9375 4.40625C8.875 4.53125 8.84375 4.65625 8.84375 4.78125C8.84375 5.21875 9.1875 5.5 9.59375 5.5H13.875C14.2188 5.53125 14.5 5.78125 14.5 6.09375C14.5 6.40625 14.25 6.6875 13.9375 6.6875C13.5312 6.71875 13.2188 7.0625 13.2188 7.4375C13.2188 7.9375 13.5938 7.9375 13.5938 8.34375C13.5938 9.125 12.5 8.71875 12.5 9.65625C12.5 10 12.6875 10.0625 12.6875 10.3438C12.6875 11.0625 11.75 10.7812 11.75 11.625C11.75 11.7812 11.8125 11.8125 11.8125 11.9375C11.8125 12.25 11.5312 12.5312 11.2188 12.5312H9.5625C8.75 12.5312 7.96875 12.25 7.34375 11.7812L6.1875 10.9062C6.0625 10.8125 5.90625 10.75 5.75 10.75C5.3125 10.75 4.96875 11.125 4.96875 11.5C4.96875 11.75 5.09375 11.9688 5.28125 12.125L6.4375 12.9688C7.34375 13.6562 8.4375 14 9.5625 14H11.2188C12.3125 14 13.2188 13.1562 13.2812 12.0625C13.8438 11.6875 14.1875 11.0625 14.1875 10.3438C14.1875 10.25 14.1875 10.1562 14.1875 10.0625C14.7188 9.6875 15.0938 9.0625 15.0938 8.34375C15.0938 8.1875 15.0625 8.03125 15.0312 7.84375C15.5938 7.46875 16 6.84375 16 6.09375Z" fill="#323232"/>
+                                        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M3 5H1C0.4375 5 0 5.4375 0 5.96875V12.9375C0 13.4688 0.4375 13.9062 1 13.9062H3C3.53125 13.9062 4 13.4688 4 12.9375V6C4 5.46875 3.53125 5 3 5ZM16 6.09375C16 4.96875 15.0312 4.03125 13.9062 4.03125H10.7812C11.0625 3.25 11.25 2.5625 11.25 2.15625C11.25 1.09375 10.4062 0.03125 9.03125 0.03125C7.59375 0.03125 7.1875 1.03125 6.875 1.84375C5.875 4.375 5 3.90625 5 4.75C5 5.15625 5.3125 5.5 5.75 5.5C5.90625 5.5 6.0625 5.46875 6.1875 5.34375C8.59375 3.4375 8 1.53125 9.03125 1.53125C9.5625 1.53125 9.75 1.90625 9.75 2.15625C9.75 2.40625 9.5 3.40625 8.9375 4.40625C8.875 4.53125 8.84375 4.65625 8.84375 4.78125C8.84375 5.21875 9.1875 5.5 9.59375 5.5H13.875C14.2188 5.53125 14.5 5.78125 14.5 6.09375C14.5 6.40625 14.25 6.6875 13.9375 6.6875C13.5312 6.71875 13.2188 7.0625 13.2188 7.4375C13.2188 7.9375 13.5938 7.9375 13.5938 8.34375C13.5938 9.125 12.5 8.71875 12.5 9.65625C12.5 10 12.6875 10.0625 12.6875 10.3438C12.6875 11.0625 11.75 10.7812 11.75 11.625C11.75 11.7812 11.8125 11.8125 11.8125 11.9375C11.8125 12.25 11.5312 12.5312 11.2188 12.5312H9.5625C8.75 12.5312 7.96875 12.25 7.34375 11.7812L6.1875 10.9062C6.0625 10.8125 5.90625 10.75 5.75 10.75C5.3125 10.75 4.96875 11.125 4.96875 11.5C4.96875 11.75 5.09375 11.9688 5.28125 12.125L6.4375 12.9688C7.34375 13.6562 8.4375 14 9.5625 14H11.2188C12.3125 14 13.2188 13.1562 13.2812 12.0625C13.8438 11.6875 14.1875 11.0625 14.1875 10.3438C14.1875 10.25 14.1875 10.1562 14.1875 10.0625C14.7188 9.6875 15.0938 9.0625 15.0938 8.34375C15.0938 8.1875 15.0625 8.03125 15.0312 7.84375C15.5938 7.46875 16 6.84375 16 6.09375Z"
+                                                  fill="#323232"/>
                                         </svg>
 
                                         Positive
                                     </div>
-                                    <div class='negative_'  data-id="0">
-                                        <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z" fill="#323232"/>
+                                    <div class='negative_' data-id="0">
+                                        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z"
+                                                  fill="#323232"/>
                                         </svg>
 
                                         Negative
                                     </div>
                                 </div>
                                 <span class='rating_s'>Write a comment</span>
-                                <textarea name="" id="textareaa1" cols="30" rows="6" placeholder="Type here ..." class="comment_text"></textarea>
+                                <textarea name="" id="textareaa1" cols="30" rows="6" placeholder="Type here ..."
+                                          class="comment_text"></textarea>
                                 <div class='cancel_rate'>
                                     <span class='cencel_revo'>Cancel</span>
-                                    <span class='positive_ rate_model' data-like="1"  data-id="{{$product->id}}" data-slug="{{$product->slug}}"> Rate model</span>
+                                    <span class='positive_ rate_model' data-like="1" data-id="{{$product->id}}"
+                                          data-slug="{{$product->slug}}"> Rate model</span>
                                 </div>
                             </div>
                         </div>
                         <div class="reviewers_review">
                             @php
-                                $comments = \App\Models\Comment::where('product_id',$product->id)->whereNull('to_user_id')->latest()->get();
+                                $comments = Comment::where('product_id',$product->id)->whereNull('to_user_id')->latest()->get();
                             @endphp
                             @foreach($comments as $comment)
-                            <div class="d_flex added_comms sto_">
-                                <div class="prof_pic">
-                                    @php
-                                        $user_info = \App\Models\User::find($comment->user_id);
-                                    @endphp
+                                <div class="d_flex added_comms sto_">
+                                    <div class="prof_pic">
+                                        @php
+                                            $user_info = \App\Models\User::find($comment->user_id);
+                                        @endphp
 
-                                    <img src="{{$user_info->avatar?showImage($user_info->avatar):showImage('frontend/default/img/avatar.jpg')}}"
-                                         alt="">
-                                </div>
-                                <div class="d_flex eye_cool">
-                                    <div class="watched_">
-                                        @if($comment->like_id == 0 && $comment->like_id != null)
-                                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z" fill="#323232"/>
-                                            </svg>
-
-                                        @else
-                                            <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M14.5625 8.96875C14.8438 8.5 15 8 15 7.40625C15 6.03125 13.8125 4.75 12.3125 4.75H11.1562C11.3125 4.34375 11.4375 3.875 11.4375 3.28125C11.4375 1 10.25 0 8.46875 0C6.53125 0 6.65625 2.96875 6.21875 3.40625C5.5 4.125 4.65625 5.5 4.0625 6H1C0.4375 6 0 6.46875 0 7V14.5C0 15.0625 0.4375 15.5 1 15.5H3C3.4375 15.5 3.84375 15.1875 3.9375 14.7812C5.34375 14.8125 6.3125 16 9.5 16C9.75 16 10 16 10.2188 16C12.625 16 13.6875 14.7812 13.7188 13.0312C14.1562 12.4688 14.375 11.6875 14.2812 10.9375C14.5938 10.375 14.6875 9.6875 14.5625 8.96875ZM12.625 10.6562C13.0312 11.3125 12.6562 12.1875 12.1875 12.4688C12.4375 13.9688 11.625 14.5 10.5312 14.5H9.34375C7.125 14.5 5.65625 13.3438 4 13.3438V7.5H4.3125C5.21875 7.5 6.4375 5.3125 7.28125 4.46875C8.15625 3.59375 7.875 2.09375 8.46875 1.5C9.9375 1.5 9.9375 2.53125 9.9375 3.28125C9.9375 4.5 9.0625 5.0625 9.0625 6.25H12.3125C12.9688 6.25 13.4688 6.84375 13.5 7.4375C13.5 8 13.0938 8.59375 12.7812 8.59375C13.2188 9.0625 13.3125 10.0312 12.625 10.6562ZM2.75 13.5C2.75 13.9375 2.40625 14.25 2 14.25C1.5625 14.25 1.25 13.9375 1.25 13.5C1.25 13.0938 1.5625 12.75 2 12.75C2.40625 12.75 2.75 13.0938 2.75 13.5Z" fill="#717171"></path>
-                                            </svg>
-                                        @endif
+                                        <img src="{{$user_info->avatar?showImage($user_info->avatar):showImage('frontend/default/img/avatar.jpg')}}"
+                                             alt="">
                                     </div>
-                                    <div class="good_or_bad">{{$comment->text}}</div>
+                                    <div class="d_flex eye_cool">
+                                        <div class="watched_">
+                                            @if($comment->like_id == 0 && $comment->like_id != null)
+                                                <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z"
+                                                          fill="#323232"/>
+                                                </svg>
+
+                                            @else
+                                                <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M14.5625 8.96875C14.8438 8.5 15 8 15 7.40625C15 6.03125 13.8125 4.75 12.3125 4.75H11.1562C11.3125 4.34375 11.4375 3.875 11.4375 3.28125C11.4375 1 10.25 0 8.46875 0C6.53125 0 6.65625 2.96875 6.21875 3.40625C5.5 4.125 4.65625 5.5 4.0625 6H1C0.4375 6 0 6.46875 0 7V14.5C0 15.0625 0.4375 15.5 1 15.5H3C3.4375 15.5 3.84375 15.1875 3.9375 14.7812C5.34375 14.8125 6.3125 16 9.5 16C9.75 16 10 16 10.2188 16C12.625 16 13.6875 14.7812 13.7188 13.0312C14.1562 12.4688 14.375 11.6875 14.2812 10.9375C14.5938 10.375 14.6875 9.6875 14.5625 8.96875ZM12.625 10.6562C13.0312 11.3125 12.6562 12.1875 12.1875 12.4688C12.4375 13.9688 11.625 14.5 10.5312 14.5H9.34375C7.125 14.5 5.65625 13.3438 4 13.3438V7.5H4.3125C5.21875 7.5 6.4375 5.3125 7.28125 4.46875C8.15625 3.59375 7.875 2.09375 8.46875 1.5C9.9375 1.5 9.9375 2.53125 9.9375 3.28125C9.9375 4.5 9.0625 5.0625 9.0625 6.25H12.3125C12.9688 6.25 13.4688 6.84375 13.5 7.4375C13.5 8 13.0938 8.59375 12.7812 8.59375C13.2188 9.0625 13.3125 10.0312 12.625 10.6562ZM2.75 13.5C2.75 13.9375 2.40625 14.25 2 14.25C1.5625 14.25 1.25 13.9375 1.25 13.5C1.25 13.0938 1.5625 12.75 2 12.75C2.40625 12.75 2.75 13.0938 2.75 13.5Z"
+                                                          fill="#717171"></path>
+                                                </svg>
+                                            @endif
+                                        </div>
+                                        <div class="good_or_bad">{{$comment->text}}</div>
+                                    </div>
                                 </div>
-                            </div>
                             @endforeach
                         </div>
                     </div>
                     @auth
                         @if(\App\Models\Paymant_products::where('user_id',auth()->id())->where('product_id',$product->id)->first())
                             <script>
-                                $('.star_span').click(function (){
+                                $('.star_span').click(function () {
                                     let astx = $(this).data('value')
                                     let id = '{{$product->id}}'
-                                    let data = {astx,id}
+                                    let data = {astx, id}
                                     $.post('{{route('astx')}}', data, function (data) {
                                     });
                                 })
@@ -881,16 +877,16 @@
                     @endauth
                 </div>
                 @if(isset($tiv))
-                <script>
+                    <script>
 
-                    $('.{{$tiv}}').addClass('star_span_actives');
-                    $('.{{$tiv}}').prevAll(".star_span").addClass('star_span_actives');
-                    $('.{{$tiv}}').nextAll(".star_span").removeClass('star_span_actives');
-                    $('#{{$tiv}}').addClass('star_span_actives');
-                    $('#{{$tiv}}').prevAll(".star_span").addClass('star_span_actives');
-                    $('#{{$tiv}}').nextAll(".star_span").removeClass('star_span_actives');
+                        $('.{{$tiv}}').addClass('star_span_actives');
+                        $('.{{$tiv}}').prevAll(".star_span").addClass('star_span_actives');
+                        $('.{{$tiv}}').nextAll(".star_span").removeClass('star_span_actives');
+                        $('#{{$tiv}}').addClass('star_span_actives');
+                        $('#{{$tiv}}').prevAll(".star_span").addClass('star_span_actives');
+                        $('#{{$tiv}}').nextAll(".star_span").removeClass('star_span_actives');
 
-                </script>
+                    </script>
                 @endif
             </div>
         </section>
@@ -908,7 +904,8 @@
             <div class="new_models_section sto_ d_flex also_like">
                 <div class="d_flex sto_ for_mob_view">
                     <span class="second_title">Simillar Products</span>
-                    <a href="{{route('frontend.category_slug', ['slug' => 'all-products'])}}" class="view_all">View All</a>
+                    <a href="{{route('frontend.category_slug', ['slug' => 'all-products'])}}" class="view_all">View
+                        All</a>
                 </div>
                 <div class="products_slide sto_ d_flex gray_slider">
                     @php
@@ -930,30 +927,36 @@
 
                                 @if($product->discount != 0 )
                                     <span class="sale_red"> -@if($product->discount_type != 0)
-                                            $@endif {{$product->discount}} @if($product->discount_type == 0)
-                                            %@endif</span>
+                                            $
+                                        @endif {{$product->discount}} @if($product->discount_type == 0)
+                                            %
+                                        @endif</span>
                                 @endif
                                 <div class="add_to_fav add_to_wishlist"
-                                     @if(!empty(\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id))
-                                     data-wish="{{\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id}}"
+                                     @if(!empty(Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id))
+                                         data-wish="{{Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id}}"
                                      @endif
                                      data-product_id="{{$product->id}}" data-seller_id="{{$product->user_id}}">
                                     @guest
-                                        <svg width="27" height="23" viewBox="0 0 27 23" fill="none" xmlns="http://www.w3.org/2000/svg" class="add_to_wishlistt">
-                                            <path d="M23.4972 1.67509C20.524 -0.836734 15.9617 -0.477902 13.1423 2.44402C10.2716 -0.477902 5.70932 -0.836734 2.73614 1.67509C-1.1085 4.90459 -0.544619 10.1846 2.22352 13.004L11.1943 22.1798C11.7069 22.6924 12.3734 23 13.1423 23C13.8599 23 14.5263 22.6924 15.039 22.1798L24.061 13.004C26.7779 10.1846 27.3418 4.90459 23.4972 1.67509ZM22.2669 11.261L13.2961 20.4369C13.1935 20.5394 13.091 20.5394 12.9372 20.4369L3.96642 11.261C2.06973 9.36436 1.7109 5.77604 4.32525 3.57178C6.32446 1.88014 9.40017 2.13645 11.3481 4.0844L13.1423 5.92982L14.9364 4.0844C16.8331 2.13645 19.9088 1.88014 21.908 3.52052C24.5224 5.77604 24.1636 9.36436 22.2669 11.261Z" fill="#00AAAD"/>
+                                        <svg width="27" height="23" viewBox="0 0 27 23" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg" class="add_to_wishlistt">
+                                            <path d="M23.4972 1.67509C20.524 -0.836734 15.9617 -0.477902 13.1423 2.44402C10.2716 -0.477902 5.70932 -0.836734 2.73614 1.67509C-1.1085 4.90459 -0.544619 10.1846 2.22352 13.004L11.1943 22.1798C11.7069 22.6924 12.3734 23 13.1423 23C13.8599 23 14.5263 22.6924 15.039 22.1798L24.061 13.004C26.7779 10.1846 27.3418 4.90459 23.4972 1.67509ZM22.2669 11.261L13.2961 20.4369C13.1935 20.5394 13.091 20.5394 12.9372 20.4369L3.96642 11.261C2.06973 9.36436 1.7109 5.77604 4.32525 3.57178C6.32446 1.88014 9.40017 2.13645 11.3481 4.0844L13.1423 5.92982L14.9364 4.0844C16.8331 2.13645 19.9088 1.88014 21.908 3.52052C24.5224 5.77604 24.1636 9.36436 22.2669 11.261Z"
+                                                  fill="#00AAAD"/>
                                         </svg>
                                     @endguest
                                     @auth
-                                        @if(!empty(\App\Models\Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id))
-                                            <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M24.2611 2C21.2879 -0.511827 16.7256 -0.152994 13.9062 2.76893C11.0355 -0.152994 6.47324 -0.511827 3.50005 2C-0.344584 5.22949 0.219297 10.5095 2.98743 13.3289L11.9583 22.5047C12.4709 23.0173 13.1373 23.3249 13.9062 23.3249C14.6239 23.3249 15.2903 23.0173 15.8029 22.5047L24.825 13.3289C27.5418 10.5095 28.1057 5.22949 24.2611 2Z" fill="#00AAAD"/>
+                                        @if(!empty(Wishlist::where('user_id',auth()->id())->where('seller_product_id',$product->id)->first()->id))
+                                            <svg width="28" height="24" viewBox="0 0 28 24" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M24.2611 2C21.2879 -0.511827 16.7256 -0.152994 13.9062 2.76893C11.0355 -0.152994 6.47324 -0.511827 3.50005 2C-0.344584 5.22949 0.219297 10.5095 2.98743 13.3289L11.9583 22.5047C12.4709 23.0173 13.1373 23.3249 13.9062 23.3249C14.6239 23.3249 15.2903 23.0173 15.8029 22.5047L24.825 13.3289C27.5418 10.5095 28.1057 5.22949 24.2611 2Z"
+                                                      fill="#00AAAD"/>
                                             </svg>
                                         @else
-                                            <svg width="27" height="23" viewBox="0 0 27 23" fill="none" xmlns="http://www.w3.org/2000/svg" class="add_to_wishlistt">
-                                                <path d="M23.4972 1.67509C20.524 -0.836734 15.9617 -0.477902 13.1423 2.44402C10.2716 -0.477902 5.70932 -0.836734 2.73614 1.67509C-1.1085 4.90459 -0.544619 10.1846 2.22352 13.004L11.1943 22.1798C11.7069 22.6924 12.3734 23 13.1423 23C13.8599 23 14.5263 22.6924 15.039 22.1798L24.061 13.004C26.7779 10.1846 27.3418 4.90459 23.4972 1.67509ZM22.2669 11.261L13.2961 20.4369C13.1935 20.5394 13.091 20.5394 12.9372 20.4369L3.96642 11.261C2.06973 9.36436 1.7109 5.77604 4.32525 3.57178C6.32446 1.88014 9.40017 2.13645 11.3481 4.0844L13.1423 5.92982L14.9364 4.0844C16.8331 2.13645 19.9088 1.88014 21.908 3.52052C24.5224 5.77604 24.1636 9.36436 22.2669 11.261Z" fill="#00AAAD"/>
+                                            <svg width="27" height="23" viewBox="0 0 27 23" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg" class="add_to_wishlistt">
+                                                <path d="M23.4972 1.67509C20.524 -0.836734 15.9617 -0.477902 13.1423 2.44402C10.2716 -0.477902 5.70932 -0.836734 2.73614 1.67509C-1.1085 4.90459 -0.544619 10.1846 2.22352 13.004L11.1943 22.1798C11.7069 22.6924 12.3734 23 13.1423 23C13.8599 23 14.5263 22.6924 15.039 22.1798L24.061 13.004C26.7779 10.1846 27.3418 4.90459 23.4972 1.67509ZM22.2669 11.261L13.2961 20.4369C13.1935 20.5394 13.091 20.5394 12.9372 20.4369L3.96642 11.261C2.06973 9.36436 1.7109 5.77604 4.32525 3.57178C6.32446 1.88014 9.40017 2.13645 11.3481 4.0844L13.1423 5.92982L14.9364 4.0844C16.8331 2.13645 19.9088 1.88014 21.908 3.52052C24.5224 5.77604 24.1636 9.36436 22.2669 11.261Z"
+                                                      fill="#00AAAD"/>
                                             </svg>
-
-
 
                                         @endif
                                     @endauth
@@ -968,23 +971,23 @@
                                             @else
                                                 {{$product->product->product_name}}
                                             @endif</a>
-{{--                                        <span class="data_of_model">--}}
-{{--                                            {{$product->created_at->toDateString()}}--}}
-{{--                                </span>--}}
+                                        {{--                                        <span class="data_of_model">--}}
+                                        {{--                                            {{$product->created_at->toDateString()}}--}}
+                                        {{--                                </span>--}}
                                     </div>
 
                                     <div class="d_flex sto_ for_sale_height">
 
                                         <span class="twenty_sp">
                                             @php
-                                                $productFileTypesTxts =\App\Services\ProductService::getProductFileTypes($product);
+                                                $productFileTypesTxts = ProductService::getProductFileTypes($product);
                                                 echo implode(", ", $productFileTypesTxts)
                                             @endphp
                                         </span>
 
                                         <div class='d_flex sale_price_col'>
                                             @if(($product->hasDeal || $product->hasDiscount == 'yes') && single_price(@$product->skus->first()->selling_price) != '$ 0.00')
-                                               <span class="prev_price">{{$product->skus->max('selling_price')}}$</span>
+                                                <span class="prev_price">{{$product->skus->max('selling_price')}}$</span>
                                             @endif
                                             <span class="price_of_prod">
                                                 @if($product->hasDeal)
@@ -995,19 +998,18 @@
                                                     @if($product->hasDiscount == 'yes')
                                                         {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount))}}
 
-
                                                     @else
                                                         {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->skus->first()->selling_price)}}
                                                     @endif
 
                                                 @endif
                                         </span>
-                                      </div>
+                                        </div>
                                     </div>
 
                                     @php
                                         $disabledAddToCartClass = "";
-                                        if( \App\Services\CartService::isProductInCart($product)) {
+                                        if( CartService::isProductInCart($product)) {
                                           $disabledAddToCartClass = "disabled";
                                         }
                                     @endphp
@@ -1020,11 +1022,11 @@
 
                                        @endauth
                                        @else
-                                    @auth class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
+                                           @auth class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
                                        @elseif(single_price($product->skus->max('selling_price')) == '$ 0.00') class="{{ $disabledAddToCartClass }} addToCartFromThumnail add_catalog_btn"
                                        @else class="add_catalog_btn" @endauth
-                                    @endif
-                                    tabindex="-1"
+                                       @endif
+                                       tabindex="-1"
                                        data-producttype="{{ @$product->product->product_type }}"
                                        data-seller={{ $product->user_id }} data-product-sku={{ @$product->skus->first()->id }}
                                        @if(@$product->hasDeal)
@@ -1043,9 +1045,11 @@
                                        data-min_qty="{{$product->product->minimum_order_qty}}"
                                     >
                                         @if(single_price($product->skus->max('selling_price')) == '$ 0.00')
-                                            <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="18" height="16" viewBox="0 0 18 16" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_794_15016)">
-                                                    <path d="M16.5 9H13.5938L15.0625 7.5625C16 6.625 15.3125 5 14 5H12V1.5C12 0.6875 11.3125 0 10.5 0H7.5C6.65625 0 6 0.6875 6 1.5V5H4C2.65625 5 1.96875 6.625 2.9375 7.5625L4.375 9H1.5C0.65625 9 0 9.6875 0 10.5V14.5C0 15.3438 0.65625 16 1.5 16H16.5C17.3125 16 18 15.3438 18 14.5V10.5C18 9.6875 17.3125 9 16.5 9ZM4 6.5H7.5V1.5H10.5V6.5H14L9 11.5L4 6.5ZM16.5 14.5H1.5V10.5H5.875L7.9375 12.5625C8.5 13.1562 9.46875 13.1562 10.0312 12.5625L12.0938 10.5H16.5V14.5ZM13.75 12.5C13.75 12.9375 14.0625 13.25 14.5 13.25C14.9062 13.25 15.25 12.9375 15.25 12.5C15.25 12.0938 14.9062 11.75 14.5 11.75C14.0625 11.75 13.75 12.0938 13.75 12.5Z" fill="white"/>
+                                                    <path d="M16.5 9H13.5938L15.0625 7.5625C16 6.625 15.3125 5 14 5H12V1.5C12 0.6875 11.3125 0 10.5 0H7.5C6.65625 0 6 0.6875 6 1.5V5H4C2.65625 5 1.96875 6.625 2.9375 7.5625L4.375 9H1.5C0.65625 9 0 9.6875 0 10.5V14.5C0 15.3438 0.65625 16 1.5 16H16.5C17.3125 16 18 15.3438 18 14.5V10.5C18 9.6875 17.3125 9 16.5 9ZM4 6.5H7.5V1.5H10.5V6.5H14L9 11.5L4 6.5ZM16.5 14.5H1.5V10.5H5.875L7.9375 12.5625C8.5 13.1562 9.46875 13.1562 10.0312 12.5625L12.0938 10.5H16.5V14.5ZM13.75 12.5C13.75 12.9375 14.0625 13.25 14.5 13.25C14.9062 13.25 15.25 12.9375 15.25 12.5C15.25 12.0938 14.9062 11.75 14.5 11.75C14.0625 11.75 13.75 12.0938 13.75 12.5Z"
+                                                          fill="white"/>
                                                 </g>
                                                 <defs>
                                                     <clipPath id="clip0_794_15016">
@@ -1056,7 +1060,8 @@
 
                                         @else
                                             +
-                                            <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="21" height="18" viewBox="0 0 21 18" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M19.645 2.25H5.33643L5.02002 0.703125C4.94971 0.316406 4.59815 0 4.21143 0H0.695801C0.449707 0 0.273926 0.210938 0.273926 0.421875V1.26562C0.273926 1.51172 0.449707 1.6875 0.695801 1.6875H3.5083L5.93408 14.2031C5.54736 14.625 5.33643 15.1523 5.33643 15.75C5.33643 17.0156 6.3208 18 7.58643 18C8.8169 18 9.83643 17.0156 9.83643 15.75C9.83643 15.3633 9.6958 14.9766 9.52002 14.625H14.6177C14.4419 14.9766 14.3364 15.3633 14.3364 15.75C14.3364 17.0156 15.3208 18 16.5864 18C17.8169 18 18.8364 17.0156 18.8364 15.75C18.8364 15.1172 18.5552 14.5547 18.1333 14.1328L18.1685 13.9922C18.2739 13.4648 17.8872 12.9375 17.3247 12.9375H7.41065L7.09424 11.25H18.063C18.4849 11.25 18.8013 11.0039 18.9067 10.6172L20.4888 3.30469C20.5942 2.77734 20.2075 2.25 19.645 2.25ZM7.58643 16.5938C7.09424 16.5938 6.74268 16.2422 6.74268 15.75C6.74268 15.293 7.09424 14.9062 7.58643 14.9062C8.04346 14.9062 8.43018 15.293 8.43018 15.75C8.43018 16.2422 8.04346 16.5938 7.58643 16.5938ZM16.5864 16.5938C16.0942 16.5938 15.7427 16.2422 15.7427 15.75C15.7427 15.293 16.0942 14.9062 16.5864 14.9062C17.0435 14.9062 17.4302 15.293 17.4302 15.75C17.4302 16.2422 17.0435 16.5938 16.5864 16.5938ZM17.395 9.5625H6.74268L5.65283 3.9375H18.6255L17.395 9.5625Z"
                                                       fill="white"/>
                                             </svg>
@@ -1077,64 +1082,64 @@
 @endsection
 
 @section('js')
-<script>
-    $(document).ready(function () {
+    <script>
+        $(document).ready(function () {
 
-        $('.rate_model').click(function () {
-            console.log($(this).attr('data-like'))
-            if ($(this).attr('data-like') !== undefined) {
-                id = likes($(this).attr('data-id'), $(this).attr('data-like'));
+            $('.rate_model').click(function () {
+                console.log($(this).attr('data-like'))
+                if ($(this).attr('data-like') !== undefined) {
+                    id = likes($(this).attr('data-id'), $(this).attr('data-like'));
 
-                comment_store($(this).attr('data-id'), $(this).attr('data-slug'), null, $('#textareaa1').val(), $(this).attr('data-like'))
+                    comment_store($(this).attr('data-id'), $(this).attr('data-slug'), null, $('#textareaa1').val(), $(this).attr('data-like'))
 
-            } else {
-                // $('.negative_').css('background-color','red')
-            }
-        })
-
-        const slides = Array.from(document.querySelector(".zoom_imgs_block").children)
-        document.querySelector(".general_big_img").addEventListener("click", () => {
-            document.querySelectorAll(".mySlides").forEach((slide) => {
-                slide.style.display = "none"
+                } else {
+                    // $('.negative_').css('background-color','red')
+                }
             })
-            const current = slides.find(el => el.children[0].src == document.querySelector(".general_big_img").src)
-            current.style.display = "block"
-        })
-        document.querySelector(".prev").addEventListener("click", () => {
-            const current = slides.find(el => el.style.display == "block")
-            let count = slides.indexOf(current) - 1
-            if (count <= 1) {
-                count = slides.length - 1
+
+            const slides = Array.from(document.querySelector(".zoom_imgs_block").children)
+            document.querySelector(".general_big_img").addEventListener("click", () => {
+                document.querySelectorAll(".mySlides").forEach((slide) => {
+                    slide.style.display = "none"
+                })
+                const current = slides.find(el => el.children[0].src == document.querySelector(".general_big_img").src)
+                current.style.display = "block"
+            })
+            document.querySelector(".prev").addEventListener("click", () => {
+                const current = slides.find(el => el.style.display == "block")
+                let count = slides.indexOf(current) - 1
+                if (count <= 1) {
+                    count = slides.length - 1
+                }
+
+                document.querySelector(".zoom_imgs_block").children[count].style.display = "block"
+                current.style.display = "none"
+            })
+            document.querySelector(".next").addEventListener("click", () => {
+                const current = slides.find(el => el.style.display == "block")
+                let count = slides.indexOf(current) + 1
+                if (count >= slides.length) {
+                    count = 1
+                }
+
+                document.querySelector(".zoom_imgs_block").children[count].style.display = "block"
+                current.style.display = "none"
+            })
+
+            // The case when clicked "Review" in Dashboard/My Purchases page
+            if (window.location.href.includes("review")) {
+                const targetOffset = $("._reviews").offset().top - 400;
+
+                setTimeout(function () {
+                    $("html, body").animate({
+                        scrollTop: targetOffset
+                    }, 300)
+
+                    $('._reviews').trigger('click');
+                    $('.write_review').trigger('click');
+                }, 2000)
             }
-
-            document.querySelector(".zoom_imgs_block").children[count].style.display = "block"
-            current.style.display = "none"
         })
-        document.querySelector(".next").addEventListener("click", () => {
-            const current = slides.find(el => el.style.display == "block")
-            let count = slides.indexOf(current) + 1
-            if (count >= slides.length) {
-                count = 1
-            }
-
-            document.querySelector(".zoom_imgs_block").children[count].style.display = "block"
-            current.style.display = "none"
-        })
-
-        // The case when clicked "Review" in Dashboard/My Purchases page
-        if (window.location.href.includes("review")) {
-            const targetOffset = $("._reviews").offset().top - 400;
-
-            setTimeout(function (){
-                $("html, body").animate({
-                    scrollTop: targetOffset
-                }, 300)
-                
-                $('._reviews').trigger('click');
-                $('.write_review').trigger('click');
-            }, 2000)
-        }
-    })
-</script>
+    </script>
 @endsection
 
