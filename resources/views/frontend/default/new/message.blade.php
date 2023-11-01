@@ -45,7 +45,8 @@ $userId = $userId ?? auth()->id();
                     <div class="message_users_block d_flex">
                         @foreach ($users as $user)
                             @if(isset($user))
-                                <div class="messages_from_user sto_ d_flex" onclick="fill_message_block('{{ $user->id }}')"
+                                <div class="messages_from_user sto_ d_flex"
+                                     onclick="fill_message_block('{{ $user->id }}')"
                                      data-id="{{$user->id}}">
                                     <div class="user_img_mess">
                                         <img src="{{$user->avatar?showImage($user->avatar):showImage('frontend/default/img/avatar.jpg')}}"
@@ -95,4 +96,16 @@ $userId = $userId ?? auth()->id();
             </div>
         </section>
     </main>
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function () {
+            @if(auth()->user()->role->type === 'customer')
+            const firstMessageBlock = $('.messages_from_user:first-child');
+            $(firstMessageBlock).click();
+            $(firstMessageBlock).addClass('messages_from_user_active');
+            @endif
+        })
+    </script>
 @endsection
