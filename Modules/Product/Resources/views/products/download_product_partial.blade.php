@@ -1,5 +1,5 @@
 @php
-    /** @var Modules\Product\Entities\ $product */
+    /** @var Modules\Product\Entities\Product $product */
 @endphp
 
 @php
