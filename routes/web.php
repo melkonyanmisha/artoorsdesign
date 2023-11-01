@@ -509,21 +509,21 @@ Route::get('/clear', function() {
     return 'done'; //Return anything
 });
 
-Route::post('/astx', function (Request $request){
-    if (!empty($a = \App\Models\Astx::where('user_id', \auth()->id())->where('product_id',$request->id)->first())){
-        $a->astx = $request->astx;
-        $a->save();
-    }else{
-        $a = \App\Models\Astx::create([
-            'user_id' => \auth()->id(),
-            'product_id' => $request->id,
-            'astx' => $request->astx
-        ]);
-    }
-    $controller = new \App\Http\Controllers\Controller();
-    return $controller->send_notid($a);
-
-})->name('astx');
+//Route::post('/astx', function (Request $request){
+//    if (!empty($a = \App\Models\Astx::where('user_id', \auth()->id())->where('product_id',$request->id)->first())){
+//        $a->astx = $request->astx;
+//        $a->save();
+//    }else{
+//        $a = \App\Models\Astx::create([
+//            'user_id' => \auth()->id(),
+//            'product_id' => $request->id,
+//            'astx' => $request->astx
+//        ]);
+//    }
+//    $controller = new \App\Http\Controllers\Controller();
+//    return $controller->send_notid($a);
+//
+//})->name('astx');
 
 Route::post('/like', function (Request $request){
     if (!empty(\App\Models\Like::where('user_id', \auth()->id())->where('product_id',$request->id)->first())){
