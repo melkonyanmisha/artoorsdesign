@@ -1063,14 +1063,11 @@ main {
 
 .download_product_btn,
 .add_catalog_btnn {
-    width: 100%;
     color: var(--white);
     display: flex;
-    margin-bottom: 0;
     align-items: center;
     justify-content: center;
     column-gap: 5px;
-    font-size: 18px;
     padding: 18px 0;
     border-radius: 5px;
     cursor: pointer;
@@ -1079,6 +1076,22 @@ main {
     position: relative;
     top: 0;
     transition: top ease 0.4s;
+}
+
+.about_model .download_product_btn, .about_prod_model .download_product_btn {
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 0;
+
+}
+
+.purchases_section .download_product_btn {
+    width: 85%;
+    margin: auto;
+}
+
+.purchases_section .purchases_block .simple-link {
+    color: #00AAAD
 }
 
 .download_product_btn:hover,
@@ -2963,19 +2976,19 @@ textarea {
 
 }
 
-/*todo@@@*/
-table.purchases_block_ {
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*row-gap: 16px;*/
+table.purchases_block {
     width: 100%;
     text-align: center;
 
 }
 
-table.purchases_block_, table.purchases_block_ th, table.purchases_block_ td {
+table.purchases_block, table.purchases_block th, table.purchases_block td {
     border: 1px solid black;
     border-collapse: collapse;
+}
+
+table.purchases_block th, table.purchases_block td {
+    height: 100px;
 }
 
 .purch_block span {

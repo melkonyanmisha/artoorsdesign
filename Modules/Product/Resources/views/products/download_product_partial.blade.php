@@ -6,7 +6,7 @@
     $link = route('artoors.files',$product->id);
 @endphp
 
-<a class="download_product_btn" href="{{$link}}" target="_blank">
+<a href="{{$link}}" class="download_product_btn" target="_blank">
     Download
     <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0_794_15016)">
