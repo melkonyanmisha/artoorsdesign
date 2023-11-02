@@ -862,19 +862,19 @@
                             @endforeach
                         </div>
                     </div>
-                    @auth
-                        @if(\App\Models\Paymant_products::where('user_id',auth()->id())->where('product_id',$product->id)->first())
-                            <script>
-                                $('.star_span').click(function () {
-                                    let astx = $(this).data('value')
-                                    let id = '{{$product->id}}'
-                                    let data = {astx, id}
-                                    $.post('{{route('astx')}}', data, function (data) {
-                                    });
-                                })
-                            </script>
-                        @endif
-                    @endauth
+{{--                    @auth--}}
+{{--                        @if(\App\Models\Paymant_products::where('user_id',auth()->id())->where('product_id',$product->id)->first())--}}
+{{--                            <script>--}}
+{{--                                $('.star_span').click(function () {--}}
+{{--                                    let astx = $(this).data('value')--}}
+{{--                                    let id = '{{$product->id}}'--}}
+{{--                                    let data = {astx, id}--}}
+{{--                                    $.post('{{route('astx')}}', data, function (data) {--}}
+{{--                                    });--}}
+{{--                                })--}}
+{{--                            </script>--}}
+{{--                        @endif--}}
+{{--                    @endauth--}}
                 </div>
                 @if(isset($tiv))
                     <script>
