@@ -853,13 +853,13 @@
 {{--                                            </div>--}}
 {{--                                        </div>--}}
                                         @include('product::products.upload_file')
-{{--                                        todo@@@ continue--}}
                                         <div class="uploaded_file_info">
                                             <span class="text-info" id="remove_uploaded_file_status"></span>
 
                                             <input class="primary_input_field col-sm-8" name="video_link"
                                                    placeholder="Files Link" type="text"
-                                                   value="{{ basename($product->video_link) }}" id="video_link">
+                                                   value="{{ $product->video_link }}" id="video_link"
+                                            >
                                             @if($product->video_link)
                                                 <button type="button" class="btn primary-btn small fix-gr-bg"
                                                         id="remove_uploaded_file">
