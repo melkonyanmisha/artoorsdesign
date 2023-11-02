@@ -3,10 +3,8 @@
 namespace Modules\Product\Http\Controllers;
 
 use App\Traits\Notification;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use \Modules\Product\Services\CategoryService;
 use Modules\Product\Services\AttributeService;
 use Modules\Product\Services\UnitTypeService;
@@ -16,7 +14,6 @@ use Modules\Setup\Services\TagService;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Modules\GeneralSetting\Entities\EmailTemplateType;
 use Modules\GST\Repositories\GstConfigureRepository;
 use Modules\Product\Entities\Product;
@@ -283,8 +280,6 @@ class ProductController extends Controller
 
     public function store(CreateProductRequest $request)
     {
-        //        todo@@@@
-//        var_dump(54545444); exit;
         DB::beginTransaction();
 
         try {
