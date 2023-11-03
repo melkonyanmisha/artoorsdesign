@@ -39,6 +39,7 @@ if ( ! auth()->check()) {
                     'customer/active-customer-list',
                     'appearance/headers/*',
                     'review/product-list',
+                    'sales',
                     'marketing/coupon',
                 ];
             @endphp
@@ -61,7 +62,7 @@ if ( ! auth()->check()) {
                         </a>
                     </li>
                     @if (permissionCheck('product.category.index') && menuManagerCheck(2,12,'product.category.index')->status == 1)
-                        <li data-position="{{ menuManagerCheck(2,12,'product.category.index')->position }}">
+                        <li>
                             <a href="{{ route('product.category.index') }}"
                                class="{{request()->is('products/category') ? 'active' : ''}}">
                                 {{__('product.category')}}
@@ -69,7 +70,7 @@ if ( ! auth()->check()) {
                         </li>
                     @endif
                     @if (permissionCheck('product.create') && menuManagerCheck(2,12,'product.create')->status == 1)
-                        <li data-position="{{ menuManagerCheck(2,12,'product.create')->position }}">
+                        <li>
                             <a href="{{ route('product.create') }}"
                                class="{{request()->is('products/create') ? 'active' : ''}}">
                                 {{__('product.add_new_product')}}
@@ -77,15 +78,21 @@ if ( ! auth()->check()) {
                         </li>
                     @endif
                     @if (permissionCheck('product.index') && menuManagerCheck(2,12,'product.index')->status == 1)
-                        <li data-position="{{ menuManagerCheck(2,12,'product.index')->position }}">
+                        <li>
                             <a href="{{ route('product.index') }}"
                                class="{{request()->is('products') ? 'active' : ''}}">
                                 {{__('product.product_list')}}
                             </a>
                         </li>
                     @endif
+                    <li class="nav-item mb_5">
+                        <a class="nav-link {{request()->is('sales') ? 'active' : ''}}"
+                           href="{{route('admin.sales')}}">
+                            My Sales
+                        </a>
+                    </li>
                     @if (permissionCheck('marketing.coupon.get-data') && menuManagerCheck(2,10,'marketing.coupon.get-data')->status == 1)
-                        <li data-position="{{ menuManagerCheck(2,10,'marketing.coupon.get-data')->position }}">
+                        <li>
                             <a href="{{route('marketing.coupon')}}"
                                class="{{request()->is('marketing/coupon') ? 'active' : ''}}">
                                 {{__('marketing.coupons')}}
@@ -93,7 +100,7 @@ if ( ! auth()->check()) {
                         </li>
                     @endif
                     @if (menuManagerCheck(2,5,'customer.show_details')->status == 1)
-                        <li data-position="{{ menuManagerCheck(2,5,'customer.show_details')->position }}">
+                        <li>
                             <a href="{{route('cusotmer.list_active')}}"
                                class="{{request()->is('customer/active-customer-list') ? 'active' : ''}}">
 
@@ -102,7 +109,7 @@ if ( ! auth()->check()) {
                         </li>
                     @endif
                     @if (permissionCheck('appearance.header.index') && menuManagerCheck(2,3,'appearance.header.index')->status == 1)
-                        <li data-position="{{ menuManagerCheck(2,3,'appearance.header.index')->position }}">
+                        <li>
                             <a href="{{route('appearance.header.setup',1)}}"
                                class="{{request()->is('appearance/headers*') ? 'active' : ''}}">
                                 Slider
@@ -110,7 +117,7 @@ if ( ! auth()->check()) {
                         </li>
                     @endif
                     @if (permissionCheck('review.product.index') && menuManagerCheck(2,13,'review.product.index')->status == 1)
-                        <li data-position="{{ menuManagerCheck(2,13,'review.product.index')->position }}">
+                        <li>
                             <a href="{{ route('review.product.index') }}"
                                class="{{request()->is('review/product-list') ? 'active' : ''}}">
                                 {{ __('review.product_review') }}
@@ -142,23 +149,28 @@ if ( ! auth()->check()) {
                 </a>
                 <ul>
                     <li class="nav-item mb_5">
-                        <a class="nav-link {{request()->is('admin/home-page/seo') ? 'active' : ''}}" href="{{route('admin.home-page')}}">HOME PAGE</a>
+                        <a class="nav-link {{request()->is('admin/home-page/seo') ? 'active' : ''}}"
+                           href="{{route('admin.home-page')}}">HOME PAGE</a>
                     </li>
                     <li class="nav-item mb_5">
-                        <a class="nav-link {{request()->is('edit/privacy-policy-page') ? 'active' : ''}}" href="{{route('front.privacy-policy-page')}}">Privacy Policy
+                        <a class="nav-link {{request()->is('edit/privacy-policy-page') ? 'active' : ''}}"
+                           href="{{route('front.privacy-policy-page')}}">Privacy Policy
                             PAGE</a>
                     </li>
                     <li class="nav-item mb_5">
-                        <a class="nav-link {{request()->is('edit/terms-conditions-page') ? 'active' : ''}}" href="{{route('front.terms-conditions-page')}}">Terms &
+                        <a class="nav-link {{request()->is('edit/terms-conditions-page') ? 'active' : ''}}"
+                           href="{{route('front.terms-conditions-page')}}">Terms &
                             Conditions
                             PAGE</a>
                     </li>
 
                     <li class="nav-item mb_5">
-                        <a class="nav-link {{request()->is('edit/contact-us-page') ? 'active' : ''}}" href="{{route('front.contact-us-page')}}">Message PAGE</a>
+                        <a class="nav-link {{request()->is('edit/contact-us-page') ? 'active' : ''}}"
+                           href="{{route('front.contact-us-page')}}">Message PAGE</a>
                     </li>
                     <li class="nav-item mb_5">
-                        <a class="nav-link {{request()->is('edit/blog-page') ? 'active' : ''}}" href="{{route('front.blog-page')}}">Blog PAGE</a>
+                        <a class="nav-link {{request()->is('edit/blog-page') ? 'active' : ''}}"
+                           href="{{route('front.blog-page')}}">Blog PAGE</a>
                     </li>
                 </ul>
             </li>
