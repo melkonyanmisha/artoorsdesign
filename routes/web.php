@@ -39,6 +39,7 @@ use  App\Models\HomeSeo;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 use \App\Models\Message;
+use App\Http\Controllers\SalesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -404,19 +405,16 @@ Route::group(['middleware' => ['auth','admin']], function(){
 
      });
 
-
-
-     Route::view('/admin/comments','backEnd.pages.comments');
-     Route::view('/comment/admin','backEnd.pages.comment')->name('admin.comment');
-     Route::view('/popap','backEnd.popap')->name('admin.popap');
+    Route::get('/sales',[SalesController::class,'index'])->name('admin.sales');
+    Route::view('/admin/comments','backEnd.pages.comments');
+    Route::view('/comment/admin','backEnd.pages.comment')->name('admin.comment');
+    Route::view('/popap','backEnd.popap')->name('admin.popap');
 
      Route::post('/change/tokos',function (Request $request){
          Modules\Appearance\Entities\Header::find(1)->update([
              'ka' => $request->ka
          ]);
      })->name('change_tokos');
-
-
 
      Route::post('/tokos',function (Request $request){
          Modules\Appearance\Entities\Header::find(1)->update([
