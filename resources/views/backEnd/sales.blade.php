@@ -4,6 +4,11 @@
 @endsection
 
 @section('mainContent')
+    <div>
+        <a id="generate-report" class="fa-sharp fa-solid fa-print" href="#">
+            Generate Report
+        </a>
+    </div>
     <table id="sales" class="table">
     </table>
 @endsection
@@ -24,8 +29,8 @@
                         {title: 'Country', data: 'shipping_country'},
                         {title: 'Original Price', data: 'sub_total'},
                         {title: 'Sold Price', data: 'grand_total'},
-                        {title: 'Downloads', data: 'downloads'},
-                        {title: 'Refund', data: 'refund_link'},
+                        {title: 'Downloads', data: 'downloads', class: 'no-print'},
+                        {title: 'Refund', data: 'refund_link', class: 'no-print'},
                     ],
 
                     data: totalSales,
@@ -34,6 +39,15 @@
 
                 salesTable.order([0, 'desc']).draw();
             }
+
+            $('#generate-report').click(function () {
+                $(this).hide();
+                $('.no-print').hide();
+                $('#sales_filter').hide();
+                window.print();
+            })
+
         })
+
     </script>
 @endpush
