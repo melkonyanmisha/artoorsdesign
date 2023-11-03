@@ -38,8 +38,11 @@ use App\Mail\SendMail;
 use  App\Models\HomeSeo;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
-use \App\Models\Message;
+use App\Models\Message;
 use App\Http\Controllers\SalesController;
+use Modules\Product\Entities\Product;
+use App\Models\Paymant_products;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -100,45 +103,34 @@ Route::post('/pictures/uploadImage', function() {
     return 'aaaaaaa';
 });
 
-Route::get('/artoors/files/{id}', function($id) {
+Route::get('/artoors/files/{id}', function ($id) {
+    $paymentProducts = Paymant_products::where('product_id1', $id)->where('user_id', auth()->id())->first();
+    if (
+        $paymentProducts
+        || auth()->user()->role->type === 'superadmin'
+        || auth()->user()->role->type === 'admin'
+    ) {
+        $product = Product::find($id);
 
-    if($b = \App\Models\Paymant_products::where('product_id1',$id)->where('user_id','')->first()){
-        $product = \Modules\Product\Entities\Product::find($id);
-        if($product->video_link){
+        // The case when video link exists
+        if ($product->video_link) {
+
+            // The case when the user is a customer. Increment the count of downloads in products and paymant_products tables
+            if ($paymentProducts) {
+                $paymentProducts->downloads = ++ $paymentProducts->downloads;
+                $paymentProducts->save();
+
+                $product->downloads = ++$product->downloads;
+                $product->save();
+            }
+
             return redirect($product->video_link);
-        }else{
+        } else {
             return redirect('/');
         }
-    }
-
-    if($a = \App\Models\Paymant_products::where('product_id1',$id)->where('user_id',\auth()->id())->first()){
-//        if($a->user_id){
-//            if (\auth()->id() == $a->user_id){
-                $product = \Modules\Product\Entities\Product::find($id);
-                if($product->video_link){
-                    return redirect($product->video_link);
-                }else{
-                    return redirect('/');
-                }
-//            }else{
-//
-//            }
-
-//        }else{
-//            $product = \Modules\Product\Entities\Product::find($id);
-//            if($product->video_link){
-//                return redirect($product->video_link);
-//            }else{
-//                return redirect('/');
-//            }
-//        }
-
-
-    }else{
+    } else {
         return redirect('/');
     }
-
-
 })->name('artoors.files');
 
 Route::post('/parol/reset/1', function(Request $request) {
@@ -188,7 +180,7 @@ Route::get('sitemap.xml', function (){
         $sitemap->add(Url::create("/blog/{$blog_post->title}"));
     }
 
-    $products = \Modules\Product\Entities\Product::with('categories')->get();
+    $products = Product::with('categories')->get();
 
     foreach ($products as $product) {
         $sitemap->add(Url::create("/product/{$product->categories[0]->slug}/{$product->slug}"));
@@ -549,7 +541,7 @@ Route::get('/download', function (Request $request){
 //    dd(public_path($filename) );
     if (file_exists(public_path($filename))) {
 
-        $product = \Modules\Product\Entities\Product::where('pdf',$filename)->first();
+        $product = Product::where('pdf',$filename)->first();
         $product->downloads++;
         $product->save();
 
