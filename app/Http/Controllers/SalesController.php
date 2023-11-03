@@ -50,9 +50,11 @@ class SalesController extends Controller
                     if ( ! empty($packageProduct->seller_product_sku->sku->product->id)) {
                         $totalSales[$keyOrder]['product_id']   = $packageProduct->seller_product_sku->sku->product->id;
                         $totalSales[$keyOrder]['product_name'] = sprintf(
-                            '<a href="%1$s?product_id=%2$s" target="_blank">%3$s</a>',
-                            route('product.index'),
-                            $packageProduct->seller_product_sku->sku->product->id,
+                            '<a href="%1$s" target="_blank">%2$s</a>',
+                            route('frontend.item.show', [
+                                'category' => $packageProduct->seller_product_sku->sku->product->categories[0]->slug,
+                                'seller'   => $packageProduct->seller_product_sku->sku->product->slug,
+                            ]),
                             $packageProduct->seller_product_sku->sku->product->product_name
                         );
                     } else {
