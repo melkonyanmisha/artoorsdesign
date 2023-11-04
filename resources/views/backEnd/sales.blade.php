@@ -2,7 +2,6 @@
 @section('styles')
     <link rel="stylesheet" href="{{asset(asset_path('backend/css/backend_page_css/sales.css'))}}"/>
 @endsection
-
 @section('mainContent')
     <div>
         <a id="generate-report" class="fa-sharp fa-solid fa-print" href="#">
@@ -45,9 +44,8 @@
                 $('.no-print').hide();
                 $('#sales_filter').hide();
                 window.print();
+                location.reload();
             })
-
         })
-
     </script>
 @endpush
