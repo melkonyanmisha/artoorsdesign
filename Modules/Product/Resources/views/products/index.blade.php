@@ -482,6 +482,40 @@
                     });
                 });
 
+                $(document).on('change', '.product_available_only_single_user_change', function (event) {
+                    let id = $(this).data('id');
+                    let status = 0;
+
+                    if ($(this).is(":checked")) {
+                        status = 1;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('_token', "{{ csrf_token() }}");
+                    formData.append('id', id);
+                    formData.append('status', status);
+
+                    $.ajax({
+                        url: "{{ route('product.update_available_only_single_user') }}",
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (response) {
+                            resetAfterChange(response);
+                            toastr.success("{{__('common.updated_successfully')}}", "{{__('common.success')}}");
+                        },
+                        error: function (response) {
+                            if (response.status == '422') {
+                                toastr.error("{{__('common.restricted_in_demo_mode')}}", "{{__('common.error')}}");
+                            } else {
+                                toastr.error("{{__('common.error_message')}}", "{{__('common.error')}}");
+                            }
+                        }
+                    });
+                });
+
                 $(document).on('change', '.product_approve', function (event) {
                     let id = $(this).data('id');
 
