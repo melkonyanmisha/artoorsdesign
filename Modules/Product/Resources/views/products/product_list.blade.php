@@ -15,6 +15,7 @@
         <th>Date Modified</th>
         <th>PRICE</th>
         <th>Total Earnings</th>
+        <th>Single User</th>
         <th>Views</th>
 
         {{--        <th scope="col">{{ __('common.product_type') }}</th>--}}
@@ -27,7 +28,6 @@
         @else
             <th>{{ __('common.approval') }}</th>
         @endif
-        <th>Single User</th>
         <th>{{ __('common.action') }}</th>
     </tr>
     </thead>
