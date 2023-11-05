@@ -213,9 +213,7 @@ class CategoryController extends Controller
         if($slug == null){
             return redirect()->to('category/all-products');
         }
-        
-        $category_id = 0;
-        $sort_by = null;
+
         $paginate = 12;
         $data = [];
 
@@ -245,7 +243,7 @@ class CategoryController extends Controller
 
                 $product_sellers = SellerProduct::with('skus', 'product')->where('seller_products.status', 1)->select("seller_products.*")
                     ->join('products', function ($query) use ($category_id) {
-                        return $query->on('products.id', '=', 'seller_products.product_id')->where('products.status', 1)
+                        return $query->on('products.id', '=', 'seller_products.product_id')->where(['products.status' => 1, 'products.available_only_single_user' => 0])
                             ->join('category_product', function ($q) use ($category_id) {
                                 return $q->on('products.id', '=', 'category_product.product_id')->where('category_product.category_id', $category_id)->join('categories', function ($q2) use ($category_id) {
                                     return $q2->on('category_product.category_id', '=', 'categories.id')->orOn('category_product.category_id', '=', 'categories.parent_id');
@@ -304,7 +302,7 @@ class CategoryController extends Controller
         } else if (isset($slug) && $slug != null && $item == '' && $slug == 'all-products') {
             $product_sellers = SellerProduct::with('skus', 'product')->where('seller_products.status', 1)->select("seller_products.*")
                 ->join('products', function ($query) {
-                    return $query->on('products.id', '=', 'seller_products.product_id')->where('products.status', 1);
+                    return $query->on('products.id', '=', 'seller_products.product_id')->where(['products.status' => 1, 'products.available_only_single_user' => 0]);
                 })->distinct('seller_products.id');
 
             $sort = 'desc';
