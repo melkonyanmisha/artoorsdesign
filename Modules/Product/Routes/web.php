@@ -33,6 +33,7 @@ Route::prefix('products')->as('product.')->group(function() {
         Route::post('/discount/update', 'ProductController@discountUpdate')->name('discount_count');
         Route::post('/sku-combination-edit', 'ProductController@sku_combination_edit')->name('sku_combination_edit');
         Route::post('/update-status', 'ProductController@update_status')->name('update_active_status')->middleware(['permission','prohibited_demo_mode']);
+        Route::post('/update-available-only-single-user', 'ProductController@update_available_only_single_user')->name('update_available_only_single_user')->middleware(['permission','prohibited_demo_mode']);
         Route::post('/update-status-als', 'ProductController@update_status_als')->name('update_active_status_als')->middleware(['permission','prohibited_demo_mode']);
         Route::post('/sku-status', 'ProductController@updateSkuStatusByID')->name('sku.status')->middleware(['permission','prohibited_demo_mode']);
         Route::post('/sku-delete', 'ProductController@deleteSkuByID')->name('sku.delete')->middleware(['permission','prohibited_demo_mode']);

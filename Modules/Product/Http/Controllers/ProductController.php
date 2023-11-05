@@ -3,6 +3,7 @@
 namespace Modules\Product\Http\Controllers;
 
 use App\Traits\Notification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use \Modules\Product\Services\CategoryService;
@@ -218,8 +219,7 @@ class ProductController extends Controller
                 return view('product::products.components._product_logo_td', compact('products'));
             })
             ->addColumn('available_only_single_user', function ($products) use ($type,$status_slider) {
-//                todo@@@ need change after adding a new column in table
-                return view('product::products.components._product_status_td', compact('products', 'type', 'status_slider'));
+                return view('product::products.components._product_available_only_single_user_td', compact('products', 'type'));
             })
             ->addColumn('status', function ($products) use ($type,$status_slider) {
                 return view('product::products.components._product_status_td', compact('products', 'type', 'status_slider'));
@@ -543,6 +543,31 @@ class ProductController extends Controller
         }
         return $this->loadTableData();
     }
+
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function update_available_only_single_user(Request $request): JsonResponse
+    {
+        try {
+            $product = $this->productService->findById($request->id);
+            $product->update([
+                'available_only_single_user' => $request->status
+            ]);
+
+            LogActivity::successLog('product available_only_single_user update successfully.');
+        } catch (\Exception $e) {
+            LogActivity::errorLog($e->getMessage());
+
+            return $e->getMessage();
+        }
+
+        return $this->loadTableData();
+    }
+
     public function update_status_als(Request $request)
     {
         $explode_id = explode(',', $request->id);
