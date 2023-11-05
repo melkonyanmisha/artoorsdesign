@@ -255,8 +255,31 @@
                     // { data: 'product_type', name: 'product_type' },
                     // { data: 'brand', name: 'brand.name' },
                     // { data: 'stock', name: 'stock' },
-                    {data: 'status', name: 'status'},
-                    {data: 'available_only_single_user', name: 'available_only_single_user'},
+                    {
+                        data: 'status', name: 'status', render: function (data, type, row) {
+                            // The 'data-sort-value' attribute contains the value for sorting
+                            const sortValue = $(data).find('.product_status_change').data('sort-value');
+
+                            if (type === 'sort') {
+                                return sortValue;
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'available_only_single_user',
+                        name: 'available_only_single_user',
+                        render: function (data, type, row) {
+                            // The 'data-sort-value' attribute contains the value for sorting
+                            const sortValue = $(data).find('.product_available_only_single_user_change').data('sort-value');
+
+                            if (type === 'sort') {
+                                return sortValue;
+                            }
+
+                            return data;
+                        }
+                    },
                     {data: 'action', name: 'action', orderable: false}
                 ]
 

@@ -3,7 +3,8 @@
         <input type="checkbox" id="checkbox_available_only_single_user_{{ $products->id }}"
                @if ($products->available_only_single_user == 1) checked @endif
                data-id="{{ $products->id }}"
-               class="product_available_only_single_user_change">
+               class="product_available_only_single_user_change"
+               data-sort-value="{{$products->available_only_single_user}}">
         <div class="slider round"></div>
     </label>
 @else
