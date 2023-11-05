@@ -67,7 +67,7 @@ if (! function_exists('showStatus')) {
                     return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
                 }
                 elseif(app('general_setting')->currency_symbol_position == 'left_with_space'){
-                    return app('user_currency')->symbol ." ". number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
+                    return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
                 }
                 elseif(app('general_setting')->currency_symbol_position == 'right'){
                     return number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit).app('user_currency')->symbol;
@@ -75,7 +75,7 @@ if (! function_exists('showStatus')) {
                 elseif(app('general_setting')->currency_symbol_position == 'right_with_space'){
                     return number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit). " " . app('user_currency')->symbol;
                 } else{
-                    return app('user_currency')->symbol ." ". number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
+                    return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
                 }
 
             }
@@ -84,7 +84,7 @@ if (! function_exists('showStatus')) {
                     return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
                 }
                 elseif(app('general_setting')->currency_symbol_position == 'left_with_space'){
-                    return app('general_setting')->currency_symbol ." ". number_format($price, app('general_setting')->decimal_limit);
+                    return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
                 }
                 elseif(app('general_setting')->currency_symbol_position == 'right'){
                     return number_format($price, app('general_setting')->decimal_limit) . app('general_setting')->currency_symbol;
@@ -92,11 +92,10 @@ if (! function_exists('showStatus')) {
                 elseif(app('general_setting')->currency_symbol_position == 'right_with_space'){
                     return number_format($price, app('general_setting')->decimal_limit) ." ".app('general_setting')->currency_symbol;
                 }else{
-                    return app('general_setting')->currency_symbol ." ". number_format($price, app('general_setting')->decimal_limit);
+                    return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
                 }
-
             }else {
-                return '$ '.number_format($price, 2);
+                return '$'.number_format($price, 2);
             }
         }
     }
