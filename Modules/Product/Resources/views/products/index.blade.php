@@ -383,11 +383,13 @@
 
                 $(document).on('click', '.product_detail', function (event) {
                     event.preventDefault();
-                    let id = $(this).data('id');
+                    const id = $(this).data('id');
+                    if (!id) {
+                        return;
+                    }
 
                     $('#pre-loader').removeClass('d-none');
                     $.post('{{ route('product.show') }}', {_token: '{{ csrf_token() }}', id: id}, function (data) {
-                        console.log(data);
                         $('.product_detail_view_div').html(data);
                         $('#productDetails').modal('show');
                         $('#pre-loader').addClass('d-none');
