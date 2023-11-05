@@ -251,6 +251,20 @@
                     },
                     {data: 'price', name: 'price'},
                     {data: 'total_earnings', name: 'total_earnings'},
+                    {
+                        data: 'available_only_single_user',
+                        name: 'available_only_single_user',
+                        render: function (data, type, row) {
+                            // The 'data-sort-value' attribute contains the value for sorting
+                            const sortValue = $(data).find('.product_available_only_single_user_change').data('sort-value');
+
+                            if (type === 'sort') {
+                                return sortValue;
+                            }
+
+                            return data;
+                        }
+                    },
                     {data: 'views', name: 'views'},
                     // { data: 'product_type', name: 'product_type' },
                     // { data: 'brand', name: 'brand.name' },
@@ -263,20 +277,6 @@
                             if (type === 'sort') {
                                 return sortValue;
                             }
-                            return data;
-                        }
-                    },
-                    {
-                        data: 'available_only_single_user',
-                        name: 'available_only_single_user',
-                        render: function (data, type, row) {
-                            // The 'data-sort-value' attribute contains the value for sorting
-                            const sortValue = $(data).find('.product_available_only_single_user_change').data('sort-value');
-
-                            if (type === 'sort') {
-                                return sortValue;
-                            }
-
                             return data;
                         }
                     },
