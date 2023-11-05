@@ -22,6 +22,7 @@ use Modules\Product\Http\Requests\CreateProductRequest;
 use Modules\Seller\Entities\SellerProduct;
 use Yajra\DataTables\Facades\DataTables;
 use Modules\UserActivityLog\Traits\LogActivity;
+use App\Models\Order;
 
 class ProductController extends Controller
 {
@@ -39,7 +40,6 @@ class ProductController extends Controller
         $data['products'] = $this->productService->all();
         $data['productRequests'] = $this->productService->getRequestProduct();
         $data['product_skus'] = $this->productService->getAllSKU();
-
         return view('product::products.index', $data);
     }
 
@@ -157,8 +157,22 @@ class ProductController extends Controller
         }
 
         $type = $user->role->type;
+
         return DataTables::of($products)
             ->addIndexColumn()
+            ->addColumn('product_name', function ($current_product) {
+                $categorySlug = $current_product->categories[0]->slug ?? '';
+                $link = '#';
+
+                if ($categorySlug) {
+                    $link = url('product/' . $categorySlug . '/' . $current_product->slug);
+                }
+
+                return [
+                    'link'         => $link,
+                    'product_name' => $current_product->product_name
+                ];
+            })
             ->addColumn('product_type', function ($products) {
                 return view('product::products.components._product_type_td', compact('products'));
             })
@@ -166,29 +180,46 @@ class ProductController extends Controller
                 return @$products->brand->name ?? '';
             })
             ->addColumn('price', function ($products) {
-//                return 'aaaaaaa';
                 $product = $products->sellerProducts->first();
-//                if(($product->hasDeal || $product->hasDiscount == 'yes') && single_price(@$product->skus->first()->selling_price) != '$ 0.00'){
-//                    return ($product->hasDeal || $product->hasDiscount == 'yes');
-//                    return $product->skus->max('selling_price') . '$';
-//                }
                 if($product->hasDeal){
                     return single_price(selling_price(@$product->skus->first()->selling_price,$product->hasDeal->discount_type,$product->hasDeal->discount));
-
                 }else{
                     if($product->hasDiscount == 'yes'){
                         return single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount));
+                    }
+                    return single_price(@$product->skus->first()->selling_price);
+                }
+            })
+            ->addColumn('total_earnings', function ($current_product) {
+                $total_earnings = 0;
+                $orders = Order::with('packages')->get();
 
-                    }else{
-                        return (single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'$ 0.00':single_price(@$product->skus->first()->selling_price);
+                foreach ($orders as $keyOrder => $order) {
+                    foreach ($order->packages as $package) {
+                        foreach ($package->products as $packageProduct) {
+                            if ( ! empty($packageProduct->seller_product_sku->sku->product->id)) {
+
+                                if($current_product->id === $packageProduct->seller_product_sku->sku->product->id){
+                                    $total_earnings += $order->grand_total;
+                                }
+                            }
+                        }
 
                     }
-
                 }
 
+                return single_price($total_earnings);
+            })
+            ->addColumn('views', function ($products) {
+                $product = $products->sellerProducts->first();
+                return $product->viewed;
             })
             ->addColumn('logo', function ($products) {
                 return view('product::products.components._product_logo_td', compact('products'));
+            })
+            ->addColumn('available_only_single_user', function ($products) use ($type,$status_slider) {
+//                todo@@@ need change after adding a new column in table
+                return view('product::products.components._product_status_td', compact('products', 'type', 'status_slider'));
             })
             ->addColumn('status', function ($products) use ($type,$status_slider) {
                 return view('product::products.components._product_status_td', compact('products', 'type', 'status_slider'));
@@ -199,7 +230,7 @@ class ProductController extends Controller
             ->addColumn('stock', function ($products) use ($type) {
                 return view('product::products.components._product_stock_td', compact('products'));
             })
-            ->rawColumns(['product_type', 'logo', 'status', 'action','stock'])
+            ->rawColumns(['stock'])
             ->toJson();
     }
 
