@@ -3,11 +3,23 @@
     <link rel="stylesheet" href="{{asset(asset_path('backend/css/backend_page_css/sales.css'))}}"/>
 @endsection
 @section('mainContent')
+    <div class="full-sales-section">
+        @if(request('full') == 0)
+            <a class="primary-btn" href="?full=1">
+                Full Sales
+            </a>
+        @else
+            <a class="primary-btn" href="?full=0">
+                Partial Sales
+            </a>
+        @endif
+    </div>
     <div>
         <a id="generate-report" class="fa-sharp fa-solid fa-print" href="#">
             Generate Report
         </a>
     </div>
+
     <table id="sales" class="table">
     </table>
 @endsection
