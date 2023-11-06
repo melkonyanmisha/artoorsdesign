@@ -8,16 +8,29 @@ use App\Models\Paymant_products;
 
 class SalesController extends Controller
 {
+    /**
+     * @return View
+     */
     public function index(): View
     {
-        $totalSales = $this->getTotalSales();
+        $full       = boolval(request('full'));
+        $totalSales = $this->getSales($full);
 
         return view('backEnd.sales', ['totalSales' => $totalSales]);
     }
 
-    private function getTotalSales(): array
+    /**
+     * @param bool $full
+     *
+     * @return array
+     */
+    private function getSales(bool $full): array
     {
-        $orders = Order::with('packages')->latest()->get();
+        if ($full) {
+            $orders = Order::with('packages')->latest()->get();
+        } else {
+            $orders = Order::with('packages')->latest()->paginate(100);
+        }
 
         $totalSalesInitial = [
             'product_id'   => 0,
@@ -66,9 +79,7 @@ class SalesController extends Controller
                             ]),
                             $packageProduct->seller_product_sku->sku->product->product_name
                         );
-
-
-                        $totalSales[$keyOrder]['downloads'] = $paymentProducts->downloads;
+                        $totalSales[$keyOrder]['downloads']    = $paymentProducts->downloads;
                     } else {
                         $totalSales[$keyOrder]['product_id']   = $totalSalesInitial['product_id'];
                         $totalSales[$keyOrder]['product_name'] = $totalSalesInitial['product_name'];
