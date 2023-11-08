@@ -459,7 +459,7 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
         </div>
         <div class="menu_search">
             <input class="category_box_input" type="text" readonly="readonly"
-                   onfocus="this.removeAttribute('readonly');" placeholder="{{ __('defaultTheme.search_your_item') }}">
+                  placeholder="{{ __('defaultTheme.search_your_item') }}">
             <button class="search_svg" id="search_form">
                 <svg width="23" height="23" viewBox="0 0 23 23" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
@@ -1087,6 +1087,11 @@ $('.likes' + id).text(data)
 })
 
 }
+
+setTimeout(function (){
+    $('.category_box_input').removeAttr('readonly')
+}, 3000)
+
 
 </script>
 <script type="text/javascript">
