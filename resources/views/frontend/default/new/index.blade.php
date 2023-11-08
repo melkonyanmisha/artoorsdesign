@@ -26,7 +26,7 @@
     <meta property="og:title" content="{{$home_seo->meta_title}}"/>
     <meta property="og:description" content="{{$home_seo->meta_description}}"/>
     <meta property="og:url" content="{{URL::full()}}"/>
-    <meta property="og:image" content="{{showImage($home_seo->meta_image)}}"/>
+    <meta property="og:image" content="{{showImage()}}"/>
     <meta property="og:image:width" content="400"/>
     <meta property="og:image:height" content="300"/>
     <meta property="og:image:alt" content="{{$home_seo->meta_image_alt}}"/>

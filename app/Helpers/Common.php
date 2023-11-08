@@ -4,10 +4,8 @@ use App\Models\OrderProductDetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Modules\GeneralSetting\Entities\BusinessSetting;
-use Modules\GeneralSetting\Entities\Currency;
 use Modules\GeneralSetting\Entities\GeneralSetting;
 use Modules\Otp\Entities\OtpConfiguration;
-use Modules\Product\Entities\Product;
 use Modules\Seller\Entities\SellerProduct;
 
 if (! function_exists('showStatus')) {
@@ -357,7 +355,7 @@ if (!function_exists('showDate')) {
 
 
 if (!function_exists('showImage')) {
-    function showImage($path)
+    function showImage($path='')
     {
         if($path){
 
