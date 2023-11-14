@@ -21,7 +21,7 @@ $('.description').click( function() {
     $(this).addClass('description_active');
     $('.comments').removeClass('comments_active');
     $('.for_description').addClass('for_description_active');
-    $('.for_comment').removeClass('for_comment_active');
+    $('.for_comments').removeClass('for_comments_active');
     $('._reviews').removeClass('_reviews_active');
     $('.for_reviews').removeClass('for_reviews_active');
 });
@@ -29,7 +29,7 @@ $('.comments').click( function() {
     $(this).addClass('comments_active');
     $('.description').removeClass('description_active');
     $('.for_description').removeClass('for_description_active');
-    $('.for_comment').addClass('for_comment_active');
+    $('.for_comments').addClass('for_comments_active');
     $('._reviews').removeClass('_reviews_active');
     $('.for_reviews').removeClass('for_reviews_active');
 });
@@ -38,7 +38,7 @@ $('._reviews').click( function() {
     $('.description').removeClass('description_active');
     $('.comments').removeClass('comments_active');
     $('.for_description').removeClass('for_description_active');
-    $('.for_comment').removeClass('for_comment_active');
+    $('.for_comments').removeClass('for_comments_active');
     $('.for_reviews').addClass('for_reviews_active');
 });
 

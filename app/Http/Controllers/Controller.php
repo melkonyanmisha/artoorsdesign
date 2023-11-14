@@ -5,14 +5,16 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\Notification;
+use App\Models\User;
+use \App\Models\Comment;
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Notification;
@@ -213,25 +215,30 @@ class Controller extends BaseController
 
 
 
-    public function store_comment(Request $request){
+    public function store_comment(Request $request):JsonResponse{
         $request->validate([
             'text' => 'required',
         ]);
         $request['created_at'] = Carbon::now()->toDateTimeString();
 
-        $comment = \App\Models\Comment::create($request->all());
+        $comment = Comment::create($request->all());
 
-        $this->createSystemNotification(\App\Models\User::find(1),'Comment','/comment/admin?id='.$comment->id);
+        $superAdminUsers = User::where('is_active', 1)->whereHas('role', function ($query) {
+            return $query->where('type', 'superadmin');
+        })->get();
+
+        foreach ($superAdminUsers as $currentUser) {
+            $this->createSystemNotification($currentUser,'Comment','/comment/admin?id='.$comment->id);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Review created successfully']);
     }
 
     public function delete_comment(Request $request){
 
-        $comments = \App\Models\Comment::where('to_user_id',$request->id)->pluck('id')->toArray();
-        \App\Models\Comment::destroy($comments);
-
-        \App\Models\Comment::find($request->id)->delete();
-
-
+        $comments = Comment::where('to_user_id',$request->id)->pluck('id')->toArray();
+        Comment::destroy($comments);
+        Comment::find($request->id)->delete();
     }
 
     public function change_password(Request $request){

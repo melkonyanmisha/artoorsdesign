@@ -577,6 +577,7 @@ Route::group(['prefix' => '/ameria', 'middleware' => ['auth']], function() {
 
 //comment
 Route::post('/store_comment',[\App\Http\Controllers\Controller::class,'store_comment'])->name('store_comment');
+Route::post('/store_review',[\App\Http\Controllers\ReviewController::class,'store'])->name('store_review');
 Route::post('/delete_comment',[\App\Http\Controllers\Controller::class,'delete_comment'])->name('delete_comment');
 Route::post('/store/notif',[\App\Http\Controllers\Controller::class,'store_notif'])->name('store_notif');
 

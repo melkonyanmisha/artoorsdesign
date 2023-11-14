@@ -1810,52 +1810,66 @@ $.post("/delete/notif", data)
 }
 
 //comments
-function comment_store(product_id,slug,to_user_id,text,id=null) {
-    console.log(id)
-let data = {}
-if('{{auth()->user()}}'){
-if(to_user_id){
-    data = {
-        product_id,
-        to_user_id,
-        'user_id' : '{{auth()->id()}}',
-        text
-    }
-}else {
-    data = {
-        product_id,
-        'user_id' : '{{auth()->id()}}',
-        'text': text??$('#textareaa').val(),
-        'like_id' : id
-    }
-}
-
-console.log(data)
-$.post("/store_comment", data)
-    .done(function (data) {
-        // location.reload()
-        // console.log(location.reload())
-        @if(request()->has('comment'))
-            window.location.href = '/product/'+slug+'?comment';
-        @else
-            window.location.href = '/product/'+slug+'?comment#comment';
-            @endif
-{{--        console.log(slug)--}}
-    })
-    .fail(function (xhr, textStatus, errorThrown) {
-        if(to_user_id){
-            $('.textareaclass').css('border-color','rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
-        }else {
-            console.log(xhr.responseJSON.errors)
-            $('#textareaa1').css('border-color','rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
+function comment_store(product_id, slug, to_user_id, text, id = null) {
+    let data = {}
+    if ('{{auth()->user()}}') {
+        if (to_user_id) {
+            data = {
+                product_id,
+                to_user_id,
+                'user_id': '{{auth()->id()}}',
+                text
+            }
+        } else {
+            data = {
+                product_id,
+                'user_id': '{{auth()->id()}}',
+                'text': text ?? $('#textareaa').val(),
+                'like_id': id
+            }
         }
-        ;
-    });
-}else {
-console.log('login  exac  chi')
-}
+
+        $.post("/store_comment", data)
+            .done(function (data) {
+                const productUrl = window.location.href.split('#')[0];
+                window.location.href = productUrl + '#comments';
+                window.location.reload();
+            })
+            .fail(function (xhr, textStatus, errorThrown) {
+                if (to_user_id) {
+                    $('.textareaclass').css('border-color', 'rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
+                } else {
+                    console.log(xhr.responseJSON.errors)
+                    $('#textareaa1').css('border-color', 'rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
+                }
+            });
+    }
 
 }
+
+function review_store(product_id, slug, text, is_positive_like) {
+    let data = {}
+    if ('{{auth()->user()}}') {
+        data = {
+            product_id,
+            'user_id': '{{auth()->id()}}',
+            'text': text,
+            'is_positive_like': is_positive_like,
+            'product_url':  window.location.href.split('?')[0]
+        }
+
+        $.post("/store_review", data)
+            .done(function (data) {
+                const productUrl = window.location.href.split('#')[0];
+                window.location.href = productUrl + '#reviews';
+                window.location.reload();
+            })
+            .fail(function (xhr, textStatus, errorThrown) {
+                $('#textareaa1').css('border-color', 'rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
+            });
+    }
+}
+
 function comment_delete(id) {
 let data = {
     id

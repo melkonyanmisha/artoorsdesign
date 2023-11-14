@@ -2109,7 +2109,7 @@ footer {
     position: relative;
 }
 
-.for_comment {
+.for_comments {
     justify-content: start;
     column-gap: 98px;
     display: none;
@@ -2117,7 +2117,7 @@ footer {
     align-items: flex-start;
 }
 
-.for_comment_active {
+.for_comments_active {
     display: flex;
 }
 
