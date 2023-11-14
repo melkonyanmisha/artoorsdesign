@@ -1809,7 +1809,6 @@ $.post("/delete/notif", data)
 });
 }
 
-// todo@@@@ continue to seperate comments and reviews systems
 //comments
 function comment_store(product_id, slug, to_user_id, text, id = null) {
     let data = {}
@@ -1830,24 +1829,11 @@ function comment_store(product_id, slug, to_user_id, text, id = null) {
             }
         }
 
-        // console.log(data)
-        // console.log()
-
-        // const currentURL = window.location.href;
-
-        // console.log(5454545)
-        // console.log(window.location.search)
-        // console.log(currentURL.includes('?comment#comment'))
-
         $.post("/store_comment", data)
             .done(function (data) {
-                const currentURL = window.location.href;
-
-                if(currentURL.includes('?comment#comment')){
-                    window.location.reload();
-                }else{
-                    window.location.href += '?comment#comment'
-                }
+                const productUrl = window.location.href.split('#')[0];
+                window.location.href = productUrl + '#comments';
+                window.location.reload();
             })
             .fail(function (xhr, textStatus, errorThrown) {
                 if (to_user_id) {
@@ -1861,6 +1847,28 @@ function comment_store(product_id, slug, to_user_id, text, id = null) {
 
 }
 
+function review_store(product_id, slug, text, is_positive_like) {
+    let data = {}
+    if ('{{auth()->user()}}') {
+        data = {
+            product_id,
+            'user_id': '{{auth()->id()}}',
+            'text': text,
+            'is_positive_like': is_positive_like,
+            'product_url':  window.location.href.split('?')[0]
+        }
+
+        $.post("/store_review", data)
+            .done(function (data) {
+                const productUrl = window.location.href.split('#')[0];
+                window.location.href = productUrl + '#reviews';
+                window.location.reload();
+            })
+            .fail(function (xhr, textStatus, errorThrown) {
+                $('#textareaa1').css('border-color', 'rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
+            });
+    }
+}
 
 function comment_delete(id) {
 let data = {

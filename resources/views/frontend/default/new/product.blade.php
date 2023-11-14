@@ -2,7 +2,8 @@
     use App\Services\CartService;
     use App\Models\Wishlist;
     use App\Models\Comment;
-    use \App\Services\ProductService;
+    use App\Services\ProductService;
+    use App\Models\Review;
 @endphp
 
 @extends('frontend.default.layouts.newApp')
@@ -462,9 +463,9 @@
                     <div class="d_flex two_line_title">
                         <div class="description description_active"> {{__('defaultTheme.product_description')}} </div>
                         {{--                        @auth--}}
-                        <div class="comments" id="comment"> Comments</div>
+                        <div class="comments" id="comments"> Comments</div>
                         {{--                        @endauth--}}
-                        <div class="_reviews">Reviews</div>
+                        <div class="_reviews" id="reviews">Reviews</div>
                     </div>
                     <div class="for_description for_description_active">
                         <p>
@@ -492,7 +493,7 @@
                             </p>
                     </div>
 
-                    <div class="for_comment d_flex sto_" data-slug="{{$product->slug}}" id="for_comment">
+                    <div class="for_comments d_flex sto_" data-slug="{{$product->slug}}" id="for_comments">
                         <div class="d_flex comment_area sto_">
                             <div class="d_flex add_comment_area sto_">
                                 @auth
@@ -507,7 +508,6 @@
                                 @endauth
 
                             </div>
-                            {{--                            <button onclick="comment_store('{{$product->id}}')">comment</button>--}}
                             @php
                                 $comments = Comment::where('product_id',$product->id)->whereNull('to_user_id')->latest()->get();
                             @endphp
@@ -745,8 +745,9 @@
                                                 <path d="M3 5H1C0.4375 5 0 5.4375 0 5.96875V12.9375C0 13.4688 0.4375 13.9062 1 13.9062H3C3.53125 13.9062 4 13.4688 4 12.9375V6C4 5.46875 3.53125 5 3 5ZM16 6.09375C16 4.96875 15.0312 4.03125 13.9062 4.03125H10.7812C11.0625 3.25 11.25 2.5625 11.25 2.15625C11.25 1.09375 10.4062 0.03125 9.03125 0.03125C7.59375 0.03125 7.1875 1.03125 6.875 1.84375C5.875 4.375 5 3.90625 5 4.75C5 5.15625 5.3125 5.5 5.75 5.5C5.90625 5.5 6.0625 5.46875 6.1875 5.34375C8.59375 3.4375 8 1.53125 9.03125 1.53125C9.5625 1.53125 9.75 1.90625 9.75 2.15625C9.75 2.40625 9.5 3.40625 8.9375 4.40625C8.875 4.53125 8.84375 4.65625 8.84375 4.78125C8.84375 5.21875 9.1875 5.5 9.59375 5.5H13.875C14.2188 5.53125 14.5 5.78125 14.5 6.09375C14.5 6.40625 14.25 6.6875 13.9375 6.6875C13.5312 6.71875 13.2188 7.0625 13.2188 7.4375C13.2188 7.9375 13.5938 7.9375 13.5938 8.34375C13.5938 9.125 12.5 8.71875 12.5 9.65625C12.5 10 12.6875 10.0625 12.6875 10.3438C12.6875 11.0625 11.75 10.7812 11.75 11.625C11.75 11.7812 11.8125 11.8125 11.8125 11.9375C11.8125 12.25 11.5312 12.5312 11.2188 12.5312H9.5625C8.75 12.5312 7.96875 12.25 7.34375 11.7812L6.1875 10.9062C6.0625 10.8125 5.90625 10.75 5.75 10.75C5.3125 10.75 4.96875 11.125 4.96875 11.5C4.96875 11.75 5.09375 11.9688 5.28125 12.125L6.4375 12.9688C7.34375 13.6562 8.4375 14 9.5625 14H11.2188C12.3125 14 13.2188 13.1562 13.2812 12.0625C13.8438 11.6875 14.1875 11.0625 14.1875 10.3438C14.1875 10.25 14.1875 10.1562 14.1875 10.0625C14.7188 9.6875 15.0938 9.0625 15.0938 8.34375C15.0938 8.1875 15.0625 8.03125 15.0312 7.84375C15.5938 7.46875 16 6.84375 16 6.09375Z"
                                                       fill="#323232"/>
                                             </svg>
-
-                                            <span>{{count(\App\Models\Like::where('product_id',$product->id)->where('type',1)->get())}}</span>
+                                            <span>
+                                                {{count(Review::where('product_id',$product->product_id)->where('is_positive_like',1)->get())}}
+                                            </span>
                                         </div>
                                         <div class="watched_" tabindex="-1">
                                             <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
@@ -755,7 +756,9 @@
                                                       fill="#323232"/>
                                             </svg>
 
-                                            <span class="likes">{{count(\App\Models\Like::where('product_id',$product->id)->where('type',0)->get())}}</span>
+                                            <span class="likes">
+                                                {{count(Review::where('product_id',$product->product_id)->where('is_positive_like',0)->get())}}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -820,20 +823,20 @@
                                           class="comment_text"></textarea>
                                 <div class='cancel_rate'>
                                     <span class='cencel_revo'>Cancel</span>
-                                    <span class='positive_ rate_model' data-like="1" data-id="{{$product->id}}"
+                                    <span class='positive_ rate_model' data-like="1" data-id="{{$product->product_id}}"
                                           data-slug="{{$product->slug}}"> Rate model</span>
                                 </div>
                             </div>
                         </div>
                         <div class="reviewers_review">
                             @php
-                                $comments = Comment::where('product_id',$product->id)->whereNull('to_user_id')->latest()->get();
+                                $reviews = App\Models\Review::where('product_id',$product->product_id)->latest()->get();
                             @endphp
-                            @foreach($comments as $comment)
+                            @foreach($reviews as $review)
                                 <div class="d_flex added_comms sto_">
                                     <div class="prof_pic">
                                         @php
-                                            $user_info = \App\Models\User::find($comment->user_id);
+                                            $user_info = \App\Models\User::find($review->user_id);
                                         @endphp
 
                                         <img src="{{$user_info->avatar?showImage($user_info->avatar):showImage('frontend/default/img/avatar.jpg')}}"
@@ -841,22 +844,19 @@
                                     </div>
                                     <div class="d_flex eye_cool">
                                         <div class="watched_">
-                                            @if($comment->like_id == 0 && $comment->like_id != null)
-                                                <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z"
-                                                          fill="#323232"/>
-                                                </svg>
-
-                                            @else
+                                            @if($review->is_positive_like === 1)
                                                 <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
                                                      xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M14.5625 8.96875C14.8438 8.5 15 8 15 7.40625C15 6.03125 13.8125 4.75 12.3125 4.75H11.1562C11.3125 4.34375 11.4375 3.875 11.4375 3.28125C11.4375 1 10.25 0 8.46875 0C6.53125 0 6.65625 2.96875 6.21875 3.40625C5.5 4.125 4.65625 5.5 4.0625 6H1C0.4375 6 0 6.46875 0 7V14.5C0 15.0625 0.4375 15.5 1 15.5H3C3.4375 15.5 3.84375 15.1875 3.9375 14.7812C5.34375 14.8125 6.3125 16 9.5 16C9.75 16 10 16 10.2188 16C12.625 16 13.6875 14.7812 13.7188 13.0312C14.1562 12.4688 14.375 11.6875 14.2812 10.9375C14.5938 10.375 14.6875 9.6875 14.5625 8.96875ZM12.625 10.6562C13.0312 11.3125 12.6562 12.1875 12.1875 12.4688C12.4375 13.9688 11.625 14.5 10.5312 14.5H9.34375C7.125 14.5 5.65625 13.3438 4 13.3438V7.5H4.3125C5.21875 7.5 6.4375 5.3125 7.28125 4.46875C8.15625 3.59375 7.875 2.09375 8.46875 1.5C9.9375 1.5 9.9375 2.53125 9.9375 3.28125C9.9375 4.5 9.0625 5.0625 9.0625 6.25H12.3125C12.9688 6.25 13.4688 6.84375 13.5 7.4375C13.5 8 13.0938 8.59375 12.7812 8.59375C13.2188 9.0625 13.3125 10.0312 12.625 10.6562ZM2.75 13.5C2.75 13.9375 2.40625 14.25 2 14.25C1.5625 14.25 1.25 13.9375 1.25 13.5C1.25 13.0938 1.5625 12.75 2 12.75C2.40625 12.75 2.75 13.0938 2.75 13.5Z"
                                                           fill="#717171"></path>
                                                 </svg>
+                                            @else
+                                                <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z" fill="#323232"></path>
+                                                </svg>
                                             @endif
                                         </div>
-                                        <div class="good_or_bad">{{$comment->text}}</div>
+                                        <div class="good_or_bad">{{$review->text}}</div>
                                     </div>
                                 </div>
                             @endforeach
@@ -890,16 +890,33 @@
                 @endif
             </div>
         </section>
-        @if(request()->has('comment'))
-            <script>
-                // $('.comments').addClass('comments_active');
-                $('._reviews').addClass('_reviews_active');
-                $('.description').removeClass('description_active');
-                $('.for_description').removeClass('for_description_active');
-                // $('.for_comment').addClass('for_comment_active');
-                $('.for_reviews').addClass('for_reviews_active');
-            </script>
-        @endif
+
+        <script>
+            const description = $('.description');
+            const for_description = $('.for_description');
+            const comments = $('#comments');
+            const for_comments = $('#for_comments');
+            const reviews = $('._reviews');
+            const for_reviews = $('.for_reviews');
+
+
+            if (window.location.hash === '#comments') {
+                $(comments).addClass('comments_active');
+                $(for_comments).addClass('for_comments_active');
+                $(description).removeClass('description_active');
+                $(for_description).removeClass('for_description_active');
+                $(reviews).removeClass('_reviews_active');
+                $('.for_reviews').removeClass('for_reviews_active');
+            } else if (window.location.hash === '#reviews') {
+                $(reviews).addClass('_reviews_active');
+                $(for_reviews).addClass('for_reviews_active');
+                $(description).removeClass('description_active');
+                $(for_description).removeClass('for_description_active');
+                $(comments).removeClass('comments_active');
+                $(for_comments).removeClass('for_comments_active');
+            }
+        </script>
+
         <section class="wrapper">
             <div class="new_models_section sto_ d_flex also_like">
                 <div class="d_flex sto_ for_mob_view">
@@ -1086,14 +1103,8 @@
         $(document).ready(function () {
 
             $('.rate_model').click(function () {
-                console.log($(this).attr('data-like'))
                 if ($(this).attr('data-like') !== undefined) {
-                    id = likes($(this).attr('data-id'), $(this).attr('data-like'));
-
-                    comment_store($(this).attr('data-id'), $(this).attr('data-slug'), null, $('#textareaa1').val(), $(this).attr('data-like'))
-
-                } else {
-                    // $('.negative_').css('background-color','red')
+                    review_store($(this).attr('data-id'), $(this).attr('data-slug'), $('#textareaa1').val(), $(this).attr('data-like'))
                 }
             })
 
@@ -1127,7 +1138,7 @@
             })
 
             // The case when clicked "Review" in Dashboard/My Purchases page
-            if (window.location.href.includes("review")) {
+            if (window.location.search === '?review') {
                 const targetOffset = $("._reviews").offset().top - 400;
 
                 setTimeout(function () {
