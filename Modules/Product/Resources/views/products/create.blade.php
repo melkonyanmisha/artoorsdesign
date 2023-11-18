@@ -627,114 +627,9 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="primary_input mb-25">
-{{--                                            <label class="primary_input_label" for="">--}}
-{{--                                                {{__('product.pdf_specifications') }}--}}
-{{--                                                --}}
-{{--                                            </label>--}}
-{{--                                            <input type="hidden" value="" name="pdf">--}}
-{{--                                            <div class="primary_file_uploader">--}}
-{{--                                                <input class="primary-input" type="text" id="pdf_place1"--}}
-{{--                                                    placeholder="File Link"  name="pdf_file">--}}
-{{--                                                <button class="" type="button">--}}
-{{--                                                    <label class="primary-btn small fix-gr-bg" for="pdf">Upload Files </label>--}}
-{{--                                                    <input   type="file" class="d-none" name="pdf_file[]" id="pdf" multiple>--}}
-{{--                                                </button>--}}
-{{--                                            </div>--}}
-{{--                                            <br>--}}
-{{--                                            <div id="myProgress" style="display: none">--}}
-{{--                                                <div id="myBar">0%</div>--}}
-{{--                                            </div>--}}
-{{--                                            <div id="myProgress1" style="display: none">--}}
-{{--                                                <div id="myBar1">0%</div>--}}
-{{--                                            </div>--}}
-{{--                                            <div id="myProgress2" style="display: none">--}}
-{{--                                                <div id="myBar2">0%</div>--}}
-{{--                                            </div>--}}
-{{--                                            <script>--}}
-{{--                                                // var i = 0;--}}
-{{--                                                // var s = 0;--}}
-{{--                                                //--}}
-{{--                                                $('#pdf').change(--}}
-{{--                                                    function() {--}}
-{{--                                                        var images = document.getElementById('pdf');--}}
-{{--                                                        var length = images.files.length;--}}
-
-{{--                                                        // for (var i = 0; i < length; i++) {--}}
-
-{{--                                                        var formData = new FormData();--}}
-{{--                                                        var image = images.files[0];--}}
-{{--                                                        if(image){--}}
-{{--                                                            formData.append('image', image);--}}
-{{--                                                            formData.append('_token', '{{csrf_token()}}');--}}
-
-{{--                                                            var xmlhttp = new XMLHttpRequest();--}}
-
-{{--                                                            (function () {--}}
-{{--                                                                xmlhttp.upload.addEventListener('progress', function (e) {--}}
-{{--                                                                    document.getElementById("myProgress").style.display = "block"--}}
-{{--                                                                    document.getElementById("myBar").style.width = Math.round((e.loaded / e.total) * 100) + "%";--}}
-{{--                                                                    document.getElementById("myBar").innerHTML = Math.round((e.loaded / e.total) * 100)  + "%";--}}
-{{--                                                                }, false);--}}
-{{--                                                            })();--}}
-
-{{--                                                            xmlhttp.open("post", "/pictures/uploadImage");--}}
-{{--                                                            xmlhttp.send(formData);--}}
-{{--                                                        }--}}
-
-
-{{--                                                        var formData = new FormData();--}}
-{{--                                                        var image = images.files[1];--}}
-{{--                                                        if(image){--}}
-{{--                                                            formData.append('image', image);--}}
-{{--                                                            formData.append('_token', '{{csrf_token()}}');--}}
-
-{{--                                                            var xmlhttp = new XMLHttpRequest();--}}
-
-
-{{--                                                            (function () {--}}
-{{--                                                                xmlhttp.upload.addEventListener('progress', function (e) {--}}
-{{--                                                                    document.getElementById("myProgress1").style.display = "block"--}}
-{{--                                                                    document.getElementById("myBar1").style.width = Math.round((e.loaded / e.total) * 100) + "%";--}}
-{{--                                                                    document.getElementById("myBar1").innerHTML = Math.round((e.loaded / e.total) * 100)  + "%";--}}
-{{--                                                                }, false);--}}
-{{--                                                            })();--}}
-
-{{--                                                            xmlhttp.open("post", "/pictures/uploadImage");--}}
-{{--                                                            xmlhttp.send(formData);--}}
-{{--                                                        }--}}
-
-
-{{--                                                        var formData = new FormData();--}}
-{{--                                                        var image = images.files[2];--}}
-{{--                                                        if(image){--}}
-{{--                                                            formData.append('image', image);--}}
-{{--                                                            formData.append('_token', '{{csrf_token()}}');--}}
-
-{{--                                                            var xmlhttp = new XMLHttpRequest();--}}
-
-
-{{--                                                            (function () {--}}
-{{--                                                                xmlhttp.upload.addEventListener('progress', function (e) {--}}
-{{--                                                                    document.getElementById("myProgress2").style.display = "block"--}}
-{{--                                                                    document.getElementById("myBar2").style.width = Math.round((e.loaded / e.total) * 100) + "%";--}}
-{{--                                                                    document.getElementById("myBar2").innerHTML = Math.round((e.loaded / e.total) * 100)  + "%";--}}
-{{--                                                                }, false);--}}
-{{--                                                            })();--}}
-
-{{--                                                            xmlhttp.open("post", "/pictures/uploadImage");--}}
-{{--                                                            xmlhttp.send(formData);--}}
-{{--                                                        }--}}
-
-{{--                                                        // }--}}
-{{--                                                })--}}
-
-
-{{--                                            </script>--}}
                                             <span class="text-danger">{{ $errors->first('documents') }}</span>
                                         </div>
                                     </div>
-
-
 
 
 {{--                                    <div class="col-lg-12">--}}
@@ -1026,8 +921,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
             </div>
             <div class="row">
