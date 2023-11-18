@@ -6,28 +6,43 @@
     <section class="admin-visitor-area up_st_admin_visitor">
         <div class="container-fluid p-0">
             <div class="row">
-
                 <div class="col-md-12 mb-20">
                     <div class="box_header_right">
                         <div class="float-lg-right float-none pos_tab_btn justify-content-end">
                             <ul class="nav nav_list" role="tablist">
                                 @if (permissionCheck('product.create'))
                                     <ul class="d-flex">
-                                        <li><a class="primary-btn radius_30px mr-10 fix-gr-bg"
-                                               href="{{route("product.create")}}"><i
-                                                        class="ti-plus"></i>{{__('product.add_new_product')}}</a></li>
-                                        <li><a class="primary-btn radius_30px mr-10 fix-gr-bg yuhu">Disconnection</a>
+                                        <li>
+                                            <a class="primary-btn radius_30px mr-10 fix-gr-bg"
+                                               href="{{route("product.create")}}">
+                                                <i class="ti-plus"></i>
+                                                {{__('product.add_new_product')}}
+                                            </a>
                                         </li>
-                                        <li><a class="primary-btn radius_30px mr-10 fix-gr-bg yuhu1">Delete</a></li>
-                                        <li><a class="primary-btn radius_30px mr-10 fix-gr-bg" data-toggle="modal"
-                                               data-target="#modalLoginForm">Discount</a></li>
+                                        <li>
+                                            <a class="primary-btn radius_30px mr-10 fix-gr-bg yuhu">
+                                                Status On/Off
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="primary-btn radius_30px mr-10 fix-gr-bg yuhu1">
+                                                Delete
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="primary-btn radius_30px mr-10 fix-gr-bg" data-toggle="modal"
+                                               data-target="#modalLoginForm">
+                                                Discount
+                                            </a>
+                                        </li>
                                     </ul>
                                 @endif
                                 @if (permissionCheck('product.get-data'))
                                     <li class="nav-item">
                                         <a class="nav-link active show" href="#order_processing_data" role="tab"
-                                           data-toggle="tab" id="product_list_id"
-                                           aria-selected="true">{{__('product.product_list')}}</a>
+                                           data-toggle="tab" id="product_list_id" aria-selected="true">
+                                            {{__('product.product_list')}}
+                                        </a>
                                     </li>
                                 @endif
 {{--                                    @if (isModuleActive('MultiVendor'))--}}
@@ -113,10 +128,8 @@
                     </div>
 
                     <div class="modal-body sku_edit_form">
-
                         <form enctype="multipart/form-data" id="sku_edit_form">
                             <div class="row">
-
                                 <input type="hidden" id="sku_id" name="id" value="">
 
                                 <div class="col-lg-12 col-md-12 col-sm-12">
