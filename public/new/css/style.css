@@ -1294,10 +1294,15 @@ footer {
 
 .for_sale_height {
     height: 64px;
+    justify-content: space-between;
+    align-items: self-end;
+    margin-bottom: 20px;
 }
 
 .sale_price_col .prev_price {
     font-size: 16px;
+    color: #CE3C5C;
+    font-weight: bold;
 }
 
 .sale_price_col {
@@ -1867,7 +1872,7 @@ footer {
 
 .twenty_sp {
     font-size: 20px;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
 }
 
 .publ_sms {

@@ -70,7 +70,7 @@
                     <a href="{{route('frontend.category_slug', ['slug' => 'all-products'])}}"
                        class="view_all">{{ __('common.view_all') }}</a>
                 </div>
-                <div class="products_slide sto_ d_flex gray_slider">
+                <div class="products_slide sto_ gray_slider">
                     @foreach($best_deal->getProductByQuery() as $key => $product)
                         <div class="model_product">
                             <a href="{{singleProductURL($product->seller->slug, $product->slug, $product->product->categories[0]->slug)}}">
