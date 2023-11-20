@@ -15,14 +15,39 @@ $('.slick-list, .slick-track').css({
     "height": "100%"
   });
 
-  $('.gray_slider').slick({
+$('.gray_slider').slick({
     dots: false,
     infinite: true,
     speed: 300,
-    slidesToShow: 1,
-    centerMode: false,
-    variableWidth: true
-  });
+    slidesToShow: 5,
+    slidesToScroll: 4,
+    responsive: [
+        {
+            breakpoint: 1200,
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 4,
+                infinite: true,
+                dots: true
+            }
+        },
+        {
+            breakpoint: 980,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3
+            }
+        },
+
+        {
+            breakpoint: 695,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+            }
+        }
+    ]
+});
 
   $(".slick-prev").prepend('<img id="thePrev" src="/public/new/img/left.svg" />')
   $("#thePrev #theNext").css({"width":"39px","height":"39px"});
