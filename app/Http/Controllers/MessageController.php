@@ -127,7 +127,9 @@ class MessageController extends Controller
             event(new \App\Events\FormSubmited($toUser));
 
             if ($toUser->role->type === 'admin' || $toUser->role->type === 'superadmin') {
-                $this->sendMail($toUser, $request->message);
+                register_shutdown_function(function () use ($toUser, $request) {
+                    $this->sendMail($toUser, $request->message);
+                });
             }
 
             return view('include', ['to_user' => $toUser]);
