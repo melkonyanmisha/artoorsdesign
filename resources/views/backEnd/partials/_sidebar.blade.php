@@ -51,7 +51,7 @@ if ( ! auth()->check()) {
                         <span class="fas fa-user"></span>
                     </div>
                     <div class="nav_title">
-                        <span>Artoors</span>
+                        <span>Areve3d</span>
                     </div>
                 </a>
                 <ul>
