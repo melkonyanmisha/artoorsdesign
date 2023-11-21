@@ -3,10 +3,8 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
 
 class SendMail extends Mailable
 {
@@ -23,7 +21,7 @@ class SendMail extends Mailable
     public function build()
     {
         $data = [
-            'subject' => 'Artoorsdesign',
+            'subject' => env('MAIL_FROM_NAME'),
             'text' => $this->text,
             'description' => $this->description,
             'password' => $this->password,
