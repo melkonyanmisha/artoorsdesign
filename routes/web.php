@@ -175,24 +175,24 @@ Route::middleware(['admin'])->group(function () {
 });
 
 Route::get('sitemap.xml', function () {
-    header('Content-type: text/xml');
+    $sitemap = Sitemap::create();
 
-    $sitemap = Sitemap::create()
-                      ->add(Url::create('/'))
-                      ->add(Url::create('/blog'))
-                      ->add(Url::create('/terms/conditions'))
-                      ->add(Url::create('/privacy/policy'));
+    $sitemap->add(Url::create('/'));
+    $sitemap->add(Url::create('/blog'));
+    $sitemap->add(Url::create('/terms/conditions'));
+    $sitemap->add(Url::create('/privacy/policy'));
 
     $blog_posts = \Modules\Blog\Entities\BlogPost::get();
 
     foreach ($blog_posts as $blog_post) {
-        $sitemap->add(Url::create("/blog/{$blog_post->title}"));
+        $sitemap->add(Url::create("/blog/{$blog_post->slug}"));
     }
 
-    $products = Product::with('categories')->get();
+    $products = \Modules\Product\Entities\Product::with('categories')->get();
 
     foreach ($products as $product) {
-        $sitemap->add(Url::create("/product/{$product->categories[0]->slug}/{$product->slug}"));
+        $category = $product->categories->first();
+        $sitemap->add(Url::create("/product/{$category->slug}/{$product->slug}"));
     }
 
     $categories = \Modules\Product\Entities\Category::get();
@@ -205,11 +205,17 @@ Route::get('sitemap.xml', function () {
         }
     }
 
-    $sitemap->writeToFile(public_path('sitemap.xml'));
+    $xmlContent = $sitemap->render();
 
-    $xml = simplexml_load_file(public_path('sitemap.xml'));
+    // Write to file
+    $filePath = public_path('sitemap.xml');
+    file_put_contents($filePath, $xmlContent);
 
-    echo $xml->asXML();
+    // Send response
+    $response = response($xmlContent)->header('Content-Type', 'text/xml');
+
+    ob_end_clean(); // Clear output buffering
+    return $response;
 })->name('sitemap');
 
 Route::post('search', [SearchController::class, 'search'])->name('routeSearch');
