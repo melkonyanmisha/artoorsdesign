@@ -135,7 +135,7 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{asset(asset_path(app('general_setting')->favicon))}}" type="image/png" />
     <link rel="canonical" href="{{request()->url()}}" />
-    <title>@if(trim($__env->yieldContent('title'))) @yield('title') | {{app('general_setting')->meta_site_title}} @else {{app('general_setting')->meta_site_title}} @endif</title>
+    <title>@if(trim($__env->yieldContent('title'))) @yield('title') | {{app('general_setting')->site_title}} @else {{app('general_setting')->site_title}} @endif</title>
     @section('share_meta')
     @show
     @laravelPWA
