@@ -4,6 +4,7 @@
     use App\Models\Comment;
     use App\Services\ProductService;
     use App\Models\Review;
+    use Modules\Seller\Entities\SellerProduct;
 @endphp
 
 @extends('frontend.default.layouts.newApp')
@@ -926,13 +927,28 @@
                 </div>
                 <div class="products_slide sto_ d_flex gray_slider">
                     @php
-                        $productss = Modules\Seller\Entities\SellerProduct::with('skus', 'product')->where('status', 1)->whereHas('product', function ($query) {
-                            $query->where('status', 1);
-                            })->get();
+                    $products = [];
+
+                    if(!empty($product->product->categories)){
+                        foreach ($product->product->categories as $currentCategory){
+                            $categorySlugs[] = $currentCategory->slug;
+                        }
+
+                        $products = SellerProduct::with('skus', 'product.categories')
+                            ->where('status', 1)
+                            ->whereHas('product', function ($query) use ($categorySlugs) {
+                                $query->where('status', 1)
+                                    ->whereHas('categories', function ($categoryQuery) use ($categorySlugs) {
+                                        $categoryQuery->whereIn('slug', $categorySlugs);
+                                    });
+                            })->orderBy('created_at', 'desc')
+                            ->get();
+                    }
+
                     @endphp
 
-                    @if(count($productss) > 0)
-                        @foreach($productss as $product)
+                    @if(count($products) > 0)
+                        @foreach($products as $product)
                             <div class="model_product">
                                 <a href="{{singleProductURL(@$product->seller->slug, $product->slug, $product->product->categories[0]->slug)}}">
                                     <div class="model_img">
