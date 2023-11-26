@@ -466,7 +466,8 @@
                                         <div class="col-lg-3">
                                             <div class="primary_input mb-15">
                                                 <label class="primary_input_label" for="">
-                                                    {{ __('product.discount') }}</label>
+                                                    {{ __('product.discount') }}
+                                                </label>
                                                 <input class="primary_input_field" name="discount" id="discount"
                                                        placeholder="{{ __('product.discount') }}" type="number" min="0"
                                                        step="{{step_decimal()}}" value="{{ $product->discount }}">
@@ -484,6 +485,20 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-lg-3">
+                                            <div class="primary_input mb-15">
+                                                <label class="primary_input_label" for="">
+                                                    {{ __('product.tax') }}
+                                                </label>
+                                                <input class="primary_input_field" name="tax" id="tax"
+                                                       placeholder="{{ __('product.tax') }}" type="number" min="0"
+                                                       value="{{ $product->tax }}">
+                                                <span class="text-danger" id="error_tax">
+                                                    {{ $errors->first('tax') }}
+                                                </span>
+                                            </div>
+                                        </div>
+
                                         @if ($errors->any())
                                             <div class="alert alert-danger">
                                                 <ul>
