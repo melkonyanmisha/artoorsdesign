@@ -35,6 +35,12 @@
                                                 Discount
                                             </a>
                                         </li>
+                                        <li>
+                                            <a class="primary-btn radius_30px mr-10 fix-gr-bg" data-toggle="modal"
+                                               data-target="#modalTaxForm">
+                                                Tax
+                                            </a>
+                                        </li>
                                     </ul>
                                 @endif
                                 @if (permissionCheck('product.get-data'))
@@ -221,16 +227,45 @@
 
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button class="btn btn-default  sales">Сохранять</button>
+                    <button class="btn btn-default  sales">Save</button>
                 </div>
             </div>
         </div>
     </div>
 
+
     {{--    <div class="text-center">--}}
     {{--        <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">Launch--}}
     {{--            Modal Login Form</a>--}}
     {{--    </div>--}}
+
+    <div class="modal fade" id="modalTaxForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Tax</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right"
+                               for="defaultForm-email">{{ __('product.tax') }}</label>
+
+                        <input name="tax" id="tax"
+                               placeholder="{{ __('product.tax') }}" type="number" min="0"
+                               step="{{step_decimal()}}" value="0" class="form-control validate primary_input_field">
+                    </div>
+
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button id="save-tax" class="btn btn-default">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     @include('backEnd.partials._deleteModalForAjax',['item_name' => __('common.product '),'form_id' =>
     'product_delete_form','modal_id' => 'product_delete_modal', 'delete_item_id' => 'product_delete_id'])
@@ -909,6 +944,44 @@
                     });
 
                 })
+
+
+                $("#save-tax").click(function () {
+                    let arr = [];
+                    let tax = $('#tax').val();
+
+                    $('.select-checkbox .chak:checked').each(function () {
+                        arr.push($(this).attr('value'));
+                    })
+
+                    const formData = new FormData();
+                    formData.append('_token', "{{ csrf_token() }}");
+                    formData.append('id', arr);
+                    formData.append('tax', tax);
+
+                    $.ajax({
+                        url: "{{ route('product.bulk_tax_update') }}",
+                        type: "POST",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (response) {
+                            $('#modalTaxForm').css('display', 'none');
+                            window.location.reload();
+                        },
+                        error: function (response) {
+                            if (response.status == '422') {
+                                toastr.error("{{__('common.restricted_in_demo_mode')}}", "{{__('common.error')}}");
+                            } else {
+                                toastr.error("{{__('common.error_message')}}", "{{__('common.error')}}");
+                            }
+                        }
+                    });
+
+                })
+
+
 
                 function disabledProductDataTable() {
                     $('#disabledProductTable').DataTable({

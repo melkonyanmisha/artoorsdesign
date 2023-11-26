@@ -31,6 +31,7 @@ Route::prefix('products')->as('product.')->group(function() {
         Route::post('/meta-image-delete', 'ProductController@metaImgDelete')->name('meta-img-delete')->middleware('prohibited_demo_mode');
         Route::post('/sku-combination', 'ProductController@sku_combination')->name('sku_combination');
         Route::post('/discount/update', 'ProductController@discountUpdate')->name('discount_count');
+        Route::post('/tax/update', 'ProductController@taxUpdate')->name('bulk_tax_update');
         Route::post('/sku-combination-edit', 'ProductController@sku_combination_edit')->name('sku_combination_edit');
         Route::post('/update-status', 'ProductController@update_status')->name('update_active_status')->middleware(['permission','prohibited_demo_mode']);
         Route::post('/update-available-only-single-user', 'ProductController@update_available_only_single_user')->name('update_available_only_single_user')->middleware(['permission','prohibited_demo_mode']);

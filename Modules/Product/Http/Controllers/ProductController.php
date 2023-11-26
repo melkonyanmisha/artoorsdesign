@@ -659,6 +659,32 @@ class ProductController extends Controller
         }
     }
 
+    public function taxUpdate(Request $request): void
+    {
+        $explode_id = explode(',', $request->id);
+
+        try {
+            for ($i = 0; $i < count($explode_id); $i++) {
+                $product = $this->productService->findById($explode_id[$i]);
+                if (single_price(@$product->skus->first()->selling_price) != '$ 0.00') {
+                    $product->update([
+                        'tax' => $request->tax,
+                    ]);
+
+                    if ( ! isModuleActive('MultiVendor')) {
+                        $product->sellerProducts->where('user_id', 1)->first()->update([
+                            'tax' => $request->tex,
+                        ]);
+                    }
+                }
+            }
+
+            LogActivity::successLog('Successfully updated tax.');
+        } catch (\Exception $e) {
+            LogActivity::errorLog($e->getMessage());
+        }
+    }
+
     public function updateSkuStatusByID(Request $request)
     {
         try {
