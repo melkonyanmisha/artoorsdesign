@@ -479,8 +479,8 @@
                                                        for="">{{ __('product.discount_type') }}</label>
                                                 <select class="primary_select mb-25" name="discount_type"
                                                         id="discount_type">
-                                                    <option value="1" @if ($product->discount_type == 1) selected @endif>{{ __('common.amount') }}</option>
                                                     <option value="0" @if ($product->discount_type == 0) selected @endif>{{ __('common.percentage') }}</option>
+                                                    <option value="1" @if ($product->discount_type == 1) selected @endif>{{ __('common.amount') }}</option>
                                                 </select>
                                             </div>
                                         </div>

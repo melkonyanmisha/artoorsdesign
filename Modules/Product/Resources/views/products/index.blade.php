@@ -214,8 +214,8 @@
 
                         <select class="form-control validate primary_select mb-25" name="discount_type"
                                 id="discount_type">
-                            <option value="1">{{ __('common.amount') }}</option>
                             <option value="0">{{ __('common.percentage') }}</option>
+                            <option value="1">{{ __('common.amount') }}</option>
                         </select>
                     </div>
 
