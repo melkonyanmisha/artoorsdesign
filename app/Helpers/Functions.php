@@ -98,18 +98,26 @@ if(!function_exists('image_resize')){
 
     }
  }
-if(!function_exists('selling_price')){
-    function selling_price ($amount = 0, $discount_type = 1, $discount_amount = 0){
+
+if ( ! function_exists('selling_price')) {
+    function selling_price($amount = 0, $discount_type = 1, $discount_amount = 0, $tax = 0)
+    {
         $discount = 0;
-        if($discount_type == 0){
-            $discount = ($amount/100) *$discount_amount;
-        }if($discount_type == 1){
+
+        if ($discount_type == 0) {
+            $discount = ($amount / 100) * ($discount_amount);
+        } elseif ($discount_type == 1) {
             $discount = $discount_amount;
         }
 
         $selling_price = $amount - $discount;
+
+        if ($tax) {
+            $selling_price = $selling_price + ($selling_price / 100) * $tax;
+        }
+
         return $selling_price;
-     }
+    }
 }
 
 if(!function_exists('tax_count')){

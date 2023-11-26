@@ -153,6 +153,12 @@
 
                                         @endif
 
+                                        @if($cart->product->product->tax)
+                                            <span class="tax">
+                                                {{sprintf('+ %1$s %2$s%%', strtoupper(__('product.tax')),  $cart->product->product->tax)}}
+                                            </span>
+                                        @endif
+
                                     </div>
                                     <div class=" remove_shop_cart delete_catal cart_item_delete_btn" data-id="{{$cart->id}}"
                                          data-product_id="{{$cart->product_id}}"
@@ -368,16 +374,6 @@
                     @endauth
                     <div class="goto_checkout_block d_flex">
                         <div class="total_check d_flex sto_">
-                            <div class="d_flex subtotal_sale sto_">
-                                <div class="d_flex sto_">
-                                    <span class="sub_sale">{{ __('common.subtotal') }}:</span>
-                                    <span class="price_of">{{$subtotal}}$</span>
-                                </div>
-                                <div class="d_flex sto_">
-                                    <span class="sub_sale">Sale::</span>
-                                    <span class="price_of">-{{$discount}}$</span>
-                                </div>
-                            </div>
                             <div class="d_flex sto_ total_padd">
                                 <span class="sub_sale">Total:</span>
                                 <span class="price_total">{{$total}}$</span>
