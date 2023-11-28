@@ -432,7 +432,7 @@
                         <td>
                             <p class="line_grid_auto grid_end">
                                 <span>
-                                    <span>{{ __('shipping.shipping_method') }}</span>
+                                    <span>Payment Method</span>
                                     <span>:</span>
                                 </span>
                                 VISA/MASTERCARD
@@ -448,6 +448,7 @@
                     <th scope="col" style="width: 30%" class="text_left">Model ID</th>
 {{--                    <th scope="col" class="text_left">{{ __('common.details') }}</th>--}}
                     <th scope="col" class="text-right">{{ __('common.price') }}</th>
+                    <th scope="col" class="text-right">Tax</th>
                     <th scope="col" class="text-right">{{ __('common.total') }}</th>
                 </tr>
                 @foreach ($order_package->products as $key => $package_product)
@@ -490,7 +491,8 @@
 
                         <td>{{ $package_product->seller_product_sku->sku->sku }}</td>
                         <td class="text-right">{{ single_price($package_product->price) }}</td>
-                        <td class="text-right">{{ single_price($package_product->price * $package_product->qty) }}</td>
+                        <td class="text-right">{{$package_product->tax_amount}}%</td>
+                        <td class="text-right">{{ single_price($package_product->price) }}</td>
                     </tr>
                 @endforeach
             </table>
