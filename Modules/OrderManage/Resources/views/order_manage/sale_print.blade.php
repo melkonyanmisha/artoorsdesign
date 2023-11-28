@@ -26,8 +26,8 @@
                                 </td>
 
                                 <td class="virtical_middle text_right invoice_info">
-                                    <h4 >Artoorsdesign</h4>
-                                    <h4>{{app('general_setting')->email}}</h4>
+                                    <h4>{{ env('APP_NAME') }}</h4>
+                                    <h4>{{ env('APP_EMAIL') }}</h4>
                                     <h4>{{$order->order_number}}</h4>
                                 </td>
                             </tr>
@@ -43,7 +43,7 @@
                                        <tbody>
                                            <tr>
                                                <td>
-                                                   <h5 class="font_18 mb-0" >{{ __('shipping.billing_info') }}</h5>
+                                                   <h5 class="font_18 mb-0" >{{ env('APP_EMAIL') }}</h5>
                                                </td>
                                            </tr>
                                            <tr>
@@ -143,7 +143,7 @@
                                                              <span>{{ __('common.name') }}</span>
                                                              <span>:</span>
                                                          </span>
-                                                         Artoorsdesign
+                                                         {{env('APP_NAME')}}
                                                      </p>
                                                  </td>
                                             </tr>
@@ -154,7 +154,7 @@
                                                              <span>{{ __('common.email') }}</span>
                                                              <span>:</span>
                                                          </span>
-                                                        {{app('general_setting')->email}}
+                                                         {{env('APP_EMAIL')}}
                                                      </p>
                                                  </td>
                                             </tr>
@@ -165,7 +165,7 @@
                                                              <span>{{ __('common.website') }}</span>
                                                              <span>:</span>
                                                          </span>
-                                                         https://artoorsdesign.com/
+                                                         {{env('APP_URL')}}
                                                      </p>
                                                  </td>
                                             </tr>
