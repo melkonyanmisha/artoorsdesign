@@ -52,17 +52,17 @@
             </div>
             <div class="d_flex name_on_off">
                 <span class="name_us_onof">{{ $to_user->name }} </span>
-                @if($to_user->active_user)
-                    <span class="online d_flex">
-                    <span class="online_green"></span>
-                        ONLINE
-                    </span>
-                @else
-                    <span class="offline d_flex">
-                    <span class="offline_gray"></span>
-                        OFFLINE {{ Carbon\Carbon::parse($to_user->when_not_active)->format('H:i') }}
-                    </span>
-                @endif
+{{--                @if($to_user->active_user)--}}
+{{--                    <span class="online d_flex">--}}
+{{--                    <span class="online_green"></span>--}}
+{{--                        ONLINE--}}
+{{--                    </span>--}}
+{{--                @else--}}
+{{--                    <span class="offline d_flex">--}}
+{{--                    <span class="offline_gray"></span>--}}
+{{--                        OFFLINE {{ Carbon\Carbon::parse($to_user->when_not_active)->format('H:i') }}--}}
+{{--                    </span>--}}
+{{--                @endif--}}
             </div>
         </a>
         <div class="settings_mess">
