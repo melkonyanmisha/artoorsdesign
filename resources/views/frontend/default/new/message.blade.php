@@ -55,35 +55,42 @@ $userId = $userId ?? auth()->id();
                                     <div class="d_flex name_message sto_">
                                         <div class="d_flex sto_ username_online_off">
                                             <span class="name_from_">{{ $user->first_name?$user->first_name.' '. $user->last_name:$user->email }}</span>
-                                            @if($user->active_user)
-                                                <span class="online d_flex">
-                                                <span class="online_green"></span>
-                                                ONLINE @if(isset(Block_user::where('user_id',6)->where('second_user',$user->id)->first()->id))
-                                                        Blocked
-                                                    @endif
-                                            </span>
-                                            @else
-                                                <span class="date_message">
+{{--                                            @if($user->active_user)--}}
+{{--                                                <span class="online d_flex">--}}
+{{--                                                    <span class="online_green">--}}
 
-                                                {{
-                                                    Carbon::parse($user->when_not_active)->format('H:i')
-                                                }} @if(isset(Block_user::where('user_id',6)->where('second_user',$user->id)->first()->id))
-                                                        Blocked
-                                                    @endif
-                                            </span>
-                                            @endif
+{{--                                                    </span>--}}
+{{--                                                    ONLINE --}}
+{{--                                                    @if(isset(Block_user::where('user_id',6)->where('second_user',$user->id)->first()->id))--}}
+{{--                                                        Blocked--}}
+{{--                                                    @endif--}}
+{{--                                                </span>--}}
+{{--                                            @else--}}
+{{--                                                <span class="date_message">--}}
+
+{{--                                                {{--}}
+{{--                                                    Carbon::parse($user->when_not_active)->format('H:i')--}}
+{{--                                                }} --}}
+{{--                                                    @if(isset(Block_user::where('user_id',6)->where('second_user',$user->id)->first()->id))--}}
+{{--                                                        Blocked--}}
+{{--                                                    @endif--}}
+{{--                                            </span>--}}
+{{--                                            @endif--}}
                                         </div>
                                         @php
                                             $pop = Message::where([['from_id' ,'=', $userId],['to_id',"=",$user->id]])->orwhere([['to_id' ,'=', $userId],['from_id',"=",$user->id]])->latest()->first();
                                         @endphp
-                                        <p class="under_name_mess">
-                                            {{Illuminate\Support\Str::substr($pop->messages, 0, 60)}}
-                                        </p>
+                                        @if(!empty($pop->messages))
+                                            <p class="under_name_mess">
+                                                {{Illuminate\Support\Str::substr($pop->messages, 0, 60)}}
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>
                             @endif
                         @endforeach
                     </div>
+
                     @if(!empty($users[0]))
                         @php
                             // userId can be the id of current or a specified user
@@ -109,3 +116,4 @@ $userId = $userId ?? auth()->id();
         })
     </script>
 @endsection
+

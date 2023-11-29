@@ -20,8 +20,19 @@ class MessageController extends Controller
      */
     public function index(): string
     {
-        $currentUserId = auth()->id();
-        $users         = $this->getUsersByConversations($currentUserId);
+        $currentUser   = auth()->user();
+        $currentUserId = $currentUser->id;
+
+        if ($currentUser->role->type === 'superadmin' || $currentUser->role->type === 'admin') {
+            $users = User::where([['id', '<>', $currentUserId], ['active_user', '=', 1]])->get();
+        } else {
+            $users = User::with('role')
+                         ->where('id', '<>', $currentUserId)
+                         ->whereHas('role', function ($query) {
+                             $query->whereIn('type', ['superadmin', 'admin']);
+                         })
+                         ->get();
+        }
 
         return view(theme('new.message'), ['users' => $users, 'userId' => $currentUserId]);
     }
