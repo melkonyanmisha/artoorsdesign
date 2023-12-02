@@ -2755,16 +2755,16 @@ textarea {
     opacity: 0.2;
 }
 
-.file_svg input {
-    opacity: 0;
-    position: absolute;
-    width: 16px;
-    height: 16px;
-}
-
 .file_svg {
     position: relative;
     cursor: pointer;
+}
+
+.file_svg input {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 
 .send_sms {
