@@ -33,7 +33,7 @@ class SalesController extends Controller
         }
 
         $totalSalesInitial = [
-            'product_id'   => 0,
+            'product_sku'   => 0,
             'product_name' => '',
             'downloads'    => 0,
             'refund_link'  => '<a href="https://payments.ameriabank.am/Admin/clients/Default.aspx" target="_blank">Refund</a',
@@ -65,12 +65,14 @@ class SalesController extends Controller
                 foreach ($package->products as $packageProduct) {
                     if ( ! empty($packageProduct->seller_product_sku->sku->product->id)) {
                         $productID       = $packageProduct->seller_product_sku->sku->product->id;
+                        $productSKU       = $packageProduct->seller_product_sku->sku->sku;
+
                         $paymentProducts = Paymant_products::where('product_id1', $productID)->where(
                             'user_id',
                             $customerId
                         )->first();
 
-                        $totalSales[$keyOrder]['product_id']   = $productID;
+                        $totalSales[$keyOrder]['product_sku']   = $productSKU;
                         $totalSales[$keyOrder]['product_name'] = sprintf(
                             '<a href="%1$s" target="_blank">%2$s</a>',
                             route('frontend.item.show', [
@@ -81,7 +83,7 @@ class SalesController extends Controller
                         );
                         $totalSales[$keyOrder]['downloads']    = $paymentProducts->downloads;
                     } else {
-                        $totalSales[$keyOrder]['product_id']   = $totalSalesInitial['product_id'];
+                        $totalSales[$keyOrder]['product_sku']   = $totalSalesInitial['product_sku'];
                         $totalSales[$keyOrder]['product_name'] = $totalSalesInitial['product_name'];
                         $totalSales[$keyOrder]['downloads']    = $totalSalesInitial['downloads'];
                     }

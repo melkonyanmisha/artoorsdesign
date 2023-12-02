@@ -33,7 +33,7 @@
                 const salesTable = $('#sales').DataTable({
                     "columns": [
                         {title: 'Order ID', data: 'order_id'},
-                        {title: 'Product ID', data: 'product_id'},
+                        {title: 'Product SKU', data: 'product_sku'},
                         {title: 'Purchased', data: 'purchase_date'},
                         {title: 'Product', data: 'product_name'},
                         {title: 'Buyer', data: 'customer_full_name'},
