@@ -306,7 +306,7 @@ class CheckoutController extends Controller
         $total_package = $this->checkoutService->totalAmountForPayment($cartData,null,null)['number_of_package'];
         $shipping_cost = $this->checkoutService->totalAmountForPayment($cartData,null,null)['shipping_cost'];
         $discount = $this->checkoutService->totalAmountForPayment($cartData,null,null)['discount'];
-
+        $tax_total = $this->checkoutService->totalAmountForPayment($cartData,null,null)['tax_total'];
 
         if(isModuleActive('MultiVendor')){
 
@@ -446,8 +446,9 @@ class CheckoutController extends Controller
             ];
             session(['single_package_height_weight_info'=>$session_packages]);
         }
+
         return view(theme('new.payment'),compact('shipping_methods','cartData','shipping_address',
-            'gateway_activations','countries', 'giftCardExist', 'states', 'cities','total_items','total_package','shipping_cost','discount'));
+            'gateway_activations','countries', 'giftCardExist', 'states', 'cities','total_items','total_package','shipping_cost','discount','tax_total'));
 //        return view(theme('pages.checkout'),compact('shipping_methods','cartData','shipping_address',
 //            'gateway_activations','countries', 'giftCardExist', 'states', 'cities','total_items','total_package','shipping_cost','discount'));
     }

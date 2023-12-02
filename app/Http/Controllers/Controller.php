@@ -167,7 +167,7 @@ class Controller extends BaseController
             $orderId = $status->PaymentID;
             $form = view('payment', compact( 'orderId'))->render();
         }else{
-            return response()->json(['ինչ որ խնդիր կա']);
+            return response()->json(['Ameria Response Error']);
         }
 
         if ($create) {

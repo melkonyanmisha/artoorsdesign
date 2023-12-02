@@ -485,10 +485,6 @@ $i = 0
                                     <span class="sub_sale">{{ __('common.subtotal') }}:</span>
                                     <span class="price_of">{{ $subtotal }}$</span>
                                 </div>
-                                <div class="d_flex sto_">
-                                    <span class="sub_sale">Sale::</span>
-                                    <span class="price_of">- {{$discount}}$</span>
-                                </div>
                             </div>
                             <div class="d_flex sto_ total_padd">
                                 <span class="sub_sale">Total:</span>

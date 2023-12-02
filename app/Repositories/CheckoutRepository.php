@@ -546,69 +546,71 @@ class CheckoutRepository{
                     $subtotal +=  ($cart->product->selling_price * $cart->qty);
                     if(file_exists(base_path().'/Modules/GST/') && $cart->product->product->product->is_physical == 1){
                         if($address!=null && app('gst_config')['enable_gst'] == "gstt"){
-                            if(PickupLocation::pickupPointAddress(1)->state_id == $address->state){
-                                if($cart->product->product->product->gstGroup){
-                                    $sameStateTaxesGroup = json_decode($cart->product->product->product->gstGroup->same_state_gst);
-                                    $sameStateTaxesGroup = (array) $sameStateTaxesGroup;
-                                    foreach($sameStateTaxesGroup as $key => $sameStateTax){
-                                        $gstAmount = ($cart->total_price * $sameStateTax) / 100;
-                                        $tax += $gstAmount;
-                                    }
-                                }else{
+//                            if(PickupLocation::pickupPointAddress(1)->state_id == $address->state){
+//                                if($cart->product->product->product->gstGroup){
+//                                    $sameStateTaxesGroup = json_decode($cart->product->product->product->gstGroup->same_state_gst);
+//                                    $sameStateTaxesGroup = (array) $sameStateTaxesGroup;
+//                                    foreach($sameStateTaxesGroup as $key => $sameStateTax){
+//                                        $gstAmount = ($cart->total_price * $sameStateTax) / 100;
+//                                        $tax += $gstAmount;
+//                                    }
+//                                }else{
+//
+//                                    foreach($sameStateTaxes as $key => $sameStateTax){
+//                                        $gstAmount = ($cart->total_price * $sameStateTax->tax_percentage) / 100;
+//                                        $tax += $gstAmount;
+//                                    }
+//                                }
+//
+//                            } else{
+//                                if($cart->product->product->product->gstGroup){
+//                                    $diffStateTaxesGroup = json_decode($cart->product->product->product->gstGroup->outsite_state_gst);
+//                                    $diffStateTaxesGroup = (array) $diffStateTaxesGroup;
+//                                    foreach ($diffStateTaxesGroup as $key => $diffStateTax){
+//                                        $gstAmount = ($cart->total_price * $diffStateTax->tax_percentage) / 100;
+//                                        $tax += $gstAmount;
+//                                    }
+//                                }else{
+//
+//                                    foreach ($diffStateTaxes as $key => $diffStateTax){
+//                                        $gstAmount = ($cart->total_price * $diffStateTax->tax_percentage) / 100;
+//                                        $tax += $gstAmount;
+//                                    }
+//                                }
+//                            }
 
-                                    foreach($sameStateTaxes as $key => $sameStateTax){
-                                        $gstAmount = ($cart->total_price * $sameStateTax->tax_percentage) / 100;
-                                        $tax += $gstAmount;
-                                    }
-                                }
-                            }
-                            else{
-                                if($cart->product->product->product->gstGroup){
-                                    $diffStateTaxesGroup = json_decode($cart->product->product->product->gstGroup->outsite_state_gst);
-                                    $diffStateTaxesGroup = (array) $diffStateTaxesGroup;
-                                    foreach ($diffStateTaxesGroup as $key => $diffStateTax){
-                                        $gstAmount = ($cart->total_price * $diffStateTax->tax_percentage) / 100;
-                                        $tax += $gstAmount;
-                                    }
-                                }else{
-
-                                    foreach ($diffStateTaxes as $key => $diffStateTax){
-                                        $gstAmount = ($cart->total_price * $diffStateTax->tax_percentage) / 100;
-                                        $tax += $gstAmount;
-                                    }
-                                }
-                            }
-                        }
-                        else{
-
-                            if($cart->product->product->product->gstGroup){
-                                $flatTaxGroup = json_decode($cart->product->product->product->gstGroup->same_state_gst);
-                                $flatTaxGroup = (array) $flatTaxGroup;
-                                foreach($flatTaxGroup as $sameStateTax){
-                                    $gstAmount = $cart->total_price * $sameStateTax / 100;
-                                    $tax += $gstAmount;
-                                }
-                            }else{
-
-                                $gstAmount = $cart->total_price * $flatTax->tax_percentage / 100;
-                                $tax += $gstAmount;
-                            }
+                        } else{
+//                            if($cart->product->product->product->gstGroup){
+//                                $flatTaxGroup = json_decode($cart->product->product->product->gstGroup->same_state_gst);
+//                                $flatTaxGroup = (array) $flatTaxGroup;
+//                                foreach($flatTaxGroup as $sameStateTax){
+//                                    $gstAmount = $cart->total_price * $sameStateTax / 100;
+//                                    $tax += $gstAmount;
+//                                }
+//                            }else{
+//                                $gstAmount = $cart->total_price * $flatTax->tax_percentage / 100;
+//                                $tax += $gstAmount;
+//                            }
+                            $discountedAmount = $cart->product->selling_price - $cart->product->selling_price * $cart->product->product->discount / 100;
+                            $tax +=  $discountedAmount * $cart->product->product->tax / 100;
+                            $discount += $cart->product->selling_price - $discountedAmount;
                         }
                     }else{
-                        if($cart->product->product->product->gstGroup){
-                            $sameStateTaxesGroup = json_decode($cart->product->product->product->gstGroup->same_state_gst);
-                            $sameStateTaxesGroup = (array) $sameStateTaxesGroup;
-                            foreach ($sameStateTaxesGroup as $key => $sameStateTax){
-                                $gstAmount = ($cart->total_price * $sameStateTax) / 100;
-                                $tax += $gstAmount;
-                            }
-                        }else{
-                            foreach ($sameStateTaxes as $key => $sameStateTax){
-                                $gstAmount = ($cart->total_price * $sameStateTax->tax_percentage) / 100;
-                                $tax += $gstAmount;
-                            }
-                        }
+//                        if($cart->product->product->product->gstGroup){
+//                            $sameStateTaxesGroup = json_decode($cart->product->product->product->gstGroup->same_state_gst);
+//                            $sameStateTaxesGroup = (array) $sameStateTaxesGroup;
+//                            foreach ($sameStateTaxesGroup as $key => $sameStateTax){
+//                                $gstAmount = ($cart->total_price * $sameStateTax) / 100;
+//                                $tax += $gstAmount;
+//                            }
+//                        }else{
+//                            foreach ($sameStateTaxes as $key => $sameStateTax){
+//                                $gstAmount = ($cart->total_price * $sameStateTax->tax_percentage) / 100;
+//                                $tax += $gstAmount;
+//                            }
+//                        }
                     }
+
                     $additional_shipping += $cart->product->sku->additional_shipping;
                     if($cart->product->product->product->is_physical == 0){
                         $is_digital_product  = 1;
@@ -634,6 +636,7 @@ class CheckoutRepository{
                 $number_of_item += $cart->qty;
                 $packagewise_tax[] = $gstAmount;
             }
+
             if($shipping!=null){
                 if($shipping->cost > 0){
                     $shipping_cost = $shipping->cost + $additional_shipping;
@@ -672,7 +675,6 @@ class CheckoutRepository{
             $total = $actual_price + $tax + $shipping_cost;
         }
 
-        $discount = $subtotal - $actual_price;
         return [
             'grand_total' => $total,
             'subtotal' => $subtotal,
