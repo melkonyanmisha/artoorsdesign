@@ -52,17 +52,17 @@
             </div>
             <div class="d_flex name_on_off">
                 <span class="name_us_onof">{{ $to_user->name }} </span>
-{{--                @if($to_user->active_user)--}}
-{{--                    <span class="online d_flex">--}}
-{{--                    <span class="online_green"></span>--}}
-{{--                        ONLINE--}}
-{{--                    </span>--}}
-{{--                @else--}}
-{{--                    <span class="offline d_flex">--}}
-{{--                    <span class="offline_gray"></span>--}}
-{{--                        OFFLINE {{ Carbon\Carbon::parse($to_user->when_not_active)->format('H:i') }}--}}
-{{--                    </span>--}}
-{{--                @endif--}}
+                {{--                @if($to_user->active_user)--}}
+                {{--                    <span class="online d_flex">--}}
+                {{--                    <span class="online_green"></span>--}}
+                {{--                        ONLINE--}}
+                {{--                    </span>--}}
+                {{--                @else--}}
+                {{--                    <span class="offline d_flex">--}}
+                {{--                    <span class="offline_gray"></span>--}}
+                {{--                        OFFLINE {{ Carbon\Carbon::parse($to_user->when_not_active)->format('H:i') }}--}}
+                {{--                    </span>--}}
+                {{--                @endif--}}
             </div>
         </a>
         <div class="settings_mess">
@@ -119,13 +119,14 @@
     </div>
     <div class="text_here_block">
         <span class="file_svg">
-            <input type="file" id="file">
-           <svg width="16" height="12" viewBox="0 0 16 12" fill="none"
+            <input type="file" id="file" onchange="handleFileInput(this)">
+           <svg class="upload-icon" width="30" height="20" viewBox="0 0 16 12" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
            <path d="M14.5 0H1.5C0.65625 0 0 0.6875 0 1.5V10.5C0 11.3438 0.65625 12 1.5 12H14.5C15.3125 12 16 11.3438 16 10.5V1.5C16 0.6875 15.3125 0 14.5 0ZM14.3125 10.5H1.6875C1.5625 10.5 1.5 10.4375 1.5 10.3125V1.6875C1.5 1.59375 1.5625 1.5 1.6875 1.5H14.3125C14.4062 1.5 14.5 1.59375 14.5 1.6875V10.3125C14.5 10.4375 14.4062 10.5 14.3125 10.5ZM4 2.75C3.28125 2.75 2.75 3.3125 2.75 4C2.75 4.71875 3.28125 5.25 4 5.25C4.6875 5.25 5.25 4.71875 5.25 4C5.25 3.3125 4.6875 2.75 4 2.75ZM3 9H13V6.5L10.25 3.78125C10.0938 3.625 9.875 3.625 9.71875 3.78125L6 7.5L4.75 6.28125C4.59375 6.125 4.375 6.125 4.21875 6.28125L3 7.5V9Z"
                  fill="#323232"/>
            </svg>
         </span>
+        <span class="uploaded-file-name"></span>
         <textarea name="messege_text" id="sms" class="messege_text" placeholder="Comment..." rows="1"
                   cols="1"></textarea>
         <button class="send_sms" type="submit"
@@ -144,5 +145,12 @@
                 sendMessage({{$userId}}, {{$to_user->id }})
             }
         });
+
+        function handleFileInput(input) {
+            const lastBackslashIndex = input.value.lastIndexOf('\\');
+
+            $('.uploaded-file-name')[0].textContent = input.value.substring(lastBackslashIndex + 1)
+        }
+
     </script>
 @endif
