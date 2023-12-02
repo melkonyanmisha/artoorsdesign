@@ -400,35 +400,40 @@
 
                                     <div class="col-lg-6 selling_price_div">
                                         <div class="primary_input mb-15">
-                                            <label class="primary_input_label" for=""> {{ __('product.selling_price') }}
-                                                <span class="text-danger">*</span></label>
+                                            <label class="primary_input_label" for="selling_price">
+                                                {{ __('product.selling_price') }}
+                                                <span class="text-danger">*</span>
+                                            </label>
                                             <input class="primary_input_field" name="selling_price" id="selling_price"
                                                 placeholder="{{ __('product.selling_price') }}" type="number" min="0"
                                                 step="{{step_decimal()}}" value="0" required>
-                                            <span class="text-danger" id="error_selling_price">{{
-                                                $errors->first('selling_price') }}</span>
+                                            <span class="text-danger" id="error_selling_price">
+                                                {{ $errors->first('selling_price') }}
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3">
                                         <div class="primary_input mb-15">
-                                            <label class="primary_input_label" for=""> {{ __('product.discount') }}
+                                            <label class="primary_input_label" for="discount">
+                                                {{ __('product.discount') }}
                                             </label>
                                             <input class="primary_input_field" name="discount" id="discount"
                                                 placeholder="{{ __('product.discount') }}" type="number" min="0"
                                                 step="{{step_decimal()}}" value="0">
-                                            <span class="text-danger" id="error_discunt">{{ $errors->first('discount')
-                                                }}</span>
+                                            <span class="text-danger" id="error_discunt">
+                                                {{ $errors->first('discount')}}
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="primary_input mb-25">
-                                            <label class="primary_input_label" for="">{{ __('product.discount_type')
-                                                }}</label>
-                                            <select class="primary_select mb-25" name="discount_type"
-                                                id="discount_type">
-                                                <option value="1">{{ __('common.amount') }}</option>
+                                            <label class="primary_input_label">
+                                                {{ __('product.discount_type')}}
+                                            </label>
+                                            <select class="primary_select mb-25" name="discount_type" id="discount_type">
                                                 <option value="0">{{ __('common.percentage') }}</option>
+                                                <option value="1">{{ __('common.amount') }}</option>
                                             </select>
                                         </div>
                                     </div>
