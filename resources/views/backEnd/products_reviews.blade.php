@@ -3,13 +3,27 @@
     <link rel="stylesheet" href="{{asset(asset_path('backend/css/backend_page_css/products_reviews.css'))}}"/>
 @endsection
 @section('mainContent')
-    <div class="col-12">
-        <div class="box_header common_table_header">
-            <div class="main-title d-md-flex">
-                <h3 class="mb-0 mr-30 mb_xs_15px mb_sm_20px">Products Review List</h3>
 
-            </div>
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
+    @elseif (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <div class="full-reviews-section">
+        @if(request('full') == 0)
+            <a class="primary-btn" href="?full=1">
+                Full Reviews
+            </a>
+        @else
+            <a class="primary-btn" href="?full=0">
+                Partial Reviews
+            </a>
+        @endif
     </div>
 
     <table id="products-reviews" class="table">
@@ -30,6 +44,7 @@
                         {title: 'Is Positive Like', data: 'is_positive_like'},
                         {title: 'Created At', data: 'created_at'},
                         {title: 'Text', data: 'text'},
+                        {title: 'Delete', data: 'remove_form', orderable: false},
                     ],
 
                     data: totalSales,

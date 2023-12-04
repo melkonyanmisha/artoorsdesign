@@ -216,6 +216,7 @@ Route::get('sitemap.xml', function () {
     $response = response($xmlContent)->header('Content-Type', 'text/xml');
 
     ob_end_clean(); // Clear output buffering
+
     return $response;
 })->name('sitemap');
 
@@ -542,6 +543,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
     Route::get('/sales', [SalesController::class, 'index'])->name('admin.sales');
     Route::get('/products-reviews', [ProductsReviewsController::class, 'index'])->name('admin.products_reviews');
+    Route::delete('/products-reviews/{id}', [ProductsReviewsController::class, 'destroy'])->name(
+        'admin.products_reviews.destroy'
+    );
     Route::view('/admin/comments', 'backEnd.pages.comments');
     Route::view('/comment/admin', 'backEnd.pages.comment')->name('admin.comment');
     Route::view('/popap', 'backEnd.popap')->name('admin.popap');
