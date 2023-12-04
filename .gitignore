@@ -18,7 +18,11 @@
 # Laravel Public
 /public/analytics/*
 /public/api/*
-/public/backend/*
+/public/backend/fonts
+/public/backend/img
+/public/backend/scss
+/public/backend/testing
+/public/backend/vendors
 /public/bulk_upload_sample/*
 /public/carrier/*
 /public/css/*

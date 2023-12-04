@@ -1,0 +1,29 @@
+.container-fluid.no-gutters{
+    display: none
+}
+
+table#products-reviews {
+    text-align: center;
+}
+
+table#products-reviews, table#products-reviews th, table#products-reviews td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table#products-reviews th:after {
+    top: 10px;
+    left: 10%;
+}
+
+.dataTables_paginate .previous, .dataTables_paginate .next {
+    width: 80px;
+}
+
+.dataTables_paginate .previous.disabled, .dataTables_paginate .next.disabled {
+    display: none;
+}
+
+.full-reviews-section{
+    text-align: right;
+}
