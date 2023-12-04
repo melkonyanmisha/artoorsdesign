@@ -40,6 +40,7 @@ use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 use App\Models\Message;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\ProductsReviewsController;
 use Modules\Product\Entities\Product;
 use App\Models\Paymant_products;
 
@@ -540,6 +541,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     });
 
     Route::get('/sales', [SalesController::class, 'index'])->name('admin.sales');
+    Route::get('/products-reviews', [ProductsReviewsController::class, 'index'])->name('admin.products_reviews');
     Route::view('/admin/comments', 'backEnd.pages.comments');
     Route::view('/comment/admin', 'backEnd.pages.comment')->name('admin.comment');
     Route::view('/popap', 'backEnd.popap')->name('admin.popap');
@@ -619,8 +621,8 @@ Route::group(['middleware' => ['auth', 'customer'], 'prefix' => 'profile'], func
     Route::get('/orders', [ProfileController::class, 'order']);
     Route::get('/refunds', [ProfileController::class, 'refund']);
     Route::get('/referral', [ReferralController::class, 'referral'])->name('customer_panel.referral');
-    Route::get('/product-review', [ProductReviewController::class, 'index']);
-    Route::post('/product-review', [ProductReviewController::class, 'store'])->name('frontend.profile.review.store');
+//    Route::get('/product-review', [ProductReviewController::class, 'index']);
+//    Route::post('/product-review', [ProductReviewController::class, 'store'])->name('frontend.profile.review.store');
 
     Route::post('/user-notification-read', [NotificationController::class, 'read'])->name('user_notification_read');
 });

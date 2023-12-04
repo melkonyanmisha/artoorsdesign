@@ -38,8 +38,8 @@ if ( ! auth()->check()) {
                     'products/create',
                     'customer/active-customer-list',
                     'appearance/headers/*',
-                    'review/product-list',
                     'sales',
+                    'products-reviews',
                     'marketing/coupon',
                 ];
             @endphp
@@ -116,14 +116,13 @@ if ( ! auth()->check()) {
                             </a>
                         </li>
                     @endif
-                    @if (permissionCheck('review.product.index') && menuManagerCheck(2,13,'review.product.index')->status == 1)
-                        <li>
-                            <a href="{{ route('review.product.index') }}"
-                               class="{{request()->is('review/product-list') ? 'active' : ''}}">
-                                {{ __('review.product_review') }}
-                            </a>
-                        </li>
-                    @endif
+
+                    <li class="nav-item mb_5">
+                        <a class="nav-link {{request()->is('products-reviews') ? 'active' : ''}}"
+                           href="{{route('admin.products_reviews')}}">
+                            Products Review
+                        </a>
+                    </li>
                 </ul>
             </li>
 
