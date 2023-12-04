@@ -1,0 +1,39 @@
+.container-fluid.no-gutters{
+    display: none
+}
+
+table#sales {
+    text-align: center;
+}
+
+table#sales, table#sales th, table#sales td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table#sales th:after {
+    top: 10px;
+    left: 10%;
+}
+
+.dataTables_paginate .previous, .dataTables_paginate .next {
+    width: 80px;
+}
+
+.dataTables_paginate .previous.disabled, .dataTables_paginate .next.disabled {
+    display: none;
+}
+
+#sales_wrapper{
+    margin-top: 50px;
+}
+
+#generate-report:before {
+    content: '\1F5A8';
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.full-sales-section{
+    text-align: right;
+}
