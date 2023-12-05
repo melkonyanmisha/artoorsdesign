@@ -13,10 +13,10 @@ class ProductsReviewsController extends Controller
      */
     public function index(): View
     {
-        $full       = boolval(request('full'));
-        $totalSales = $this->getReviews($full);
+        $full           = boolval(request('full'));
+        $productReviews = $this->getReviews($full);
 
-        return view('backEnd.products_reviews', ['totalSales' => $totalSales]);
+        return view('backEnd.products_reviews', ['productReviews' => $productReviews]);
     }
 
     /**
@@ -27,22 +27,28 @@ class ProductsReviewsController extends Controller
     private function getReviews(bool $full): array
     {
         if ($full) {
-            $reviews = Review::latest()->get()->toArray();
+            $reviews = Review::with('product')->latest()->get()->toArray();
         } else {
-            $reviews = Review::latest()->paginate(100)->toArray()['data'] ?? [];
+            $reviews = Review::with('product.categories')->latest()->paginate(100)->toArray()['data'] ?? [];
         }
 
-
         if ( ! empty($reviews)) {
-            foreach ($reviews as &$current_review) {
-                $current_review['remove_form'] = sprintf(
+            foreach ($reviews as &$currentReview) {
+                $currentProductCatSlug              = $currentReview['product']['categories'][0]['slug'] ?? '';
+                $currentReview['product_name_html'] = sprintf(
+                    '<a href="%1$s" target="_blank">%2$s</a>',
+                    singleProductURL('', $currentReview['product']['slug'], $currentProductCatSlug),
+                    $currentReview['product']['product_name']
+                );
+
+                $currentReview['remove_form'] = sprintf(
                     '
                 <form action="%1$s" method="post" onsubmit="return confirm(\'Are you sure you want to delete this review?\')">
                     <input type="hidden" name="_token" value="%2$s">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit">Remove</button>
                 </form>',
-                    route('admin.products_reviews.destroy', ['id' => $current_review['id']]),
+                    route('admin.products_reviews.destroy', ['id' => $currentReview['id']]),
                     csrf_token()
                 );
             }
@@ -54,7 +60,7 @@ class ProductsReviewsController extends Controller
     /**
      * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy(int $id): RedirectResponse
     {

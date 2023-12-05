@@ -35,19 +35,19 @@
             salesDataTable();
 
             function salesDataTable() {
-                let totalSales = {!! json_encode($totalSales) !!};
+                let productReviews = {!! json_encode($productReviews) !!};
                 const salesTable = $('#products-reviews').DataTable({
                     "columns": [
                         {title: 'ID', data: 'id'},
                         {title: 'User Id', data: 'user_id'},
-                        {title: 'Product Id', data: 'product_id'},
+                        {title: 'Product Name', data: 'product_name_html'},
                         {title: 'Is Positive Like', data: 'is_positive_like'},
                         {title: 'Created At', data: 'created_at'},
                         {title: 'Text', data: 'text'},
                         {title: 'Delete', data: 'remove_form', orderable: false},
                     ],
 
-                    data: totalSales,
+                    data: productReviews,
                     // "pageLength": 10,
                 });
 
