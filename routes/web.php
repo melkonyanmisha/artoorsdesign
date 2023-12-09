@@ -257,7 +257,7 @@ Route::post('/get-brand-by-type', [CategoryController::class, 'get_brand_by_type
 
 
 Route::get('/contact-us', [ContactUsController::class, 'index'])->name('frontend.contact-us');
-Route::get('/about-us', [AboutUsController::class, 'index'])->name('frontend.about-us');
+//Route::get('/about-us', [AboutUsController::class, 'index'])->name('frontend.about-us');
 Route::get('/merchant', [MerchantController::class, 'index'])->name('frontend.merchant');
 Route::get('/return-exchange', [ReturnExchangeController::class, 'index'])->name('frontend.return-exchange');
 

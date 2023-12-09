@@ -990,6 +990,7 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
 <div class="wrapper">
 <div class="d_flex sto_ f_padds">
     <div class="d_flex foot_bar">
+        <a href="{{url('/about-areve3d')}}" class="f_a_bar">About Us</a>
         <a href="{{url('/blog')}}" class="f_a_bar">Blog</a>
         <a href="{{url('/terms/conditions')}}" class="f_a_bar">Terms & Conditions</a>
         <a @auth href="{{route('message.index')}}" @endauth class=" @guest login_btn @endguest f_a_bar">Complain & suggestions</a>
