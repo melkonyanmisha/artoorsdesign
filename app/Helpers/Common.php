@@ -58,42 +58,62 @@ if (! function_exists('showStatus')) {
     }
 
     if (! function_exists('single_price')) {
+//        todo@@@ old  code need to remove
+//        function single_price($price)
+//        {
+//            if(app('user_currency') != null){
+//                if(app('general_setting')->currency_symbol_position == 'left'){
+//                    return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
+//                }
+//                elseif(app('general_setting')->currency_symbol_position == 'left_with_space'){
+//                    return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
+//                }
+//                elseif(app('general_setting')->currency_symbol_position == 'right'){
+//                    return number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit).app('user_currency')->symbol;
+//                }
+//                elseif(app('general_setting')->currency_symbol_position == 'right_with_space'){
+//                    return number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit). " " . app('user_currency')->symbol;
+//                } else{
+//                    return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
+//                }
+//
+//            }
+//            if(app('general_setting')->currency_symbol != null){
+//                if(app('general_setting')->currency_symbol_position == 'left'){
+//                    return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
+//                }
+//                elseif(app('general_setting')->currency_symbol_position == 'left_with_space'){
+//                    return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
+//                }
+//                elseif(app('general_setting')->currency_symbol_position == 'right'){
+//                    return number_format($price, app('general_setting')->decimal_limit) . app('general_setting')->currency_symbol;
+//                }
+//                elseif(app('general_setting')->currency_symbol_position == 'right_with_space'){
+//                    return number_format($price, app('general_setting')->decimal_limit) ." ".app('general_setting')->currency_symbol;
+//                }else{
+//                    return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
+//                }
+//            }else {
+//                return '$'.number_format($price, 2);
+//            }
+//        }
+
+
         function single_price($price)
         {
-            if(app('user_currency') != null){
-                if(app('general_setting')->currency_symbol_position == 'left'){
-                    return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
-                }
-                elseif(app('general_setting')->currency_symbol_position == 'left_with_space'){
-                    return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
-                }
-                elseif(app('general_setting')->currency_symbol_position == 'right'){
-                    return number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit).app('user_currency')->symbol;
-                }
-                elseif(app('general_setting')->currency_symbol_position == 'right_with_space'){
-                    return number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit). " " . app('user_currency')->symbol;
-                } else{
-                    return app('user_currency')->symbol . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
-                }
+          $convertedPrice =  \App\Http\Controllers\ExchangeController::getInstance()->convertPrice($price, 'USD');
+//var_dump(($price * app('user_currency')->convert_rate));
+//var_dump($convertedPrice['converted_price']);
+//var_dump( number_format($convertedPrice['converted_price'], app('general_setting')->decimal_limit));
+//exit;
+//            var_dump( app('user_currency')->convert_rate); exit;
+//            if(app('user_currency') != null){
+//                return '$' . number_format(($price * app('user_currency')->convert_rate), app('general_setting')->decimal_limit);
+//            }
 
-            }
-            if(app('general_setting')->currency_symbol != null){
-                if(app('general_setting')->currency_symbol_position == 'left'){
-                    return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
-                }
-                elseif(app('general_setting')->currency_symbol_position == 'left_with_space'){
-                    return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
-                }
-                elseif(app('general_setting')->currency_symbol_position == 'right'){
-                    return number_format($price, app('general_setting')->decimal_limit) . app('general_setting')->currency_symbol;
-                }
-                elseif(app('general_setting')->currency_symbol_position == 'right_with_space'){
-                    return number_format($price, app('general_setting')->decimal_limit) ." ".app('general_setting')->currency_symbol;
-                }else{
-                    return app('general_setting')->currency_symbol . number_format($price, app('general_setting')->decimal_limit);
-                }
-            }else {
-                return '$'.number_format($price, 2);
+
+            if(app('user_currency') != null){
+                return '$' . number_format($convertedPrice['converted_price'], app('general_setting')->decimal_limit);
             }
         }
     }
