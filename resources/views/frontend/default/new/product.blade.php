@@ -5,6 +5,7 @@
     use App\Services\ProductService;
     use App\Models\Review;
     use Modules\Seller\Entities\SellerProduct;
+    use App\Http\Controllers\ExchangeController;
 @endphp
 
 @extends('frontend.default.layouts.newApp')
@@ -208,7 +209,18 @@
                         @endif
 
                         @if($product->hasDeal || $product->hasDiscount == 'yes')
-                            <span class="prev_price">{{$product->skus->max('selling_price')}}$</span>
+
+                            <span class="prev_price">
+                            @php
+                                if(ExchangeController::getInstance()->needToConvert()){
+                                    $convertedPrice = ExchangeController::getInstance()->convertPriceToAMD($product->skus->max('selling_price'), 'USD');
+                                    echo $convertedPrice['price'] . ExchangeController::getInstance()->getAMDSymbol();
+                                }else{
+                                    echo  ExchangeController::getInstance()->getUSDSymbol() .  $product->skus->max('selling_price');
+                                }
+                            @endphp
+
+                            </span>
                         @endif
 
                     </div>
@@ -1014,29 +1026,36 @@
                                         <span class="twenty_sp">
                                             @php
                                                 $productFileTypesTxts = ProductService::getProductFileTypes($product);
-                                                echo implode(", ", $productFileTypesTxts)
+                                                echo implode(", ", $productFileTypesTxts);
                                             @endphp
                                         </span>
 
                                         <div class='d_flex sale_price_col'>
-                                            @if(($product->hasDeal || $product->hasDiscount == 'yes') && single_price(@$product->skus->first()->selling_price) != '$ 0.00')
-                                                <span class="prev_price">{{$product->skus->max('selling_price')}}$</span>
+                                            @if(($product->hasDeal || $product->hasDiscount == 'yes') && @$product->skus->first()->selling_price)
+                                                <span class="prev_price">
+                                                @php
+                                                    if(ExchangeController::getInstance()->needToConvert()){
+                                                        $convertedPrice = ExchangeController::getInstance()->convertPriceToAMD($product->skus->max('selling_price'), 'USD');
+                                                        echo $convertedPrice['price'] . ExchangeController::getInstance()->getAMDSymbol();
+                                                    }else{
+                                                        echo  ExchangeController::getInstance()->getUSDSymbol() .  $product->skus->max('selling_price');
+                                                    }
+                                                @endphp
+                                            </span>
                                             @endif
                                             <span class="price_of_prod">
                                                 @if($product->hasDeal)
-
                                                     {{single_price(selling_price(@$product->skus->first()->selling_price,$product->hasDeal->discount_type,$product->hasDeal->discount))}}
                                                 @else
 
                                                     @if($product->hasDiscount == 'yes')
-                                                        {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount))}}
-
+                                                       {{!@$product->skus->first()->selling_price ? 'Free' : single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount))}}
                                                     @else
-                                                        {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->skus->first()->selling_price)}}
+                                                        {{!@$product->skus->first()->selling_price  ? 'Free' : single_price(@$product->skus->first()->selling_price)}}
                                                     @endif
 
                                                 @endif
-                                        </span>
+                                            </span>
                                         </div>
                                     </div>
 

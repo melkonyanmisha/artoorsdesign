@@ -18,6 +18,9 @@ class ExchangeController extends Controller
         $this->fetchExchangeData();
     }
 
+    /**
+     * @return self
+     */
     public static function getInstance()
     {
         if (self::$instance === null) {
@@ -27,7 +30,11 @@ class ExchangeController extends Controller
         return self::$instance;
     }
 
-
+    /**
+     * @param $baseCurrency
+     *
+     * @return void
+     */
     private function fetchExchangeData($baseCurrency = 'USD')
     {
         try {
@@ -43,33 +50,65 @@ class ExchangeController extends Controller
         }
     }
 
-
-    public function getExchangeRate($toCurrency)
+    /**
+     * @param $fromCurrency
+     *
+     * @return float|int
+     */
+    public function getExchangeRate($fromCurrency)
     {
-        return ! empty($this->exchangeData[$toCurrency]) ? (float)$this->exchangeData[$toCurrency] : 0;
+        return ! empty($this->exchangeData[$fromCurrency]) ? (float)$this->exchangeData[$fromCurrency] : 0;
     }
 
-    public function convertPrice($amount, $toCurrency)
+    /**
+     * @param float $amount
+     * @param string $fromCurrency
+     *
+     * @return array
+     */
+    public function convertPriceToAMD(float $amount, string $fromCurrency): array
     {
-        $exchangeRate = $this->getExchangeRate($toCurrency);
+        $convertedPrice = $amount;
+
+        $exchangeRate = $this->getExchangeRate($fromCurrency);
 
         if ($exchangeRate) {
-            if ($exchangeRate > 0) {
-                $convertedPrice = ($amount * $exchangeRate);
+            if ($exchangeRate > 1) {
+                $convertedPrice = ceil($amount * $exchangeRate);
             } else {
-                $convertedPrice = ceil($amount / $exchangeRate);
+                $convertedPrice = $exchangeRate == 0 ? ceil($amount / $exchangeRate) : $amount;
             }
-
-//            var_dump($amount);
-//            var_dump($exchangeRate);
-//            var_dump($convertedPrice);
-//            exit;
-
-            return ['converted_price' => $convertedPrice, 'currency' => $toCurrency];
-        } else {
-            $amount;
         }
+
+        return ['price' => $convertedPrice, 'currency' => $fromCurrency];
     }
+
+    /**
+     * @return string
+     */
+    public function needToConvert(): string
+    {
+        $currentUserRole = auth()->user()->role->type ?? '';
+
+        return $currentUserRole !== 'superadmin' && $currentUserRole !== 'admin';
+    }
+
+    /**
+     * @return string
+     */
+    public function getUSDSymbol(): string
+    {
+        return '$';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAMDSymbol(): string
+    {
+        return '֏';
+    }
+
 
     /**
      * @throws Exception to prevent cloning object.

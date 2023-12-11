@@ -1,3 +1,7 @@
+@php
+    use \App\Http\Controllers\ExchangeController;
+@endphp
+
 @if(isset($products) && count($products) > 0)
     <div class="categories_block d_flex">
 
@@ -71,8 +75,18 @@
                             @endphp
                         </span>
                         <div class='d_flex sale_price_col'>
-                            @if(($product->hasDeal || $product->hasDiscount == 'yes') && single_price(@$product->skus->first()->selling_price) != '$ 0.00')
-                                <span class="prev_price">{{$product->skus->max('selling_price')}}$</span>
+                            @if(($product->hasDeal || $product->hasDiscount == 'yes') && @$product->skus->first()->selling_price)
+                                <span class="prev_price">
+                                    @php
+                                        if(ExchangeController::getInstance()->needToConvert()){
+                                            $convertedPrice = ExchangeController::getInstance()->convertPriceToAMD($product->skus->max('selling_price'), 'USD');
+                                            echo $convertedPrice['price'] . ExchangeController::getInstance()->getAMDSymbol();
+                                        }else{
+                                            echo  ExchangeController::getInstance()->getUSDSymbol() .  $product->skus->max('selling_price');
+                                        }
+                                    @endphp
+
+                                </span>
                             @endif
                             <span class="price_of_prod">
                                 @if($product->hasDeal)
