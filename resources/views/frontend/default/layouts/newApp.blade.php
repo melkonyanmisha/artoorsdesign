@@ -715,7 +715,7 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
                                             @endif
 
                                             @if($cart->product->product->tax)
-                                                <span class="tax">
+                                                <span title="Tax applied at the point of sale to the end buyer" class="tax">
                                                     {{sprintf('+ %1$s%%',  $cart->product->product->tax)}}
                                                 </span>
                                             @endif

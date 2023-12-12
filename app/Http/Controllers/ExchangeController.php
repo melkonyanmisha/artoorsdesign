@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -14,14 +13,21 @@ class ExchangeController extends Controller
 
     private function __construct()
     {
-        // Private constructor to prevent instantiation
         $this->fetchExchangeData();
+    }
+
+    /**
+     * @throws Exception to prevent cloning object.
+     */
+    public function __clone()
+    {
+        throw new Exception('You cannot clone singleton object');
     }
 
     /**
      * @return self
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -31,21 +37,19 @@ class ExchangeController extends Controller
     }
 
     /**
-     * @param $baseCurrency
-     *
      * @return void
      */
-    private function fetchExchangeData($baseCurrency = 'USD')
+    private function fetchExchangeData(): void
     {
         try {
-            $response = Http::get('https://cb.am/latest.json.php', ['currency' => $baseCurrency]);
+            $response = Http::get('https://cb.am/latest.json.php', ['currency' => 'USD']);
 
             if ($response->successful() && $response->json()) {
                 $this->exchangeData = $response->json();
             } else {
                 throw new Exception('Received status code ' . $response->status());
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Error fetching exchange data: ' . $e->getMessage());
         }
     }
@@ -84,13 +88,17 @@ class ExchangeController extends Controller
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function needToConvert(): string
+    public function needToConvert(): bool
     {
+        $countryCode     = DetectLocationController::getInstance()->getCountryCode();
         $currentUserRole = auth()->user()->role->type ?? '';
+        if ($countryCode === 'AM' && $currentUserRole !== 'superadmin' && $currentUserRole !== 'admin') {
+            return true;
+        }
 
-        return $currentUserRole !== 'superadmin' && $currentUserRole !== 'admin';
+        return false;
     }
 
     /**
@@ -107,14 +115,5 @@ class ExchangeController extends Controller
     public function getAMDSymbol(): string
     {
         return '֏';
-    }
-
-
-    /**
-     * @throws Exception to prevent cloning object.
-     */
-    public function __clone()
-    {
-        throw new Exception('You cannot clone singleton object');
     }
 }
