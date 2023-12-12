@@ -524,45 +524,45 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
                     @foreach ($notifications as $notification)
                         <div class="notif_info_block sto_">
                             <div class="d_flex">
-                            <span class="delete_notif" onclick="delete_notif('{{$notification->id}}')">
-                                <svg width="18" height="21" viewBox="0 0 18 21" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                            d="M10.6172 16.2995H11.5547C11.7891 16.2995 12.0234 16.1042 12.0234 15.8307V7.39325C12.0234 7.15887 11.7891 6.9245 11.5547 6.9245H10.6172C10.3438 6.9245 10.1484 7.15887 10.1484 7.39325V15.8307C10.1484 16.1042 10.3438 16.2995 10.6172 16.2995ZM17.0234 3.1745H13.7812L12.4531 0.987C12.1406 0.440125 11.5156 0.0494995 10.8516 0.0494995H6.90625C6.24219 0.0494995 5.61719 0.440125 5.30469 0.987L3.97656 3.1745H0.773438C0.421875 3.1745 0.148438 3.487 0.148438 3.7995V4.4245C0.148438 4.77606 0.421875 5.0495 0.773438 5.0495H1.39844V18.1745C1.39844 19.2292 2.21875 20.0495 3.27344 20.0495H14.5234C15.5391 20.0495 16.3984 19.2292 16.3984 18.1745V5.0495H17.0234C17.3359 5.0495 17.6484 4.77606 17.6484 4.4245V3.7995C17.6484 3.487 17.3359 3.1745 17.0234 3.1745ZM6.82812 2.04169C6.86719 2.00262 6.94531 1.9245 7.02344 1.9245C7.02344 1.9245 7.02344 1.9245 7.0625 1.9245H10.7344C10.8125 1.9245 10.8906 2.00262 10.9297 2.04169L11.5938 3.1745H6.16406L6.82812 2.04169ZM14.5234 18.1745H3.27344V5.0495H14.5234V18.1745ZM6.24219 16.2995H7.17969C7.41406 16.2995 7.64844 16.1042 7.64844 15.8307V7.39325C7.64844 7.15887 7.41406 6.9245 7.17969 6.9245H6.24219C5.96875 6.9245 5.77344 7.15887 5.77344 7.39325V15.8307C5.77344 16.1042 5.96875 16.2995 6.24219 16.2995Z"
-                                            fill="#717171"/>
-                                </svg>
-                            </span>
+                                <a  class="d_flex notif_from">
+                                    @php
+                                        $admin = \App\Models\User::find(1);
+                                    @endphp
+                                    <img class="from_user d_flex" src="{{showImage($admin->avatar !=null?$admin->avatar:'backend/img/avatar.png')}}">
+                                    {{--                                            <span class="from_user d_flex">S</span>--}}
+                                    <div class="who_what_notif">
+                                        <span class="notif_title_from">
+                                            {{$notification->description}}
+                                            {{--                                                Sveta Ganashiram <span class="notif_title_green">Commented</span> a Post--}}
+                                        </span>
+                                        <p class="what_notif">
+                                            {{$notification->title}}
+                                            {{--                                            Lorem Ipsum is simply dummy text of--}}
+                                            {{--                                            the printing and typesetting industry. Lorem Ipsu....--}}
+                                        </p>
+                                    </div>
+                                </a>
                                 <span class="d_flex notif_clock">
-                                <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                            d="M6.66699 0.83077C3.27767 0.83077 0.531575 3.57686 0.531575 6.96619C0.531575 10.3555 3.27767 13.1016 6.66699 13.1016C10.0563 13.1016 12.8024 10.3555 12.8024 6.96619C12.8024 3.57686 10.0563 0.83077 6.66699 0.83077ZM6.66699 11.9141C3.9209 11.9141 1.71908 9.71228 1.71908 6.96619C1.71908 4.24483 3.9209 2.01827 6.66699 2.01827C9.38835 2.01827 11.6149 4.24483 11.6149 6.96619C11.6149 9.71228 9.38835 11.9141 6.66699 11.9141ZM8.17611 9.34119C8.32454 9.44014 8.49772 9.41541 8.59668 9.26697L9.06673 8.64848C9.16569 8.50004 9.14095 8.32686 8.99251 8.22791L7.3597 7.01567V3.50264C7.3597 3.35421 7.21126 3.20577 7.06283 3.20577H6.27116C6.09798 3.20577 5.97428 3.35421 5.97428 3.50264V7.58468C5.97428 7.65889 5.99902 7.75785 6.07324 7.80733L8.17611 9.34119Z"
-                                            fill="#717171"/>
-                                </svg>
-                                <span>{{$notification->created_at->toDateString()}}</span>
-                            </span>
-                            </div>
-                            <a  class="d_flex notif_from">
-                                @php
-                                $admin = \App\Models\User::find(1);
-                                @endphp
-                                <img class="from_user d_flex" src="{{showImage($admin->avatar !=null?$admin->avatar:'backend/img/avatar.png')}}">
-{{--                                            <span class="from_user d_flex">S</span>--}}
-                                <div class="who_what_notif">
-                                <span class="notif_title_from">
-                                    {{$notification->description}}
-                                    {{--                                                Sveta Ganashiram <span class="notif_title_green">Commented</span> a Post--}}
+                                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.66699 0.83077C3.27767 0.83077 0.531575 3.57686 0.531575 6.96619C0.531575 10.3555 3.27767 13.1016 6.66699 13.1016C10.0563 13.1016 12.8024 10.3555 12.8024 6.96619C12.8024 3.57686 10.0563 0.83077 6.66699 0.83077ZM6.66699 11.9141C3.9209 11.9141 1.71908 9.71228 1.71908 6.96619C1.71908 4.24483 3.9209 2.01827 6.66699 2.01827C9.38835 2.01827 11.6149 4.24483 11.6149 6.96619C11.6149 9.71228 9.38835 11.9141 6.66699 11.9141ZM8.17611 9.34119C8.32454 9.44014 8.49772 9.41541 8.59668 9.26697L9.06673 8.64848C9.16569 8.50004 9.14095 8.32686 8.99251 8.22791L7.3597 7.01567V3.50264C7.3597 3.35421 7.21126 3.20577 7.06283 3.20577H6.27116C6.09798 3.20577 5.97428 3.35421 5.97428 3.50264V7.58468C5.97428 7.65889 5.99902 7.75785 6.07324 7.80733L8.17611 9.34119Z"
+                                                fill="#717171"/>
+                                    </svg>
+                                    <span>{{$notification->created_at->toDateString()}}</span>
                                 </span>
-                                    <p class="what_notif">
-                                        {{$notification->title}}
-                                        {{--                                            Lorem Ipsum is simply dummy text of--}}
-                                        {{--                                            the printing and typesetting industry. Lorem Ipsu....--}}
-                                    </p>
-                                </div>
-                            </a>
+                                <span class="delete_notif" onclick="delete_notif('{{$notification->id}}')">
+                                    <svg width="18" height="21" viewBox="0 0 18 21" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.6172 16.2995H11.5547C11.7891 16.2995 12.0234 16.1042 12.0234 15.8307V7.39325C12.0234 7.15887 11.7891 6.9245 11.5547 6.9245H10.6172C10.3438 6.9245 10.1484 7.15887 10.1484 7.39325V15.8307C10.1484 16.1042 10.3438 16.2995 10.6172 16.2995ZM17.0234 3.1745H13.7812L12.4531 0.987C12.1406 0.440125 11.5156 0.0494995 10.8516 0.0494995H6.90625C6.24219 0.0494995 5.61719 0.440125 5.30469 0.987L3.97656 3.1745H0.773438C0.421875 3.1745 0.148438 3.487 0.148438 3.7995V4.4245C0.148438 4.77606 0.421875 5.0495 0.773438 5.0495H1.39844V18.1745C1.39844 19.2292 2.21875 20.0495 3.27344 20.0495H14.5234C15.5391 20.0495 16.3984 19.2292 16.3984 18.1745V5.0495H17.0234C17.3359 5.0495 17.6484 4.77606 17.6484 4.4245V3.7995C17.6484 3.487 17.3359 3.1745 17.0234 3.1745ZM6.82812 2.04169C6.86719 2.00262 6.94531 1.9245 7.02344 1.9245C7.02344 1.9245 7.02344 1.9245 7.0625 1.9245H10.7344C10.8125 1.9245 10.8906 2.00262 10.9297 2.04169L11.5938 3.1745H6.16406L6.82812 2.04169ZM14.5234 18.1745H3.27344V5.0495H14.5234V18.1745ZM6.24219 16.2995H7.17969C7.41406 16.2995 7.64844 16.1042 7.64844 15.8307V7.39325C7.64844 7.15887 7.41406 6.9245 7.17969 6.9245H6.24219C5.96875 6.9245 5.77344 7.15887 5.77344 7.39325V15.8307C5.77344 16.1042 5.96875 16.2995 6.24219 16.2995Z"
+                                                fill="#717171"/>
+                                    </svg>
+                                </span>
+                            </div>
                         </div>
                     @endforeach
-                    <a class="see_notifs" href="{{route('frontend.customer_profile',['a'=>'comments'])}}">See all notifications</a>
+                    <div class="see_notifs-section">
+                        <a class="see_notifs" href="{{route('frontend.customer_profile',['a'=>'comments'])}}">See all notifications</a>
+                    </div>
                 </div>
             </div>
         @else
@@ -700,7 +700,7 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
 {{--                                                                <span class="sale_for">-{{$cart->product->product->discount/$cart->product->product->skus->first()->selling_price*100}}%</span>--}}
 
                                                     <span class="this_moment_price">{{single_price($cart->total_price)}}</span>
-                                                    <span class="sale_for">-{{single_price($cart->product->product->discount)}}%</span>
+                                                    <span class="sale_for">-{{$cart->product->product->discount}}%</span>
                                                     <span class="prev_price">{{single_price($cart->product->selling_price)}}</span>
                                                 @else
 {{--                                                                <span class="this_moment_price">${{$cart->product->product->skus->first()->selling_price - $cart->product->product->discount}}</span>--}}
@@ -712,6 +712,12 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
                                                 @endif
                                             @else
                                                 <span class="this_moment_price">{{single_price($cart->product->selling_price)}}</span>
+                                            @endif
+
+                                            @if($cart->product->product->tax)
+                                                <span class="tax">
+                                                    {{sprintf('+ %1$s%%',  $cart->product->product->tax)}}
+                                                </span>
                                             @endif
 
                                         @endif
@@ -921,19 +927,15 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
                     <button class="apply_promo d_flex coupon_apply_btn" onclick="couponApply('{{$total}}')" data-total="{{$total}}">{{__('common.apply')}}</button>
                 </div>
                 @endif
-                <div class="sub_sale_prices sto_">
-                    <div class="d_flex">
-                        <span class="sub_sp">{{ __('common.subtotal') }}:</span>
-                        <span class="sale_price">{{ $subtotal }}$</span>
-                    </div>
-                    <div class="d_flex">
-                        <span class="sub_sp">{{__('common.discount')}}::</span>
-                        <span class="sale_price">- {{$discount}}$</span>
-                    </div>
-                </div>
+{{--                <div class="sub_sale_prices sto_">--}}
+{{--                    <div class="d_flex">--}}
+{{--                        <span class="sub_sp">{{ __('common.subtotal') }}:</span>--}}
+{{--                        <span class="sale_price">{{ single_price($subtotal) }}</span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="d_flex total_bl">
                     <span class="total_pr">{{__('common.total')}}:</span>
-                    <span class="total_num">{{$total}}$</span>
+                    <span class="total_num">{{single_price($total)}}</span>
                 </div>
                 <div class="total_bl">
                     <a href="{{ route('frontend.cart') }}" class="goto_check sto_ d_flex">{{ __('defaultTheme.view_shopping_cart') }}</a>

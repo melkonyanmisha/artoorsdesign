@@ -417,7 +417,7 @@ header {
 .for_notifications {
     position: absolute;
     box-shadow: 0 4px 20px rgb(0 0 0 / 10%);
-    min-width: 543px;
+    min-width: 450px;
     border-radius: 10px;
     top: 61px;
     right: -70px;
@@ -488,16 +488,20 @@ header {
 .what_notif {
     color: var(--grayWithOpacity);
     font-size: 16px;
-    height: 63px;
+    height: 40px;
     max-width: 335px;
     overflow: hidden;
+}
+
+.see_notifs-section{
+    text-align: center;
+    margin: 20px 0;
 }
 
 .see_notifs {
     color: var(--blue);
     font-size: 16px;
     align-self: center;
-    margin-top: 20px;
 }
 
 .see_notifs:hover {
