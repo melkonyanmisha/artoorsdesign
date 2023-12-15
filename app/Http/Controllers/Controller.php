@@ -136,30 +136,32 @@ class Controller extends BaseController
             'status' => 'panding',
             'created_at' =>  Carbon::now()->toDateTimeString(),
             'description' => $order_desc,
-
         ];
 
-
         $create = \App\Models\Payment::create($data);
+        $currency_code = '840';
 
+        // Convert to AMD
+        if (ExchangeController::getInstance()->needToConvert()) {
+            $convertedPrice        = ExchangeController::getInstance()->convertPriceToAMD($amount, 'USD');
 
-        $lang = \App::getLocale();
+            $amount = $convertedPrice['price'];
+            $currency_code = '051';
+        }
+
         $arrayArca = [
-            "ClientID" => '11690e40-c297-409c-97ca-f20e27939504',
-            'Amount' => $amount,
-            'OrderID' => $order_id,//$order_id
-            'language' => 'en',
-            'Username' => '19532139_api',
-            'Password' => 'hf43BX3uPSTug0op',
+            "ClientID"    => '9aa358fd-b230-4dd0-bac6-ba3817838e89',
+            'Amount'      =>  $amount,
+            'OrderID'     => $order_id,//$order_id
+            'language'    => 'en',
+            'Username'    => '19533296_api',
+            'Password'    => '3vRubf7TN0aog6WD',
             'Description' => $order_desc,
-            'BackURL' => route('arca.result'),
-            'Currency' => '840'
+            'BackURL'     => route('arca.result'),
+            'Currency'    => $currency_code
         ];
 
         $server_output = Http::post('https://services.ameriabank.am/VPOS/api/VPOS/InitPayment',$arrayArca)->body();
-
-        //errorCode
-        $status = [];
 
         $status = json_decode($server_output);
 

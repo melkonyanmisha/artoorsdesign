@@ -1050,8 +1050,7 @@ $('.likes' + id).text(data)
 
 setTimeout(function (){
     $('.category_box_input').removeAttr('readonly')
-}, 3000)
-
+}, 1000)
 
 </script>
 <script type="text/javascript">
