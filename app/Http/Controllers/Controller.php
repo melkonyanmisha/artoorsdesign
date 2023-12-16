@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\Notification;
 use App\Models\User;
-use \App\Models\Comment;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Log;
 
 class Controller extends BaseController
 {
@@ -132,7 +133,7 @@ class Controller extends BaseController
 //            'gateway' => 'arca',
             'user_id' => \Auth::id(),
             'Amount' => $amount,
-            'order_id' => $order_id,//$order_id,
+            'order_id' => $order_id,
             'status' => 'panding',
             'created_at' =>  Carbon::now()->toDateTimeString(),
             'description' => $order_desc,
@@ -150,18 +151,20 @@ class Controller extends BaseController
         }
 
         $arrayArca = [
-            "ClientID"    => '9aa358fd-b230-4dd0-bac6-ba3817838e89',
+            "ClientID"    => env('AMERIA_CLIENT_ID', '9aa358fd-b230-4dd0-bac6-ba3817838e89'),
             'Amount'      =>  $amount,
-            'OrderID'     => $order_id,//$order_id
+            'OrderID'     => $order_id,
             'language'    => 'en',
-            'Username'    => '19533296_api',
-            'Password'    => '3vRubf7TN0aog6WD',
+            'Username'    => env('AMERIA_USERNAME', '19533296_api'),
+            'Password'    => env('AMERIA_PASS', '3vRubf7TN0aog6WD'),
             'Description' => $order_desc,
             'BackURL'     => route('arca.result'),
             'Currency'    => $currency_code
         ];
 
         $server_output = Http::post('https://services.ameriabank.am/VPOS/api/VPOS/InitPayment',$arrayArca)->body();
+
+        Log::alert('Init Payment response' . $server_output);
 
         $status = json_decode($server_output);
 
@@ -183,11 +186,13 @@ class Controller extends BaseController
 
         $arrayArca = [
             'PaymentID' => $request->all()['paymentID'],
-            'Username' => '19532139_api',
-            'Password' => 'hf43BX3uPSTug0op',
+            'Username' => env('AMERIA_USERNAME', '19533296_api'),
+            'Password' => env('AMERIA_PASS','3vRubf7TN0aog6WD'),
         ];
 //        dd($request->all());
         $server_output = Http::post('https://services.ameriabank.am/VPOS/api/VPOS/GetPaymentDetails',$arrayArca)->body();
+        Log::alert('GetPaymentDetails response' . $server_output);
+
         $status = json_decode($server_output);
         if ($status->ResponseCode == '00') {
             $payMant = \App\Models\Payment::where('order_id', $status->OrderID)->where('status', 'panding')->first();
