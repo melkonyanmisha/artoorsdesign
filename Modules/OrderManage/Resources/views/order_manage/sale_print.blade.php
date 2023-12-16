@@ -491,7 +491,7 @@
 
                         <td>{{ $package_product->seller_product_sku->sku->sku }}</td>
                         <td class="text-right">{{ single_price($package_product->price) }}</td>
-                        <td class="text-right">{{$package_product->tax_amount}}%</td>
+                        <td class="text-right">{{single_price($order->tax_amount)}}</td>
                         <td class="text-right">{{ single_price($package_product->price) }}</td>
                     </tr>
                 @endforeach
