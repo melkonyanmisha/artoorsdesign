@@ -98,7 +98,7 @@ $('.close_new_pass').click(function () {
     $('.new_password_section').css('display', 'none');
 });
 
-$('.notif_fav').click(function () {
+$('.notif_fav .head_icons_svg').click(function () {
     $('.for_notifications').toggleClass('for_notifications_active');
 
     $('.container').on('mousemove', function (event) {
@@ -114,7 +114,7 @@ $('.sort_by').on('click', function () {
     });
 });
 
-$('.head_catal').on('click', function () {
+$('.head_catal .head_icons_svg').on('click', function () {
     $('.for_catal').toggleClass('for_catal_active');
 
     $('.container').on('mousemove', function (event) {

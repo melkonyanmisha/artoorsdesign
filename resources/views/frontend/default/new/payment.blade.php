@@ -479,16 +479,16 @@ $i = 0
                     @endauth
                     <div class="goto_checkout_block d_flex">
                         <div class="total_check d_flex sto_">
-                            <span class="total_title">Total</span>
-                            <div class="d_flex subtotal_sale sto_">
-                                <div class="d_flex sto_">
-                                    <span class="sub_sale">{{ __('common.subtotal') }}:</span>
-                                    <span class="price_of">{{ $subtotal }}$</span>
-                                </div>
-                            </div>
+{{--                            <span class="total_title">Total</span>--}}
+{{--                            <div class="d_flex subtotal_sale sto_">--}}
+{{--                                <div class="d_flex sto_">--}}
+{{--                                    <span class="sub_sale">{{ __('common.subtotal') }}:</span>--}}
+{{--                                    <span class="price_of">{{ single_price($subtotal) }}</span>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <div class="d_flex sto_ total_padd">
                                 <span class="sub_sale">Total:</span>
-                                <span class="price_total">{{$total}}$</span>
+                                <span class="price_total">{{single_price($total)}}</span>
                             </div>
                             <div class="total_padd sto_ goto_check_btnn" id="payment_btn_trigger" data-total="{{$total}}" data-ids="{{$ids}}" >
                                 <a   class="goto_check_btn sto_ d_flex" >Go to checkout</a>

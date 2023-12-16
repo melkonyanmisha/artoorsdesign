@@ -3,6 +3,8 @@
  * @var Illuminate\Database\Eloquent\Collection $widgets
  */
 
+use \App\Http\Controllers\ExchangeController;
+
 ?>
 
 @extends('frontend.default.layouts.newApp')
@@ -143,9 +145,20 @@
                                             echo implode(", ", $productFileTypesTxts)
                                         @endphp
                                     </span>
+
                                     <div class='d_flex sale_price_col'>
-                                        @if(($product->hasDeal || $product->hasDiscount == 'yes') && single_price(@$product->skus->first()->selling_price) != '$ 0.00')
-                                            <span class="prev_price">{{$product->skus->max('selling_price')}}$</span>
+                                        @if(($product->hasDeal || $product->hasDiscount == 'yes') && @$product->skus->first()->selling_price)
+                                            <span class="prev_price">
+                                                @php
+                                                    if(ExchangeController::getInstance()->needToConvert()){
+                                                        $convertedPrice = ExchangeController::getInstance()->convertPriceToAMD($product->skus->max('selling_price'), 'USD');
+                                                        echo $convertedPrice['price'] . ExchangeController::getInstance()->getAMDSymbol();
+                                                    }else{
+                                                        echo  ExchangeController::getInstance()->getUSDSymbol() .  $product->skus->max('selling_price');
+                                                    }
+                                                @endphp
+
+                                            </span>
                                         @endif
                                         <span class="price_of_prod">
 

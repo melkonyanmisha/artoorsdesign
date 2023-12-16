@@ -376,7 +376,7 @@
                         <div class="total_check d_flex sto_">
                             <div class="d_flex sto_ total_padd">
                                 <span class="sub_sale">Total:</span>
-                                <span class="price_total">{{$total}}$</span>
+                                <span class="price_total">{{single_price($total)}}</span>
                             </div>
                             <div class="total_padd sto_">
                                 <a href="{{route('frontend.checkout')}}" class="goto_check_btn sto_ d_flex">{{__('defaultTheme.proceed_to_checkout')}}</a>
