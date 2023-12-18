@@ -927,12 +927,16 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
                     <button class="apply_promo d_flex coupon_apply_btn" onclick="couponApply('{{$total}}')" data-total="{{$total}}">{{__('common.apply')}}</button>
                 </div>
                 @endif
-{{--                <div class="sub_sale_prices sto_">--}}
-{{--                    <div class="d_flex">--}}
-{{--                        <span class="sub_sp">{{ __('common.subtotal') }}:</span>--}}
-{{--                        <span class="sale_price">{{ single_price($subtotal) }}</span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                <div class="sub_sale_prices sto_">
+                    <div class="d_flex">
+                        <span class="sub_sp">{{ __('common.subtotal') }}:</span>
+                        <span class="sale_price">{{ single_price($subtotal) }}</span>
+                    </div>
+                    <div class="d_flex sto_">
+                        <span class="sub_sale">Sale::</span>
+                        <span class="price_of">-{{single_price($discount)}}</span>
+                    </div>
+                </div>
                 <div class="d_flex total_bl">
                     <span class="total_pr">{{__('common.total')}}:</span>
                     <span class="total_num">{{single_price($total)}}</span>
