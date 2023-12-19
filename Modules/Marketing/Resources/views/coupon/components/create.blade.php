@@ -15,13 +15,13 @@
             
                         <div class="col-lg-12">
                             <div class="primary_input mb-15">
-                                <label class="primary_input_label" for="coupon_type">{{ __('marketing.coupon_type') }} <span
+                                <label class="primary_input_label valod" for="coupon_type">{{ __('marketing.coupon_type') }} <span
                                     class="text-danger">*</span></label>
                                 <select name="coupon_type" id="coupon_type" class="primary_select mb-15">
                                     <option disabled selected>{{ __('common.select') }}</option>
                                     <option value="1">{{__('marketing.product_base')}}</option>
                                     <option value="2">{{__('marketing.order_base')}}</option>
-                                    <option value="3">{{__('marketing.free_shipping')}}</option>
+{{--                                    <option value="3">{{__('marketing.free_shipping')}}</option>--}}
             
                                 </select>
                             </div>

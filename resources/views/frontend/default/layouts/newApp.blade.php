@@ -923,8 +923,8 @@ Modules\OrderManage\Entities\CustomerNotification::where('customer_id',Auth::id(
 
                 @if($subtotal > 0)
                 <div class="d_flex promocode_form sto_">
-                    <input autocomplete="off" class="promo_code coupon_code" id="coupon_code" type="text" data-total="{{$total}}" placeholder="{{ __('marketing.coupon_code') }}">
-                    <button class="apply_promo d_flex coupon_apply_btn" onclick="couponApply('{{$total}}')" data-total="{{$total}}">{{__('common.apply')}}</button>
+                    <input autocomplete="off" class="promo_code coupon_code" type="text" data-total="{{$total}}" placeholder="{{ __('marketing.coupon_code') }}">
+                    <button class="apply_promo d_flex coupon_apply_btn" onclick="couponApply(this, '{{$total}}')" data-total="{{$total}}">{{__('common.apply')}}</button>
                 </div>
                 @endif
                 <div class="sub_sale_prices sto_">
@@ -1925,153 +1925,60 @@ cartProductDelete(id, product_id, unique_id);
 });
 
 function cartProductDelete(id, p_id, btn_id) {
-// $('#pre-loader').show();
-// $(btn_id).prop("disabled", true);
-var formData = new FormData();
-formData.append('_token', "{{ csrf_token() }}");
-formData.append('id', id);
-formData.append('p_id', p_id);
+    var formData = new FormData();
+    formData.append('_token', "{{ csrf_token() }}");
+    formData.append('id', id);
+    formData.append('p_id', p_id);
 
-// var base_url = $('#url').val();
-$.ajax({
-url: '{{url('/')}}' + "/cart/delete",
-type: "POST",
-cache: false,
-contentType: false,
-processData: false,
-data: formData,
-success: function (response) {
-    (window.location.pathname === '/checkout')? window.location.pathname = '/cart':location.reload()
-    {{--toastr.success("{{__('defaultTheme.product_successfully_deleted_from_cart')}}", "{{__('common.success')}}");--}}
-    // $('#cart_details_div').empty();
-    // $('#cart_details_div').html(response.MainCart);
-    // $(btn_id).prop("disabled", false);
-
-    // $('#cart_inner').empty();
-    // $('#cart_inner').html(response.SubmenuCart);
-    // $('#pre-loader').hide();
-
-},
-error: function (response) {
-    console.log('error')
-    // $(btn_id).prop("disabled", false);
-    // $('#pre-loader').hide();
-
-}
-});
-}
-
-//en  aplajy  carti  popapi  vri
-// $(document).on('click', '.coupon_apply_btn', function (event) {
-//     event.preventDefault();
-//     let total = $(this).data('total');
-//     couponApply(total);
-// });
-
-$(".promo_code").keypress(function (e) {
-if(e.which === 13 && !e.shiftKey) {
-couponApply1($(this).attr('data-total'))
-}
-});
-
-// $(".promo_code").keypress(function (e) {
-//     console.log('textareaclass')
-//     if(e.which === 13 && !e.shiftKey) {
-//         console.log($(this).attr('data-total'))
-//         couponApply1($(this).attr('data-total'))
-//     }
-// });
-
-function couponApply1(total) {
-
-let coupon_code = $('.coupon_code').val();
-if (coupon_code) {
-$('#pre-loader').show();
-
-let formData = new FormData();
-formData.append('_token', "{{ csrf_token() }}");
-formData.append('coupon_code', coupon_code);
-formData.append('shopping_amount', total);
-$.ajax({
-    url: '{{route('frontend.checkout.coupon-apply')}}',
-    type: "POST",
-    cache: false,
-    contentType: false,
-    processData: false,
-    data: formData,
-    success: function (response) {
-        if (response.error) {
-            console.log(response.error)
-            $('.coupon_code').css('border-color','rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
-            // toastr.error(response.error, 'Error');
-            $('#pre-loader').hide();
-        } else {
-            // console.log(response.MainCheckout)
-            location.reload()
-            // $('#mainDiv').html(response.MainCheckout);
-            {{--toastr.success("{{__('defaultTheme.coupon_applied_successfully')}}", "{{__('common.success')}}");--}}
-            // $('#pre-loader').hide();
+    $.ajax({
+        url: '{{url('/')}}' + "/cart/delete",
+        type: "POST",
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        success: function (response) {
+            window.location.pathname === '/checkout' ? window.location.pathname = '/cart' : location.reload()
+        },
+        error: function (response) {
+            console.log('error')
         }
-    },
-    error: function (response) {
-        $('.coupon_code').css('border-color','rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
+    });
+}
 
-        // toastr.error(response.responseJSON.errors.coupon_code)
-        // $('#pre-loader').hide();
+function couponApply(clickedButton, total) {
+    let coupon_code = $(clickedButton).parent().find('.coupon_code').val();
+
+    if (coupon_code) {
+        $('#pre-loader').show();
+
+        let formData = new FormData();
+        formData.append('_token', "{{ csrf_token() }}");
+        formData.append('coupon_code', coupon_code);
+        formData.append('shopping_amount', total);
+        $.ajax({
+            url: '{{route('frontend.checkout.coupon-apply')}}',
+            type: "POST",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                if (response.error) {
+                    console.log(response.error)
+                    $('.coupon_code').css('border-color', 'rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
+                    $('#pre-loader').hide();
+                } else {
+                    location.reload()
+                }
+            },
+            error: function (response) {
+                $('.coupon_code').css('border-color', 'rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
+            }
+        });
+    } else {
+        $('.coupon_code').css('border-color', 'rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
     }
-});
-} else {
-{{--toastr.error("{{__('defaultTheme.coupon_field_is_required')}}", "{{__('common.error')}}");--}}
-$('.coupon_code').css('border-color','rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
-
-}
-}
-function couponApply(total) {
-
-let coupon_code = $('#coupon_code').val();
-console.log(coupon_code)
-if (coupon_code) {
-$('#pre-loader').show();
-
-let formData = new FormData();
-formData.append('_token', "{{ csrf_token() }}");
-formData.append('coupon_code', coupon_code);
-formData.append('shopping_amount', total);
-$.ajax({
-    url: '{{route('frontend.checkout.coupon-apply')}}',
-    type: "POST",
-    cache: false,
-    contentType: false,
-    processData: false,
-    data: formData,
-    success: function (response) {
-        if (response.error) {
-            console.log(response.error)
-            $('.coupon_code').css('border-color','rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
-
-            // toastr.error(response.error, 'Error');
-            $('#pre-loader').hide();
-        } else {
-            // console.log(response.MainCheckout)
-            // $('#mainDiv').html(response.MainCheckout);
-            location.reload()
-            {{--toastr.success("{{__('defaultTheme.coupon_applied_successfully')}}", "{{__('common.success')}}");--}}
-            // $('#pre-loader').hide();
-        }
-    },
-    error: function (response) {
-        $('.coupon_code').css('border-color','rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
-
-        console.log('bbbbbbbbbbbbbb')
-        // toastr.error(response.responseJSON.errors.coupon_code)
-        // $('#pre-loader').hide();
-    }
-});
-} else {
-{{--toastr.error("{{__('defaultTheme.coupon_field_is_required')}}", "{{__('common.error')}}");--}}
-$('.coupon_code').css('border-color','rgb(206, 60, 92)').css('background', 'rgba(206, 60, 92, 0.1)')
-
-}
 }
 
 $(document).on('click', '#coupon_delete', function (event) {

@@ -396,7 +396,7 @@
                         @if($subtotal > 0)
                         <div  class="d_flex promocode_form sto_">
                             <input class="promo_code coupon_code" type="text" placeholder="Promocode" data-total="{{$total}}">
-                            <button class="apply_promo d_flex coupon_apply_btn" onclick="couponApply1('{{$total}}')" data-total="{{$total}}">Apply</button>
+                            <button class="apply_promo d_flex coupon_apply_btn" onclick="couponApply(this, '{{$total}}')" data-total="{{$total}}">Apply</button>
                         </div>
                         @endif
                     </div>
