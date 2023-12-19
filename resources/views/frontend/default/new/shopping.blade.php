@@ -374,6 +374,16 @@
                     @endauth
                     <div class="goto_checkout_block d_flex">
                         <div class="total_check d_flex sto_">
+                            <div class="d_flex subtotal_sale sto_">
+                                <div class="d_flex sto_">
+                                    <span class="sub_sale">{{ __('common.subtotal') }}:</span>
+                                    <span class="price_of">{{single_price($subtotal)}}</span>
+                                </div>
+                                <div class="d_flex sto_">
+                                    <span class="sub_sale">Sale::</span>
+                                    <span class="price_of">-{{single_price($discount)}}</span>
+                                </div>
+                            </div>
                             <div class="d_flex sto_ total_padd">
                                 <span class="sub_sale">Total:</span>
                                 <span class="price_total">{{single_price($total)}}</span>
@@ -382,10 +392,11 @@
                                 <a href="{{route('frontend.checkout')}}" class="goto_check_btn sto_ d_flex">{{__('defaultTheme.proceed_to_checkout')}}</a>
                             </div>
                         </div>
+
                         @if($subtotal > 0)
                         <div  class="d_flex promocode_form sto_">
                             <input class="promo_code coupon_code" type="text" placeholder="Promocode" data-total="{{$total}}">
-                            <button class="apply_promo d_flex coupon_apply_btn" onclick="couponApply1('{{$total}}')" data-total="{{$total}}">Apply</button>
+                            <button class="apply_promo d_flex coupon_apply_btn" onclick="couponApply(this, '{{$total}}')" data-total="{{$total}}">Apply</button>
                         </div>
                         @endif
                     </div>

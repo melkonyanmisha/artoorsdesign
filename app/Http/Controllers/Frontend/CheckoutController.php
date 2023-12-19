@@ -588,6 +588,7 @@ class CheckoutController extends Controller
         if(isset($coupon)){
             if(date('Y-m-d')>=$coupon->start_date && date('Y-m-d')<=$coupon->end_date){
                 if($coupon->is_multiple_buy){
+
                     if($coupon->coupon_type == 1){
                         $carts = Cart::where('user_id',auth()->user()->id)->where('is_select',1)->where('product_type', 'product')->pluck('product_id');
 
@@ -609,9 +610,10 @@ class CheckoutController extends Controller
                         }
 
                     }elseif($coupon->coupon_type == 2){
+
                         if($request->shopping_amount < $coupon->minimum_shopping){
                             return response()->json([
-                                'error' => 'You Have more purchase to get This Coupon.'
+                                'error' => 'Shop more to get this coupon.'
                             ]);
                         }else{
                             Session::put('coupon_type', $coupon->coupon_type);
@@ -686,6 +688,7 @@ class CheckoutController extends Controller
                 'error' => 'invalid Coupon'
             ]);
         }
+
         return $this->reloadWithData();
 
     }
@@ -792,15 +795,21 @@ class CheckoutController extends Controller
         if(isModuleActive('ShipRocket')){
             $postalCodeRequired = true;
         }
+
+
         if ($customer != null) {
-            return response()->json([
-                'MainCheckout' =>  (string)view(theme('partials._checkout_details'),compact('cartData','giftCardExist','shipping_methods','shipping_address','gateway_activations','countries', 'states', 'cities','total_items','total_package','shipping_cost','discount','postalCodeRequired'))
-            ]);
+//            return response()->json([
+//                'MainCheckout' =>  (string)view(theme('partials._checkout_details'),compact('cartData','giftCardExist','shipping_methods','shipping_address','gateway_activations','countries', 'states', 'cities','total_items','total_package','shipping_cost','discount','postalCodeRequired'))
+//            ]);
+            return response()->json(['success']);
+
         }
         else {
-            return response()->json([
-                'MainCheckout' =>  (string)view(theme('partials._checkout_details'),compact('cartData','giftCardExist','shipping_methods','customer','gateway_activations','countries', 'states', 'cities','total_items','total_package','shipping_cost','discount','postalCodeRequired'))
-            ]);
+//            return response()->json([
+//                'MainCheckout' =>  (string)view(theme('partials._checkout_details'),compact('cartData','giftCardExist','shipping_methods','customer','gateway_activations','countries', 'states', 'cities','total_items','total_package','shipping_cost','discount','postalCodeRequired'))
+//            ]);
+
+            return response()->json(['error'], 404);
         }
     }
 
