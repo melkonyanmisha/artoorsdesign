@@ -89,7 +89,6 @@ header {
 .header_first {
     width: 100%;
     column-gap: 10px;
-    padding-top: 30px;
 }
 
 .head_social_lang {
@@ -132,6 +131,7 @@ header {
 }
 
 .head_soc {
+    margin-top: 20px;
     column-gap: 20px;
     justify-content: start;
 }
