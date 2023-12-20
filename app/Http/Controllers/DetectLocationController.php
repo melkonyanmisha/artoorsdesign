@@ -16,7 +16,7 @@ class DetectLocationController extends Controller
     {
         $this->fetchLocationInfo();
 
-        $this->countryCode = $this->locationInfo['country_code'] ?? 'AM';
+        $this->countryCode = $this->locationInfo['country_code'] ?? '';
     }
 
     /**
@@ -73,7 +73,8 @@ class DetectLocationController extends Controller
     /**
      * @return mixed|string
      */
-    public function getCountryCode(){
+    public function getCountryCode()
+    {
         return $this->countryCode;
     }
 }
