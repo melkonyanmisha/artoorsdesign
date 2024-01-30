@@ -542,6 +542,10 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     });
 
     Route::get('/sales', [SalesController::class, 'index'])->name('admin.sales');
+    Route::post('/sales/refund/{id}', [SalesController::class, 'refund'])->name(
+        'admin.sales.refund'
+    );
+
     Route::get('/products-reviews', [ProductsReviewsController::class, 'index'])->name('admin.products_reviews');
     Route::delete('/products-reviews/{id}', [ProductsReviewsController::class, 'destroy'])->name(
         'admin.products_reviews.destroy'
