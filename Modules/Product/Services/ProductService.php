@@ -5,12 +5,11 @@ namespace Modules\Product\Services;
 use App\Models\MediaManager;
 use App\Models\UsedMedia;
 use App\Traits\GenerateSlug;
-use Illuminate\Support\Facades\Validator;
+use Modules\Product\Entities\Product;
 use \Modules\Product\Repositories\ProductRepository;
 use App\Traits\ImageStore;
 use Modules\Product\Entities\ProductGalaryImage;
 use Modules\Product\Entities\ProductSku;
-use ZipArchive;
 use File;
 class ProductService
 {
@@ -135,6 +134,30 @@ class ProductService
     public function findProductSkuById($id)
     {
         return $this->productRepository->findProductSkuById($id);
+    }
+
+    /**
+     * Update products discount
+     *
+     * @param array $data
+     *
+     * @return void
+     */
+    public function updateAllProductsDiscount(array $data): void
+    {
+        $products = Product::all();
+        foreach ($products as $product) {
+            if ($product->skus->first()->selling_price > 0) {
+                $product->update($data);
+
+                if ( ! isModuleActive('MultiVendor')) {
+                    $product->sellerProducts->where('user_id', 1)->first()->update([
+                        'discount'      => $data['discount'],
+                        'discount_type' => $data['discount_type'],
+                    ]);
+                }
+            }
+        }
     }
 
     public function update($data, $id)
