@@ -213,7 +213,12 @@
                                placeholder="{{ __('product.discount') }}" type="number" min="0"
                                step="{{step_decimal()}}" value="0" class="form-control validate primary_input_field">
                     </div>
-
+                    <div class="md-form mb-4">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="discount_all_products" id="discount_all_products">
+                            <label class="form-check-label" for="discount_all_products">All Products</label>
+                        </div>
+                    </div>
                     <div class="md-form mb-4">
                         <label data-error="wrong" data-success="right"
                                for="defaultForm-pass">{{ __('product.discount_type')}}</label>
@@ -227,7 +232,7 @@
 
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button class="btn btn-default  sales">Save</button>
+                    <button class="btn btn-default sales">Save</button>
                 </div>
             </div>
         </div>
@@ -911,16 +916,18 @@
                 $(".sales").click(function () {
                     let arr = [];
                     let discount = $('#discount').val();
+                    let discount_all_products = $('#discount_all_products').prop('checked') ? '1' : '0';
                     let discount_type = $('#discount_type').val();
 
                     $('.select-checkbox .chak:checked').each(function () {
                         arr.push($(this).attr('value'));
                     })
 
-                    var formData = new FormData();
+                    let formData = new FormData();
                     formData.append('_token', "{{ csrf_token() }}");
                     formData.append('id', arr);
                     formData.append('discount', discount);
+                    formData.append('discount_all_products', discount_all_products);
                     formData.append('discount_type', discount_type);
 
                     $.ajax({
@@ -944,7 +951,6 @@
                     });
 
                 })
-
 
                 $("#save-tax").click(function () {
                     let arr = [];

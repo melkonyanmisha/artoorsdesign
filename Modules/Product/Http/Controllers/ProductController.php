@@ -632,29 +632,39 @@ class ProductController extends Controller
     }
     public function discountUpdate(Request $request)
     {
-        $explode_id = explode(',', $request->id);
         try {
-            for ($i = 0; $i < count($explode_id) ;$i++){
-                $product = $this->productService->findById($explode_id[$i]);
-                if(single_price(@$product->skus->first()->selling_price) != '$ 0.00') {
-                    $product->update([
-                        'discount' => $request->discount,
-                        'discount_type' => $request->discount_type,
-                    ]);
+            $discount_all_products = intval($request->discount_all_products);
 
-                    if (!isModuleActive('MultiVendor')) {
-                        $product->sellerProducts->where('user_id', 1)->first()->update([
-                            'discount' => $request->discount,
+            if ($discount_all_products) {
+                $this->productService->updateAllProductsDiscount([
+                    'discount'      => $request->discount,
+                    'discount_type' => $request->discount_type,
+                ]);
+            } else {
+                $explode_id = explode(',', $request->id);
+                for ($i = 0; $i < count($explode_id); $i++) {
+                    $product = $this->productService->findById($explode_id[$i]);
+
+                    if (@$product->skus->first()->selling_price) {
+                        $product->update([
+                            'discount'      => $request->discount,
                             'discount_type' => $request->discount_type,
                         ]);
+
+                        if ( ! isModuleActive('MultiVendor')) {
+                            $product->sellerProducts->where('user_id', 1)->first()->update([
+                                'discount'      => $request->discount,
+                                'discount_type' => $request->discount_type,
+                            ]);
+                        }
                     }
                 }
-
             }
 
             LogActivity::successLog('Update sku status successful.');
         } catch (\Exception $e) {
             LogActivity::errorLog($e->getMessage());
+
             return 0;
         }
     }
