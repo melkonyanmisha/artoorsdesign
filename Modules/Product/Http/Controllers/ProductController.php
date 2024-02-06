@@ -6,6 +6,7 @@ use App\Traits\Notification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Redirect;
 use \Modules\Product\Services\CategoryService;
 use Modules\Product\Services\AttributeService;
 use Modules\Product\Services\UnitTypeService;
@@ -314,9 +315,16 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
+            $productName = trim($request->product_name);
+            $product     = Product::where('product_name', $productName)->first();
+
+            if ($product) {
+                return Redirect::back()->withErrors(['error' => 'Product already exists']);
+            }
 
             $this->productService->create($request->except("_token"));
             DB::commit();
+
             Toastr::success(__('common.added_successfully'), __('common.success'));
             LogActivity::successLog('product upload successful.');
             $user = auth()->user();
@@ -332,6 +340,7 @@ class ProductController extends Controller
             dd($e);
             LogActivity::errorLog($e->getMessage());
             Toastr::error(__('common.error_message'));
+
             return back();
         }
     }

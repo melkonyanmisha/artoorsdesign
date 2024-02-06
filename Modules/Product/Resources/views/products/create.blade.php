@@ -53,6 +53,15 @@
 
 @section('mainContent')
 <section class="admin-visitor-area up_st_admin_visitor">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="container-fluid p-20 white_box">
         <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data" id="choice_form">
             @csrf
