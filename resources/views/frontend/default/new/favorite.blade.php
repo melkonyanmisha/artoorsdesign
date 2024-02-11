@@ -110,13 +110,13 @@
                                                 @else
 
                                                     @if($product->product->hasDiscount == 'yes')
-                                                            {{(single_price(@$product->product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(selling_price(@$product->product->skus->first()->selling_price,$product->product->discount_type,$product->product->discount))}}
+                                                            {{(@$product->product->skus->first()->selling_price == 0)? 'Free':single_price(selling_price(@$product->product->skus->first()->selling_price,$product->product->discount_type,$product->product->discount))}}
 
 {{--                                                        @if($product->product->hasDeal || $product->product->hasDiscount == 'yes')--}}
 {{--                                                            <span class="prev_price">{{$product->product->skus->max('selling_price')}}$</span>--}}
 {{--                                                        @endif--}}
                                                     @else
-                                                        {{(single_price(@$product->product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->product->skus->first()->selling_price)}}
+                                                        {{(@$product->product->skus->first()->selling_price == 0 ) ? 'Free':single_price(@$product->product->skus->first()->selling_price)}}
                                                     @endif
 
                                                 @endif

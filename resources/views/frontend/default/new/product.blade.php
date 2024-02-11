@@ -141,24 +141,24 @@
                                     });
                                 }
                             </script>
-{{--                            @auth--}}
-{{--                                    <a class="like_post d_flex" tabindex="-1"--}}
-{{--                                       @auth onclick="likes('{{$product->id}}')" @endauth>--}}
-{{--                                        <svg width="18" height="18" viewBox="0 0 15 16" fill="none"--}}
-{{--                                             xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                            <path d="M14.5625 8.96875C14.8438 8.5 15 8 15 7.40625C15 6.03125 13.8125 4.75 12.3125 4.75H11.1562C11.3125 4.34375 11.4375 3.875 11.4375 3.28125C11.4375 1 10.25 0 8.46875 0C6.53125 0 6.65625 2.96875 6.21875 3.40625C5.5 4.125 4.65625 5.5 4.0625 6H1C0.4375 6 0 6.46875 0 7V14.5C0 15.0625 0.4375 15.5 1 15.5H3C3.4375 15.5 3.84375 15.1875 3.9375 14.7812C5.34375 14.8125 6.3125 16 9.5 16C9.75 16 10 16 10.2188 16C12.625 16 13.6875 14.7812 13.7188 13.0312C14.1562 12.4688 14.375 11.6875 14.2812 10.9375C14.5938 10.375 14.6875 9.6875 14.5625 8.96875ZM12.625 10.6562C13.0312 11.3125 12.6562 12.1875 12.1875 12.4688C12.4375 13.9688 11.625 14.5 10.5312 14.5H9.34375C7.125 14.5 5.65625 13.3438 4 13.3438V7.5H4.3125C5.21875 7.5 6.4375 5.3125 7.28125 4.46875C8.15625 3.59375 7.875 2.09375 8.46875 1.5C9.9375 1.5 9.9375 2.53125 9.9375 3.28125C9.9375 4.5 9.0625 5.0625 9.0625 6.25H12.3125C12.9688 6.25 13.4688 6.84375 13.5 7.4375C13.5 8 13.0938 8.59375 12.7812 8.59375C13.2188 9.0625 13.3125 10.0312 12.625 10.6562ZM2.75 13.5C2.75 13.9375 2.40625 14.25 2 14.25C1.5625 14.25 1.25 13.9375 1.25 13.5C1.25 13.0938 1.5625 12.75 2 12.75C2.40625 12.75 2.75 13.0938 2.75 13.5Z"--}}
-{{--                                                  fill="#717171"></path>--}}
-{{--                                        </svg>--}}
-{{--                                        <span class="likes">{{count(\App\Models\Like::where('product_id',$product->id)->get())}}</span>--}}
-{{--                                    </a>--}}
-{{--                            @endauth--}}
+                            {{--                                @auth--}}
+                            {{--                                    <a class="like_post d_flex" tabindex="-1"--}}
+                            {{--                                       @auth onclick="likes('{{$product->id}}')" @endauth>--}}
+                            {{--                                        <svg width="18" height="18" viewBox="0 0 15 16" fill="none"--}}
+                            {{--                                             xmlns="http://www.w3.org/2000/svg">--}}
+                            {{--                                            <path d="M14.5625 8.96875C14.8438 8.5 15 8 15 7.40625C15 6.03125 13.8125 4.75 12.3125 4.75H11.1562C11.3125 4.34375 11.4375 3.875 11.4375 3.28125C11.4375 1 10.25 0 8.46875 0C6.53125 0 6.65625 2.96875 6.21875 3.40625C5.5 4.125 4.65625 5.5 4.0625 6H1C0.4375 6 0 6.46875 0 7V14.5C0 15.0625 0.4375 15.5 1 15.5H3C3.4375 15.5 3.84375 15.1875 3.9375 14.7812C5.34375 14.8125 6.3125 16 9.5 16C9.75 16 10 16 10.2188 16C12.625 16 13.6875 14.7812 13.7188 13.0312C14.1562 12.4688 14.375 11.6875 14.2812 10.9375C14.5938 10.375 14.6875 9.6875 14.5625 8.96875ZM12.625 10.6562C13.0312 11.3125 12.6562 12.1875 12.1875 12.4688C12.4375 13.9688 11.625 14.5 10.5312 14.5H9.34375C7.125 14.5 5.65625 13.3438 4 13.3438V7.5H4.3125C5.21875 7.5 6.4375 5.3125 7.28125 4.46875C8.15625 3.59375 7.875 2.09375 8.46875 1.5C9.9375 1.5 9.9375 2.53125 9.9375 3.28125C9.9375 4.5 9.0625 5.0625 9.0625 6.25H12.3125C12.9688 6.25 13.4688 6.84375 13.5 7.4375C13.5 8 13.0938 8.59375 12.7812 8.59375C13.2188 9.0625 13.3125 10.0312 12.625 10.6562ZM2.75 13.5C2.75 13.9375 2.40625 14.25 2 14.25C1.5625 14.25 1.25 13.9375 1.25 13.5C1.25 13.0938 1.5625 12.75 2 12.75C2.40625 12.75 2.75 13.0938 2.75 13.5Z"--}}
+                            {{--                                                  fill="#717171"></path>--}}
+                            {{--                                        </svg>--}}
+                            {{--                                        <span class="likes">{{count(\App\Models\Like::where('product_id',$product->id)->get())}}</span>--}}
+                            {{--                                    </a>--}}
+                            {{--                                @endauth--}}
                         </div>
                     </div>
                     <h1 class="prod_name">{{$product->product_name}}</h1>
                     <div class="d_flex price_prod">
                         @if($product->hasDeal)
                             @if ($product->product->product_type == 1)
-                                {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->skus->first()->selling_price)}}
+                                {{@$product->skus->first()->selling_price == 0 ? 'Free':single_price(@$product->skus->first()->selling_price)}}
                             @else
                                 @if (selling_price($product->skus->min('selling_price'),$product->hasDeal->discount_type,$product->hasDeal->discount) === selling_price($product->skus->max('selling_price'),$product->hasDeal->discount_type,$product->hasDeal->discount))
                                     {{single_price(selling_price($product->skus->min('selling_price'),$product->hasDeal->discount_type,$product->hasDeal->discount))}}
@@ -182,7 +182,7 @@
                                         @endif
                                     </span>
                                 @else
-                                    <span class="this_moment_price"> {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->skus->first()->selling_price)}}</span>
+                                    <span class="this_moment_price"> {{(@$product->skus->first()->selling_price == 0)?'Free':single_price(@$product->skus->first()->selling_price)}}</span>
 
                                 @endif
                             @else
@@ -864,8 +864,10 @@
                                                           fill="#717171"></path>
                                                 </svg>
                                             @else
-                                                <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z" fill="#323232"></path>
+                                                <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4 8V1.03125C4 0.46875 3.53125 0.03125 3 0.03125H1C0.4375 0.03125 0 0.5 0 1.03125V8C0 8.53125 0.4375 8.96875 1 8.96875H3C3.53125 9 4 8.5625 4 8ZM15.0312 6.1875C15.0625 6.03125 15.0938 5.84375 15.0938 5.6875C15.0938 4.96875 14.7188 4.34375 14.1875 3.96875C14.1875 3.875 14.1875 3.78125 14.1875 3.6875C14.1875 2.96875 13.8438 2.34375 13.2812 1.96875C13.2188 0.875 12.3125 0.03125 11.2188 0.03125H9.5625C8.4375 0.03125 7.34375 0.375 6.4375 1.0625L5.28125 1.90625C5.09375 2.0625 5 2.28125 5 2.53125C5 2.90625 5.3125 3.28125 5.75 3.28125C5.90625 3.28125 6.0625 3.21875 6.1875 3.125L7.34375 2.25C7.96875 1.78125 8.75 1.5 9.5625 1.5H11.2188C11.5312 1.5 11.8125 1.78125 11.8125 2.09375C11.8125 2.21875 11.75 2.25 11.75 2.40625C11.75 3.25 12.6875 2.96875 12.6875 3.6875C12.6875 3.96875 12.5 4 12.5 4.375C12.5 4.8125 12.8438 5.0625 13.0938 5.09375C13.375 5.15625 13.5938 5.40625 13.5938 5.6875C13.5938 6.09375 13.2188 6.09375 13.2188 6.59375C13.2188 6.96875 13.5312 7.3125 13.9375 7.34375C14.25 7.34375 14.5 7.625 14.5 7.90625C14.5 8.21875 14.2188 8.5 13.9062 8.5H9.59375C9.1875 8.5 8.84375 8.8125 8.84375 9.21875C8.84375 9.34375 8.875 9.46875 8.9375 9.5625C9.5 10.625 9.75 11.625 9.75 11.875C9.75 12.125 9.5625 12.5 9.03125 12.5C8.65625 12.5 8.59375 12.5 8.28125 11.625C7.5 9.6875 6.34375 8.53125 5.75 8.53125C5.3125 8.53125 5 8.875 5 9.28125C5 9.5 5.09375 9.71875 5.28125 9.84375C7.4375 11.5625 6.59375 14 9.03125 14C10.4062 14 11.25 12.9062 11.25 11.875C11.25 11.4688 11.0625 10.75 10.7812 10H13.9062C15.0312 10 16 9.0625 16 7.90625C16 7.1875 15.5938 6.53125 15.0312 6.1875Z"
+                                                          fill="#323232"></path>
                                                 </svg>
                                             @endif
                                         </div>
@@ -875,19 +877,19 @@
                             @endforeach
                         </div>
                     </div>
-{{--                    @auth--}}
-{{--                        @if(\App\Models\Paymant_products::where('user_id',auth()->id())->where('product_id',$product->id)->first())--}}
-{{--                            <script>--}}
-{{--                                $('.star_span').click(function () {--}}
-{{--                                    let astx = $(this).data('value')--}}
-{{--                                    let id = '{{$product->id}}'--}}
-{{--                                    let data = {astx, id}--}}
-{{--                                    $.post('{{route('astx')}}', data, function (data) {--}}
-{{--                                    });--}}
-{{--                                })--}}
-{{--                            </script>--}}
-{{--                        @endif--}}
-{{--                    @endauth--}}
+                    {{--                    @auth--}}
+                    {{--                        @if(\App\Models\Paymant_products::where('user_id',auth()->id())->where('product_id',$product->id)->first())--}}
+                    {{--                            <script>--}}
+                    {{--                                $('.star_span').click(function () {--}}
+                    {{--                                    let astx = $(this).data('value')--}}
+                    {{--                                    let id = '{{$product->id}}'--}}
+                    {{--                                    let data = {astx, id}--}}
+                    {{--                                    $.post('{{route('astx')}}', data, function (data) {--}}
+                    {{--                                    });--}}
+                    {{--                                })--}}
+                    {{--                            </script>--}}
+                    {{--                        @endif--}}
+                    {{--                    @endauth--}}
                 </div>
                 @if(isset($tiv))
                     <script>
@@ -939,23 +941,23 @@
                 </div>
                 <div class="products_slide sto_ d_flex gray_slider">
                     @php
-                    $products = [];
+                        $products = [];
 
-                    if(!empty($product->product->categories)){
-                        foreach ($product->product->categories as $currentCategory){
-                            $categorySlugs[] = $currentCategory->slug;
+                        if(!empty($product->product->categories)){
+                            foreach ($product->product->categories as $currentCategory){
+                                $categorySlugs[] = $currentCategory->slug;
+                            }
+
+                            $products = SellerProduct::with('skus', 'product.categories')
+                                ->where('status', 1)
+                                ->whereHas('product', function ($query) use ($categorySlugs) {
+                                    $query->where('status', 1)
+                                        ->whereHas('categories', function ($categoryQuery) use ($categorySlugs) {
+                                            $categoryQuery->whereIn('slug', $categorySlugs);
+                                        });
+                                })->orderBy('created_at', 'desc')
+                                ->get();
                         }
-
-                        $products = SellerProduct::with('skus', 'product.categories')
-                            ->where('status', 1)
-                            ->whereHas('product', function ($query) use ($categorySlugs) {
-                                $query->where('status', 1)
-                                    ->whereHas('categories', function ($categoryQuery) use ($categorySlugs) {
-                                        $categoryQuery->whereIn('slug', $categorySlugs);
-                                    });
-                            })->orderBy('created_at', 'desc')
-                            ->get();
-                    }
 
                     @endphp
 
@@ -1049,9 +1051,9 @@
                                                 @else
 
                                                     @if($product->hasDiscount == 'yes')
-                                                       {{!@$product->skus->first()->selling_price ? 'Free' : single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount))}}
+                                                        {{@$product->skus->first()->selling_price == 0 ? 'Free' : single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount))}}
                                                     @else
-                                                        {{!@$product->skus->first()->selling_price  ? 'Free' : single_price(@$product->skus->first()->selling_price)}}
+                                                        {{@$product->skus->first()->selling_price == 0  ? 'Free' : single_price(@$product->skus->first()->selling_price)}}
                                                     @endif
 
                                                 @endif

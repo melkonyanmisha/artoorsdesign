@@ -162,8 +162,7 @@ use \App\Http\Controllers\ExchangeController;
                                         @endif
                                         <span class="price_of_prod">
 
-                                     @if($product->hasDeal)
-
+                                            @if($product->hasDeal)
                                                 {{single_price(selling_price(@$product->skus->first()->selling_price,$product->hasDeal->discount_type,$product->hasDeal->discount))}}
                                             @else
 
@@ -171,7 +170,7 @@ use \App\Http\Controllers\ExchangeController;
                                                     {{single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount))}}
 
                                                 @else
-                                                    {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->skus->first()->selling_price)}}
+                                                    {{@$product->skus->first()->selling_price == 0 ? 'Free':single_price(@$product->skus->first()->selling_price)}}
                                                 @endif
 
                                             @endif
