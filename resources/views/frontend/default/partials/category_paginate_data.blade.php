@@ -88,15 +88,15 @@
 
                                 </span>
                             @endif
+
                             <span class="price_of_prod">
                                 @if($product->hasDeal)
                                     {{single_price(selling_price(@$product->skus->first()->selling_price,$product->hasDeal->discount_type,$product->hasDeal->discount))}}
                                 @else
                                     @if($product->hasDiscount == 'yes')
-                                        {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount))}}
-
+                                        {{@$product->skus->first()->selling_price == 0 ?'Free':single_price(selling_price(@$product->skus->first()->selling_price,$product->discount_type,$product->discount))}}
                                     @else
-                                        {{(single_price(@$product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->skus->first()->selling_price)}}
+                                        {{@$product->skus->first()->selling_price == 0 ?'Free':single_price(@$product->skus->first()->selling_price)}}
                                     @endif
                                 @endif
                             </span>

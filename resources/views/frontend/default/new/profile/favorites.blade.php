@@ -145,7 +145,7 @@
                                             <span class="prev_price">{{$product->product->skus->max('selling_price')}}$</span>
                                         @endif
                                     @else
-                                        {{(single_price(@$product->product->skus->first()->selling_price) == '$ 0.00')?'Free':single_price(@$product->product->skus->first()->selling_price)}}
+                                        {{(@$product->product->skus->first()->selling_price == 0)?'Free':single_price(@$product->product->skus->first()->selling_price)}}
                                         {{--                                        {{single_price(@$product->skus->first()->selling_price)}}--}}
                                     @endif
 
