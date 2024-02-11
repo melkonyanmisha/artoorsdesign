@@ -493,7 +493,7 @@ header {
     overflow: hidden;
 }
 
-.see_notifs-section{
+.see_notifs-section {
     text-align: center;
     margin: 20px 0;
 }
@@ -716,7 +716,6 @@ header {
     z-index: 20;
 }
 
-
 /* end header  */
 
 /* home  */
@@ -729,8 +728,9 @@ main {
     height: 500px;
 }
 
-.slide_section .slick-slide {
-    width: 1683px;
+.slide_section .slick-slide{
+    /*width: 17.7%;*/
+    width: 1770px;
 }
 
 .slick-prev, .slick-next {
