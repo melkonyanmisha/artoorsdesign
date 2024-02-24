@@ -1,11 +1,10 @@
 <!doctype html>
-<html lang="en" dir="{{isRtl()?'rtl':''}}" class="{{isRtl()?'rtl':''}}">
+<html>
     <head>
         <title>@yield('title')</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="{{asset(asset_path(app('general_setting')->favicon))}}" type="image/png" />
         <!-- Fonts -->
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
@@ -475,12 +474,6 @@
                     <p class="text-grey-darker text-2xl md:text-3xl font-light mb-8 leading-normal">
                         @yield('message')
                     </p>
-
-                    <a href="{{ url('/') }}">
-                        <button class="bg-transparent text-grey-darkest font-bold uppercase tracking-wide py-3 px-6 border-2 border-grey-light hover:border-grey rounded-lg">
-                            {{ __('defaultTheme.go_home') }}
-                        </button>
-                    </a>
                 </div>
             </div>
 
