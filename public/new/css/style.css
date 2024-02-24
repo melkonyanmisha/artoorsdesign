@@ -1323,7 +1323,7 @@ footer {
 .for_sale_height {
     height: 64px;
     justify-content: space-between;
-    align-items: self-end;
+    align-items: flex-start;
     margin-bottom: 20px;
 }
 
