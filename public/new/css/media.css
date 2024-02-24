@@ -165,7 +165,7 @@
     }
 
     .prod_name {
-        font-size: 38px;
+        font-size: 28px;
         margin-top: 20px;
     }
 
@@ -996,8 +996,9 @@
     .for_sale_height {
         flex-wrap: wrap;
         align-items: center;
-        justify-content: center;
         row-gap: 5px;
+        justify-content: space-between;
+        flex-direction: column;
     }
 
     .for_sale_height .twenty_sp {
@@ -1205,7 +1206,7 @@
     }
 
     .prod_name {
-        font-size: 30px;
+        font-size: 20px;
         margin-top: 14px;
     }
 
