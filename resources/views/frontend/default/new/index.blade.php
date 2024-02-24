@@ -60,7 +60,7 @@ use \App\Http\Controllers\ExchangeController;
                 @php
                     $best_deal = $widgets->where('section_name','feature_categories')->first();
                 @endphp
-                <div class="d_flex sto_ for_mob_view">
+                <div class="d_column sto_ for_mob_view">
                     <div>
                         <h2 class="second_title">
                             {{$home_seo->product_slider_title}}
@@ -271,4 +271,3 @@ use \App\Http\Controllers\ExchangeController;
         </section>
     </main>
 @endsection
-

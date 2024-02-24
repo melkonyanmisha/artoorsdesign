@@ -272,12 +272,13 @@ $('.payment_option_block').on('click', function () {
     $(this).find('.chosen_svg').css('display', 'block');
 });
 
-$('#myImg').click(function () {
-    let url = $(this).attr("src");
-    $('#zoomed_prod').css('display', 'flex');
-    $('#img01').attr("src", url);
-    $('body').css('overflow', 'hidden');
-});
+// uncomment for show popup
+// $('#myImg').click(function () {
+//     let url = $(this).attr("src");
+//     $('#zoomed_prod').css('display', 'flex');
+//     $('#img01').attr("src", url);
+//     $('body').css('overflow', 'hidden');
+// });
 
 $('.close').click(function () {
     $('#myModal').css('display', 'none');
