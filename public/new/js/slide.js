@@ -11,9 +11,8 @@ $('.slide_section').slick({
     variableWidth: true,
     swipeToSlide: true,
 });
-$('.slick-list, .slick-track').css({
-    "height": "100%"
-  });
+
+$('.slick-list, .slick-track').css({"height": "100%"});
 
 $('.gray_slider').slick({
     dots: false,
@@ -38,9 +37,8 @@ $('.gray_slider').slick({
                 slidesToScroll: 3
             }
         },
-
         {
-            breakpoint: 695,
+            breakpoint: 393,
             settings: {
                 slidesToShow: 2,
                 slidesToScroll: 2
@@ -49,6 +47,6 @@ $('.gray_slider').slick({
     ]
 });
 
-  $(".slick-prev").prepend('<img id="thePrev" src="/public/new/img/left.svg" />')
-  $("#thePrev #theNext").css({"width":"39px","height":"39px"});
-  $(".slick-next").prepend('<img id="theNext" src="/public/new/img/right.svg" />');
+$(".slick-prev").prepend('<img id="thePrev" src="/public/new/img/left.svg" />');
+$("#thePrev #theNext").css({"width": "39px", "height": "39px"});
+$(".slick-next").prepend('<img id="theNext" src="/public/new/img/right.svg" />');
