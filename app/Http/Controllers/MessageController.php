@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use Illuminate\Support\Collection;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Illuminate\Http\Request;
@@ -23,16 +24,28 @@ class MessageController extends Controller
         $currentUser   = auth()->user();
         $currentUserId = $currentUser->id;
 
-        if ($currentUser->role->type === 'superadmin' || $currentUser->role->type === 'admin') {
-            $users = User::where([['id', '<>', $currentUserId], ['active_user', '=', 1]])->get();
-        } else {
-            $users = User::with('role')
-                         ->where('id', '<>', $currentUserId)
-                         ->whereHas('role', function ($query) {
-                             $query->whereIn('type', ['superadmin', 'admin']);
-                         })
-                         ->get();
+        $usersQuery = User::where([['users.id', '<>', $currentUserId], ['users.is_active', '=', 1]]);
+
+        if ($currentUser->role->type !== 'superadmin' && $currentUser->role->type !== 'admin') {
+            $usersQuery->with('role')
+                       ->whereHas('role', function ($query) {
+                           $query->whereIn('type', ['admin']);
+                       });
         }
+
+        // Add a left join to get the latest message date for each user
+        $users = $usersQuery->leftJoin('messages', function ($join) use ($currentUserId) {
+            $join->on('users.id', '=', 'messages.from_id')
+                 ->where('messages.to_id', '=', $currentUserId)
+                 ->orWhere(function ($query) use ($currentUserId) {
+                     $query->on('users.id', '=', 'messages.to_id')
+                           ->where('messages.from_id', '=', $currentUserId);
+                 });
+        })
+                            ->select('users.*', DB::raw('MAX(messages.created_at) as latest_message_date'))
+                            ->groupBy('users.id')
+                            ->orderByDesc('latest_message_date')
+                            ->get();
 
         return view(theme('new.message'), ['users' => $users, 'userId' => $currentUserId]);
     }
@@ -55,7 +68,6 @@ class MessageController extends Controller
 
         return view(theme('new.message'), ['users' => $users, 'userId' => $userId]);
     }
-
 
     /**
      * @param int $userId
@@ -141,6 +153,20 @@ class MessageController extends Controller
                 register_shutdown_function(function () use ($toUser, $request) {
                     $this->sendMail($toUser, $request->message);
                 });
+            }
+
+            $superAdminUsers = User::where('is_active', 1)->whereHas('role', function ($query) {
+                return $query->whereIn('type', ['superadmin', 'admin']);
+            })->get();
+
+            foreach ($superAdminUsers as $currentUser) {
+                if ($toUserId === $currentUser->id) {
+                    $msg_link = env('APP_URL') . '/messages';
+                } else {
+                    $msg_link = env('APP_URL') . "/admin/{$toUserId}/messages?instead_of_admin=1";
+                }
+
+                $this->createSystemNotification($currentUser, 'Message', $msg_link);
             }
 
             return view('include', ['to_user' => $toUser]);
