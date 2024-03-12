@@ -46,15 +46,17 @@
                     <div class="single_blog_post d-flex align-items-center">
                         <div class="single_blog_post_img" >
                             <div class="blog_img_main_div">
-                            <a class="blog_img_div" href="{{route('blog.single.page',$post->title)}}">
-                              <img src="{{
-                              isset($post->image_url)? showImage($post->image_url):showImage('backend/img/default.png')}}" alt="{{$post->image_alt}}">
+                            <a class="blog_img_div" href="{{route('blog.single.page',$post->slug)}}">
+                              <img src="{{isset($post->image_url)? showImage($post->image_url):showImage('backend/img/default.png')}}"
+                                   alt="{{$post->image_alt}}">
                             </a>
                             </div>
 
                         </div>
                         <div class="single_blog_post_content">
-                        <h4><a href="{{route('blog.single.page',$post->title)}}">{{$post->title}}</a></h4>
+                        <h4>
+                            <a href="{{route('blog.single.page',$post->title)}}">{{$post->title}}</a>
+                        </h4>
                             <p>{{$post->excerpt}}</p>
                             <div class="blog_post_details">
                                 <a href="javascript:void(0);"> <i class="ti-calendar"></i> {{ \Carbon\Carbon::parse($post->published_at)->format('d/m/Y')}}</a>

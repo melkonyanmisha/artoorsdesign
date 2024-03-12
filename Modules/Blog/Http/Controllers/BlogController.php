@@ -44,21 +44,27 @@ class BlogController extends Controller
 
     public function singlePage($slug)
     {
-        $post = BlogPost::where('title', $slug)->where('status',1)->with(['comments.commentUser','comments.replay.replayReplay','comments.replay'])->firstOrFail();
+        $post = BlogPost::where('slug', $slug)->where('status', 1)->with(
+            ['comments.commentUser', 'comments.replay.replayReplay', 'comments.replay']
+        )->firstOrFail();
 
         $blogKey = 'blog_' . $post->id;
-        if (!Session::has($blogKey)) {
+        if ( ! Session::has($blogKey)) {
             $post->increment('view_count');
-            Session::put($blogKey,1);
+            Session::put($blogKey, 1);
         }
-        $posts=$this->blogService->getPosts();
-        $categoryPost=$this->blogService->categoryPost();
-        $likePost=$this->blogService->likePost($post->id);
-        $likecheck=$this->blogService->checkPostLike($post->id);
-        $popularPost=$this->blogService->popularPost();
-        return view('frontend.default.pages.blog.single_post',compact(['post','posts','categoryPost','likePost','likecheck','popularPost']));
+        $posts        = $this->blogService->getPosts();
+        $categoryPost = $this->blogService->categoryPost();
+        $likePost     = $this->blogService->likePost($post->id);
+        $likecheck    = $this->blogService->checkPostLike($post->id);
+        $popularPost  = $this->blogService->popularPost();
 
+        return view(
+            'frontend.default.pages.blog.single_post',
+            compact(['post', 'posts', 'categoryPost', 'likePost', 'likecheck', 'popularPost'])
+        );
     }
+
     //comments
     public function commentStore(Request $request, $post_id)
     {
