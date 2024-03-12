@@ -145,6 +145,7 @@ input:checked + .slider:before {
 
 .notification-content {
     color: #828bb2;
+    cursor: pointer;
 }
 .cs-pointer {
     cursor: pointer !important;
