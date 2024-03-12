@@ -272,13 +272,15 @@ $('.payment_option_block').on('click', function () {
     $(this).find('.chosen_svg').css('display', 'block');
 });
 
-// uncomment for show popup
-// $('#myImg').click(function () {
-//     let url = $(this).attr("src");
-//     $('#zoomed_prod').css('display', 'flex');
-//     $('#img01').attr("src", url);
-//     $('body').css('overflow', 'hidden');
-// });
+// To hide slider in mobile
+if (!window.matchMedia('(max-width: 767px)').matches) {
+    $('#myImg').click(function () {
+        let url = $(this).attr("src");
+        $('#zoomed_prod').css('display', 'flex');
+        $('#img01').attr("src", url);
+        $('body').css('overflow', 'hidden');
+    });
+}
 
 $('.close').click(function () {
     $('#myModal').css('display', 'none');
