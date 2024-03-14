@@ -47,6 +47,10 @@
         line-height: 30px;
         color: white;
     }
+
+    #scheme_markup{
+        height: 250px;
+    }
 </style>
 
 @endsection
@@ -469,8 +473,7 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="primary_input mb-15">
-
-                                            <textarea class="summernote" name="description"></textarea>
+                                            <textarea id="description" class="summernote" name="description"></textarea>
                                         </div>
                                     </div>
 
@@ -549,7 +552,7 @@
                                     <div class="col-lg-12">
                                         <div class="primary_input mb-15">
                                             <label class="primary_input_label" for=""> Scheme Markup </label>
-                                            <textarea style="height: 250px;" class="primary_input_field" name="scheme_markup"
+                                            <textarea id="scheme_markup" class="primary_input_field" name="scheme_markup"
                                                    placeholder="Scheme Markup">{{ old('scheme_markup') }}</textarea>
                                             <span class="text-danger">{{ $errors->first('scheme_markup') }}</span>
                                         </div>
@@ -964,6 +967,54 @@
         </form>
     </div>
 </section>
+
+<script>
+    jQuery(document).ready(function ($) {
+        // Call the updateSchemeMarkup function when the Product Name or other relevant fields change
+        $(document).on('change', '#product_name, #selling_price', function () {
+            updateSchemeMarkup();
+        });
+
+        $(document).on('input', '.note-editor .note-editable', function() {
+            // $(this).parent().find('.note-editor .note-editable').trigger('input');
+            updateSchemeMarkup();
+        });
+
+        function updateSchemeMarkup() {
+            {{--const appURL = "{{ env('APP_URL') }}";--}}
+            const appName = "{{ env('APP_NAME') }}";
+            const productName = $('#product_name').val();
+            const skuSingle = $('#sku_single').val();
+            const sellingPrice = $('#selling_price').val();
+            const description = $('#description').next('.note-editor').find('.note-editable').html().trim();
+            {{--const slug = $('#slug').val();--}}
+            {{--const currentDate = new Date().toISOString().split('T')[0];--}}
+
+            const schemeMarkup = {
+                "@context": "https://schema.org",
+                "@type": "Product",
+                "productID": skuSingle,
+                "name": productName,
+                "description": description,
+                "url": "",
+                "image": "",
+                "brand": appName,
+                "offers": [
+                    {
+                        "@type": "Offer",
+                        "price": sellingPrice,
+                        "priceCurrency": "USD",
+                        "itemCondition": "https://schema.org/NewCondition",
+                        "availability": "https://schema.org/InStock"
+                    }
+                ]
+            };
+
+            // Convert the JavaScript object to JSON and set it as the textarea value
+            $('#scheme_markup').val(JSON.stringify(schemeMarkup, null, 2));
+        }
+    });
+</script>
 
 @include('product::products.components._create_category_modal')
 @include('product::products.components._create_brand_modal')
