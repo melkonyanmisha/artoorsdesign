@@ -283,14 +283,14 @@
                 $(document).on('focusout', '#title', function () {
                     // tag get
                     $("#tag_show").html('<li></li>');
-                    var sentence = $(this).val();
+                    const sentence = $(this).val();
                     $.get('/setup/getTagBySentence', {sentence: sentence}, function (result) {
                         $("#tag_show").append(result);
                     })
                 });
 
                 // Call the updateSchemeMarkup function when the title or other relevant fields change
-                $(document).on('keyup change', '#title', function () {
+                $(document).on('change', '#title', function () {
                     updateSchemeMarkup();
                 });
 
@@ -324,14 +324,11 @@
                             }
                         },
                         "datePublished": currentDate,
-                        // Add more properties as needed
                     };
 
                     // Convert the JavaScript object to JSON and set it as the textarea value
                     $('#scheme_markup').val(JSON.stringify(schemeMarkup, null, 2));
                 }
-
-
             });
         })(jQuery);
     </script>
