@@ -530,8 +530,9 @@
                                     <div class="col-lg-12">
                                         <div class="primary_input mb-15">
                                             <label class="primary_input_label" for="">
-                                                {{ __('common.meta_description') }}</label>
-                                            <textarea class="primary_textarea height_112 meta_description"
+                                                {{ __('common.meta_description') }}
+                                            </label>
+                                            <textarea id="meta_description" class="primary_textarea height_112 meta_description"
                                                 placeholder="{{ __('common.meta_description') }}"
                                                 name="meta_description" spellcheck="false"></textarea>
                                             <span class="text-danger">{{ $errors->first('meta_description') }}</span>
@@ -971,11 +972,7 @@
 <script>
     jQuery(document).ready(function ($) {
         // Call the updateSchemeMarkup function when the Product Name or other relevant fields change
-        $(document).on('change', '#product_name, #selling_price', function () {
-            updateSchemeMarkup();
-        });
-
-        $(document).on('input', '.note-editor .note-editable', function() {
+        $(document).on('change', '#product_name, #selling_price, #meta_description', function () {
             updateSchemeMarkup();
         });
 
@@ -984,14 +981,14 @@
             const productName = $('#product_name').val();
             const skuSingle = $('#sku_single').val();
             const sellingPrice = $('#selling_price').val();
-            const description = $('#description').next('.note-editor').find('.note-editable').html().trim();
+            const metaDescription = $('#meta_description').val();
 
             const schemeMarkup = {
                 "@context": "https://schema.org",
                 "@type": "Product",
                 "productID": skuSingle,
                 "name": productName,
-                "description": description,
+                "description": metaDescription,
                 "url": "",
                 "image": "",
                 "brand": appName,
