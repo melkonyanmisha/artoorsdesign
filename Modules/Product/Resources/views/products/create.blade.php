@@ -976,19 +976,15 @@
         });
 
         $(document).on('input', '.note-editor .note-editable', function() {
-            // $(this).parent().find('.note-editor .note-editable').trigger('input');
             updateSchemeMarkup();
         });
 
         function updateSchemeMarkup() {
-            {{--const appURL = "{{ env('APP_URL') }}";--}}
             const appName = "{{ env('APP_NAME') }}";
             const productName = $('#product_name').val();
             const skuSingle = $('#sku_single').val();
             const sellingPrice = $('#selling_price').val();
             const description = $('#description').next('.note-editor').find('.note-editable').html().trim();
-            {{--const slug = $('#slug').val();--}}
-            {{--const currentDate = new Date().toISOString().split('T')[0];--}}
 
             const schemeMarkup = {
                 "@context": "https://schema.org",
