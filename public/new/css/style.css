@@ -2385,6 +2385,10 @@ textarea {
     font-weight: 500;
 }
 
+.products{
+    width: 100%;
+}
+
 .categories_block {
     column-gap: 20px;
     flex-wrap: wrap;
