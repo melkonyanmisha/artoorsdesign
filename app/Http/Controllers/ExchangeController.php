@@ -92,6 +92,11 @@ class ExchangeController extends Controller
      */
     public function needToConvert(): bool
     {
+        // The case when can't fetch the exchange data
+        if ( ! $this->getExchangeRate(['USD'])) {
+            return false;
+        }
+
         $countryCode     = DetectLocationController::getInstance()->getCountryCode();
         $currentUserRole = auth()->user()->role->type ?? '';
         if ($countryCode === 'AM' && $currentUserRole !== 'superadmin' && $currentUserRole !== 'admin') {
