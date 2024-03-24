@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 class ExchangeController extends Controller
 {
     private static $instance;
-    private $exchangeData;
+    private array $exchangeData = [];
 
     private function __construct()
     {
@@ -37,12 +37,14 @@ class ExchangeController extends Controller
     }
 
     /**
+     * @param string $currency
+     *
      * @return void
      */
-    private function fetchExchangeData(): void
+    private function fetchExchangeData(string $currency = 'USD'): void
     {
         try {
-            $response = Http::get('https://cb.am/latest.json.php', ['currency' => 'USD']);
+            $response = Http::get('https://cb.am/latest.json.php', ['currency' => $currency]);
 
             if ($response->successful() && $response->json()) {
                 $this->exchangeData = $response->json();
@@ -59,7 +61,7 @@ class ExchangeController extends Controller
      *
      * @return float|int
      */
-    public function getExchangeRate($fromCurrency)
+    public function getExchangeRate($fromCurrency): float|int
     {
         return ! empty($this->exchangeData[$fromCurrency]) ? (float)$this->exchangeData[$fromCurrency] : 0;
     }
@@ -73,8 +75,7 @@ class ExchangeController extends Controller
     public function convertPriceToAMD(float $amount, string $fromCurrency): array
     {
         $convertedPrice = $amount;
-
-        $exchangeRate = $this->getExchangeRate($fromCurrency);
+        $exchangeRate   = $this->getExchangeRate($fromCurrency);
 
         if ($exchangeRate) {
             if ($exchangeRate > 1) {
@@ -93,7 +94,7 @@ class ExchangeController extends Controller
     public function needToConvert(): bool
     {
         // The case when can't fetch the exchange data
-        if ( ! $this->getExchangeRate(['USD'])) {
+        if (empty($this->exchangeData)) {
             return false;
         }
 
